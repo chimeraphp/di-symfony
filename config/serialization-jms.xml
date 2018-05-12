@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services ../vendor/symfony/dependency-injection/Loader/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults public="false" />
+
+        <service id="Chimera\MessageCreator" alias="Chimera\MessageCreator\JmsSerializer\ArrayTransformer" />
+
+        <service id="Chimera\MessageCreator\JmsSerializer\ArrayTransformer" class="Chimera\MessageCreator\JmsSerializer\ArrayTransformer">
+            <argument type="service" id="JMS\Serializer\SerializerInterface" />
+        </service>
+
+        <service id="Chimera\MessageCreator\JmsSerializer\InputDataInjector" class="Chimera\MessageCreator\JmsSerializer\InputDataInjector">
+
+            <!-- This tag is very specific to the compiler passes in jms/serializer-bundle -->
+            <tag name="jms_serializer.event_listener" event="serializer.pre_deserialize" method="injectData" priority="-99" />
+        </service>
+
+        <service id="chimera.json_formatter" class="Lcobucci\ContentNegotiation\Formatter\JmsSerializer">
+            <argument type="service" id="JMS\Serializer\SerializerInterface" />
+            <argument>json</argument>
+
+            <tag name="chimera.content_negotiation" format="application/json" />
+        </service>
+
+        <service id="chimera.xml_formatter" class="Lcobucci\ContentNegotiation\Formatter\JmsSerializer">
+            <argument type="service" id="JMS\Serializer\SerializerInterface" />
+            <argument>xml</argument>
+
+            <tag name="chimera.content_negotiation" format="application/xml" />
+        </service>
+    </services>
+</container>
