@@ -14,9 +14,14 @@
         "sort-packages": true
     },
     "require": {
-        "php": "^7.2"
+        "php": "^7.2",
+        "lcobucci/di-builder": "^5.5"
     },
     "require-dev": {
+        "chimera/bus-tactician": "^0.1",
+        "chimera/mapping": "^0.1",
+        "chimera/serialization-jms": "^0.1",
+        "chimera/routing-expressive": "^0.1",
         "doctrine/coding-standard": "^4.0",
         "infection/infection": "^0.8",
         "phpstan/phpdoc-parser": "^0.3@dev",
@@ -25,6 +30,12 @@
         "phpstan/phpstan-strict-rules": "^0.10@dev",
         "phpunit/phpunit": "^7.1",
         "squizlabs/php_codesniffer": "^3.2"
+    },
+    "suggest": {
+        "chimera/bus-tactician": "To use league/tactician as service bus",
+        "chimera/mapping": "To use annotations for mapping services",
+        "chimera/serialization-jms": "To use jms/serializer to create messages and format content",
+        "chimera/routing-expressive": "To use zendframework/zend-expressive as routing application"
     },
     "autoload": {
         "psr-4": {
