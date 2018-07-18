@@ -368,7 +368,7 @@ final class RegisterServices implements CompilerPassInterface
         $applicationAllowedFormats = $this->applicationName . '.allowed_formats';
 
         $negotiator = $this->createService(
-            $this->applicationName . '.http.middleware.content_negotiation',
+            ContentTypeMiddleware::class,
             [
                 $container->hasParameter($applicationAllowedFormats) ? '%' . $applicationAllowedFormats . '%'
                                                                      : '%chimera.default_allowed_formats%',
