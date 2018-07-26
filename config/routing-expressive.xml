@@ -42,7 +42,19 @@
         </service>
 
         <service id="Chimera\Routing\RouteParamsExtractor" class="Chimera\Routing\Expressive\RouteParamsExtractor" />
-        <service id="Zend\HttpHandlerRunner\Emitter\EmitterInterface" class="Zend\HttpHandlerRunner\Emitter\SapiEmitter" />
+
+        <service id="Zend\HttpHandlerRunner\Emitter\SapiEmitter" />
+        <service id="Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter" />
+        <service id="Zend\HttpHandlerRunner\Emitter\EmitterStack">
+            <call method="push">
+                <argument type="service" id="Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter" />
+            </call>
+            <call method="push">
+                <argument type="service" id="Zend\HttpHandlerRunner\Emitter\SapiEmitter" />
+            </call>
+        </service>
+
+        <service id="Zend\HttpHandlerRunner\Emitter\EmitterInterface" alias="Zend\HttpHandlerRunner\Emitter\EmitterStack" />
 
         <service id="Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware" class="Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware">
             <argument type="service" id="Psr\Http\Message\ResponseInterface" />
