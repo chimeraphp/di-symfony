@@ -136,7 +136,7 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @return string[][][]
+     * @return mixed[]
      *
      * @throws InvalidArgumentException
      */
@@ -162,7 +162,7 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @param string[][][] $middlewareList
+     * @param mixed[] $middlewareList
      *
      * @return string[][]
      */
