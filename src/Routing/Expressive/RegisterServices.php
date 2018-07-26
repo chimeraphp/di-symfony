@@ -488,7 +488,7 @@ final class RegisterServices implements CompilerPassInterface
                 $route['redirect_to'],
                 new Reference($this->applicationName . '.http.uri_generator'),
                 new Reference(IdentifierGenerator::class),
-                $route['async'] === true ? StatusCode::STATUS_CREATED : StatusCode::STATUS_ACCEPTED,
+                $route['async'] === true ? StatusCode::STATUS_ACCEPTED : StatusCode::STATUS_CREATED,
             ]
         );
 
@@ -529,7 +529,7 @@ final class RegisterServices implements CompilerPassInterface
             [
                 $this->generateWriteAction($routeServiceId . '.action', $route['command'], $container),
                 new Reference(ResponseInterface::class),
-                $route['async'] === true ? StatusCode::STATUS_NO_CONTENT : StatusCode::STATUS_ACCEPTED,
+                $route['async'] === true ? StatusCode::STATUS_ACCEPTED : StatusCode::STATUS_NO_CONTENT,
             ]
         );
 
