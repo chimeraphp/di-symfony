@@ -47,10 +47,10 @@
         <service id="Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter" />
         <service id="Zend\HttpHandlerRunner\Emitter\EmitterStack">
             <call method="push">
-                <argument type="service" id="Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter" />
+                <argument type="service" id="Zend\HttpHandlerRunner\Emitter\SapiEmitter" />
             </call>
             <call method="push">
-                <argument type="service" id="Zend\HttpHandlerRunner\Emitter\SapiEmitter" />
+                <argument type="service" id="Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter" />
             </call>
         </service>
 
