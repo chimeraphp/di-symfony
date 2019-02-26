@@ -58,7 +58,7 @@ final class RegisterServices implements CompilerPassInterface
     private const MESSAGE_INVALID_ROUTE = 'You must specify the "route_name", "path", and "type" arguments in '
                                           . '"%s" (tag "%s").';
 
-    private const TYPES = [
+    private const BEHAVIORS = [
         'fetch'         => ['methods' => ['GET'], 'callback' => 'fetchOnly'],
         'create'        => ['methods' => ['POST'], 'callback' => 'createOnly'],
         'create_fetch'  => ['methods' => ['POST'], 'callback' => 'createAndFetch'],
@@ -221,7 +221,7 @@ final class RegisterServices implements CompilerPassInterface
         $services = [];
 
         foreach ($routes as $route) {
-            $services[] = $this->{self::TYPES[$route['type']]['callback']}(
+            $services[] = $this->{self::BEHAVIORS[$route['behavior']]['callback']}(
                 $this->applicationName . '.http.route.' . $route['route_name'],
                 $route,
                 $container
@@ -324,7 +324,7 @@ final class RegisterServices implements CompilerPassInterface
                 [
                     $route['path'],
                     new Reference($this->applicationName . '.http.route.' . $route['route_name']),
-                    $route['methods'] ?? self::TYPES[$route['type']]['methods'],
+                    $route['methods'] ?? self::BEHAVIORS[$route['behavior']]['methods'],
                     $route['route_name'],
                 ]
             );
