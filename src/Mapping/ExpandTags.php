@@ -19,7 +19,7 @@ use function is_array;
 
 final class ExpandTags implements CompilerPassInterface
 {
-    private const ROUTE_TYPES = [
+    private const ROUTE_BEHAVIOR = [
         Mapping\Routing\CreateEndpoint::class          => 'create',
         Mapping\Routing\CreateAndFetchEndpoint::class  => 'create_fetch',
         Mapping\Routing\ExecuteEndpoint::class         => 'execute',
@@ -103,10 +103,10 @@ final class ExpandTags implements CompilerPassInterface
             return $attributes;
         }
 
-        $type = self::ROUTE_TYPES[get_class($annotation)];
+        $type = self::ROUTE_BEHAVIOR[get_class($annotation)];
 
-        $attributes['type']    = $type;
-        $attributes['methods'] = implode(',', $attributes['methods'] ?? []);
+        $attributes['behavior'] = $type;
+        $attributes['methods']  = implode(',', $attributes['methods'] ?? []);
 
         if (isset($attributes['name'])) {
             $attributes['route_name'] = $attributes['name'];
