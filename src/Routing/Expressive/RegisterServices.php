@@ -124,8 +124,9 @@ final class RegisterServices implements CompilerPassInterface
                     $tag['methods'] = explode(',', $tag['methods']);
                 }
 
-                $tag['app']   = $tag['app'] ?? $this->applicationName;
-                $tag['async'] = (bool) ($tag['async'] ?? false);
+                $tag['app']       = $tag['app'] ?? $this->applicationName;
+                $tag['async']     = (bool) ($tag['async'] ?? false);
+                $tag['serviceId'] = $serviceId;
 
                 $routes[$tag['app']]   = $routes[$tag['app']] ?? [];
                 $routes[$tag['app']][] = $tag;
