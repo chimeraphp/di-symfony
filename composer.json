@@ -18,12 +18,10 @@
         "lcobucci/di-builder": "^5.5"
     },
     "require-dev": {
-        "chimera/bus-tactician": "^0.2@dev",
-        "chimera/foundation": "^0.2@dev",
-        "chimera/mapping": "^0.2@dev",
-        "chimera/serialization-jms": "^0.2@dev",
-        "chimera/routing": "^0.2@dev",
-        "chimera/routing-expressive": "^0.2@dev",
+        "chimera/bus-tactician": "^0.2",
+        "chimera/mapping": "^0.2",
+        "chimera/serialization-jms": "^0.2",
+        "chimera/routing-expressive": "^0.2",
         "infection/infection": "^0.12",
         "lcobucci/coding-standard": "^2.0",
         "phpstan/phpstan": "^0.11",
