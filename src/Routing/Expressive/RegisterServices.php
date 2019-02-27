@@ -64,6 +64,7 @@ final class RegisterServices implements CompilerPassInterface
         'create_fetch'  => ['methods' => ['POST'], 'callback' => 'createAndFetch'],
         'execute'       => ['methods' => ['PATCH', 'PUT', 'DELETE'], 'callback' => 'executeOnly'],
         'execute_fetch' => ['methods' => ['PATCH', 'PUT'], 'callback' => 'executeAndFetch'],
+        'none'          => ['methods' => ['GET'], 'callback' => 'noBehavior'],
     ];
 
     /**
@@ -554,6 +555,16 @@ final class RegisterServices implements CompilerPassInterface
         );
 
         $container->setDefinition($routeServiceId . '.handler', $handler);
+
+        return $this->wrapHandler($routeServiceId, $container);
+    }
+
+    /**
+     * @param mixed[] $route
+     */
+    public function noBehavior(string $routeServiceId, array $route, ContainerBuilder $container): string
+    {
+        $container->setAlias($routeServiceId . '.handler', $route['serviceId']);
 
         return $this->wrapHandler($routeServiceId, $container);
     }
