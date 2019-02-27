@@ -55,7 +55,7 @@ use function sprintf;
 
 final class RegisterServices implements CompilerPassInterface
 {
-    private const MESSAGE_INVALID_ROUTE = 'You must specify the "route_name", "path", and "type" arguments in '
+    private const MESSAGE_INVALID_ROUTE = 'You must specify the "route_name", "path", and "behavior" arguments in '
                                           . '"%s" (tag "%s").';
 
     private const BEHAVIORS = [
@@ -114,7 +114,7 @@ final class RegisterServices implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds(Tags::HTTP_ROUTE) as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                if (! isset($tag['route_name'], $tag['path'], $tag['type'])) {
+                if (! isset($tag['route_name'], $tag['path'], $tag['behavior'])) {
                     throw new InvalidArgumentException(
                         sprintf(self::MESSAGE_INVALID_ROUTE, $serviceId, Tags::HTTP_ROUTE)
                     );
