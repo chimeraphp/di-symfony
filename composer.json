@@ -23,7 +23,7 @@
         "chimera/serialization-jms": "^0.1",
         "chimera/routing-expressive": "^0.1",
         "doctrine/coding-standard": "^4.0",
-        "infection/infection": "^0.9",
+        "infection/infection": "^0.12",
         "phpstan/phpstan": "^0.11",
         "phpstan/phpstan-deprecation-rules": "^0.11",
         "phpstan/phpstan-phpunit": "^0.11",
