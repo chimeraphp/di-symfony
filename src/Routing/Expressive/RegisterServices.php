@@ -55,7 +55,7 @@ use function sprintf;
 
 final class RegisterServices implements CompilerPassInterface
 {
-    private const MESSAGE_INVALID_ROUTE = 'You must specify the "route_name", "path", and "type" arguments in '
+    private const MESSAGE_INVALID_ROUTE = 'You must specify the "route_name", "path", and "behavior" arguments in '
                                           . '"%s" (tag "%s").';
 
     private const BEHAVIORS = [
@@ -64,6 +64,7 @@ final class RegisterServices implements CompilerPassInterface
         'create_fetch'  => ['methods' => ['POST'], 'callback' => 'createAndFetch'],
         'execute'       => ['methods' => ['PATCH', 'PUT', 'DELETE'], 'callback' => 'executeOnly'],
         'execute_fetch' => ['methods' => ['PATCH', 'PUT'], 'callback' => 'executeAndFetch'],
+        'none'          => ['methods' => ['GET'], 'callback' => 'noBehavior'],
     ];
 
     /**
@@ -114,7 +115,7 @@ final class RegisterServices implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds(Tags::HTTP_ROUTE) as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                if (! isset($tag['route_name'], $tag['path'], $tag['type'])) {
+                if (! isset($tag['route_name'], $tag['path'], $tag['behavior'])) {
                     throw new InvalidArgumentException(
                         sprintf(self::MESSAGE_INVALID_ROUTE, $serviceId, Tags::HTTP_ROUTE)
                     );
@@ -124,8 +125,9 @@ final class RegisterServices implements CompilerPassInterface
                     $tag['methods'] = explode(',', $tag['methods']);
                 }
 
-                $tag['app']   = $tag['app'] ?? $this->applicationName;
-                $tag['async'] = (bool) ($tag['async'] ?? false);
+                $tag['app']       = $tag['app'] ?? $this->applicationName;
+                $tag['async']     = (bool) ($tag['async'] ?? false);
+                $tag['serviceId'] = $serviceId;
 
                 $routes[$tag['app']]   = $routes[$tag['app']] ?? [];
                 $routes[$tag['app']][] = $tag;
@@ -553,6 +555,16 @@ final class RegisterServices implements CompilerPassInterface
         );
 
         $container->setDefinition($routeServiceId . '.handler', $handler);
+
+        return $this->wrapHandler($routeServiceId, $container);
+    }
+
+    /**
+     * @param mixed[] $route
+     */
+    public function noBehavior(string $routeServiceId, array $route, ContainerBuilder $container): string
+    {
+        $container->setAlias($routeServiceId . '.handler', $route['serviceId']);
 
         return $this->wrapHandler($routeServiceId, $container);
     }

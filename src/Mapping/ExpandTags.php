@@ -27,6 +27,7 @@ final class ExpandTags implements CompilerPassInterface
         Mapping\Routing\ExecuteEndpoint::class         => 'execute',
         Mapping\Routing\ExecuteAndFetchEndpoint::class => 'execute_fetch',
         Mapping\Routing\FetchEndpoint::class           => 'fetch',
+        Mapping\Routing\SimpleEndpoint::class          => 'none',
     ];
 
     private const SERVICE_TAGS = [
@@ -38,6 +39,7 @@ final class ExpandTags implements CompilerPassInterface
         Mapping\Routing\ExecuteEndpoint::class         => Tags::HTTP_ROUTE,
         Mapping\Routing\ExecuteAndFetchEndpoint::class => Tags::HTTP_ROUTE,
         Mapping\Routing\FetchEndpoint::class           => Tags::HTTP_ROUTE,
+        Mapping\Routing\SimpleEndpoint::class          => Tags::HTTP_ROUTE,
         Mapping\Routing\Middleware::class              => Tags::HTTP_MIDDLEWARE,
     ];
 
