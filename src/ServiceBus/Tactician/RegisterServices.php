@@ -6,6 +6,7 @@ namespace Chimera\DependencyInjection\ServiceBus\Tactician;
 use Chimera\DependencyInjection\Tags;
 use Chimera\ServiceBus\Tactician\ReadModelConversionMiddleware;
 use Chimera\ServiceBus\Tactician\ServiceBus;
+use Exception;
 use League\Tactician\CommandBus;
 use League\Tactician\Container\ContainerLocator;
 use League\Tactician\Handler\CommandHandlerMiddleware;
@@ -51,7 +52,7 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function process(ContainerBuilder $container): void
     {
@@ -79,7 +80,7 @@ final class RegisterServices implements CompilerPassInterface
     /**
      * @return string[][]
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function extractHandlers(ContainerBuilder $container): array
     {
@@ -305,7 +306,7 @@ final class RegisterServices implements CompilerPassInterface
         return ServiceLocatorTagPass::register(
             $container,
             array_map(
-                function (string $id): Reference {
+                static function (string $id): Reference {
                     return new Reference($id);
                 },
                 (array) array_combine($serviceIds, $serviceIds)

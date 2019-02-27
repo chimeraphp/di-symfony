@@ -193,7 +193,7 @@ final class RegisterServices implements CompilerPassInterface
         return ServiceLocatorTagPass::register(
             $container,
             array_map(
-                function (string $id): Reference {
+                static function (string $id): Reference {
                     return new Reference($id);
                 },
                 (array) array_combine($services, $services)
