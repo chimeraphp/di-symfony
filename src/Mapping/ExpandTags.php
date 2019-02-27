@@ -7,7 +7,9 @@ use Chimera\DependencyInjection\Tags;
 use Chimera\Mapping;
 use Doctrine\Common\Annotations\AnnotationException;
 use Generator;
+use InvalidArgumentException;
 use ReflectionClass;
+use ReflectionException;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -42,8 +44,8 @@ final class ExpandTags implements CompilerPassInterface
     /**
      * {@inheritdoc}
      *
-     * @throws \InvalidArgumentException
-     * @throws \ReflectionException
+     * @throws InvalidArgumentException
+     * @throws ReflectionException
      * @throws AnnotationException
      */
     public function process(ContainerBuilder $container): void
@@ -62,7 +64,7 @@ final class ExpandTags implements CompilerPassInterface
 
     /**
      * @throws AnnotationException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function relevantServices(ContainerBuilder $container): Generator
     {
