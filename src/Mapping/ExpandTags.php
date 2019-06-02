@@ -65,10 +65,12 @@ final class ExpandTags implements CompilerPassInterface
     }
 
     /**
+     * @return Generator<string, array<Definition|Mapping\Annotation[]>>
+     *
      * @throws AnnotationException
      * @throws ReflectionException
      */
-    private function relevantServices(ContainerBuilder $container): Generator
+    private function relevantServices(ContainerBuilder $container): iterable
     {
         $reader = Mapping\Reader::fromDefault();
 
