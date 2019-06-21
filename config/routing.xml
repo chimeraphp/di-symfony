@@ -8,5 +8,7 @@
         <service id="Chimera\Routing\RouteParamsExtraction">
             <argument type="service" id="Chimera\Routing\RouteParamsExtractor" />
         </service>
+
+        <service id="Chimera\Routing\MissingRouteDispatching" />
     </services>
 </container>

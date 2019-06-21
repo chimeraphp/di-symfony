@@ -23,24 +23,6 @@
     <services>
         <defaults public="false" />
 
-        <service id="Psr\Http\Message\StreamInterface">
-            <factory service="chimera.routing.expressive.stream_factory" method="__invoke" />
-
-            <argument type="service" id="service_container" />
-        </service>
-
-        <service id="Psr\Http\Message\ServerRequestInterface">
-            <factory service="chimera.routing.expressive.request_factory" method="__invoke" />
-
-            <argument type="service" id="service_container" />
-        </service>
-
-        <service id="Psr\Http\Message\ResponseInterface">
-            <factory service="chimera.routing.expressive.response_factory" method="__invoke" />
-
-            <argument type="service" id="service_container" />
-        </service>
-
         <service id="Chimera\Routing\Expressive\RouteParamsExtractor" />
         <service id="Chimera\Routing\RouteParamsExtractor" alias="Chimera\Routing\Expressive\RouteParamsExtractor" />
 
@@ -49,31 +31,37 @@
         <service id="Zend\HttpHandlerRunner\Emitter\EmitterInterface" alias="Zend\HttpHandlerRunner\Emitter\SapiEmitter" />
 
         <service id="Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware">
-            <argument type="service" id="Psr\Http\Message\ResponseInterface" />
+            <argument type="collection">
+                <argument type="service" id="Psr\Http\Message\ResponseFactoryInterface" />
+                <argument>createResponse</argument>
+            </argument>
         </service>
 
         <service id="Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware">
-            <argument type="service" id="Psr\Http\Message\ResponseInterface" />
+            <argument type="collection">
+                <argument type="service" id="Psr\Http\Message\ResponseFactoryInterface" />
+                <argument>createResponse</argument>
+            </argument>
         </service>
 
         <service id="Zend\Expressive\Router\Middleware\DispatchMiddleware" />
 
-        <service id="Zend\Expressive\Handler\NotFoundHandler" class="Zend\Stratigility\Middleware\RequestHandlerMiddleware">
-            <argument type="service" id="Zend\Expressive\Handler\NotFoundHandler\Inner" />
-        </service>
-        <service id="Zend\Expressive\Handler\NotFoundHandler\Inner" class="Zend\Expressive\Handler\NotFoundHandler">
-            <argument type="service" id="Psr\Http\Message\ResponseInterface" />
-        </service>
-
         <service id="Zend\Expressive\Response\ServerRequestErrorResponseGenerator">
-            <argument type="service" id="Psr\Http\Message\ResponseInterface" />
+            <argument type="collection">
+                <argument type="service" id="Psr\Http\Message\ResponseFactoryInterface" />
+                <argument>createResponse</argument>
+            </argument>
             <argument>%zend_expressive.debug%</argument>
         </service>
 
         <service id="Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware" />
 
-        <service id="chimera.routing.expressive.stream_factory" class="Zend\Expressive\Container\StreamFactoryFactory" />
-        <service id="chimera.routing.expressive.request_factory" class="Zend\Expressive\Container\ServerRequestFactoryFactory" />
-        <service id="chimera.routing.expressive.response_factory" class="Zend\Expressive\Container\ResponseFactoryFactory" />
+        <service id="Zend\Diactoros\StreamFactory" />
+        <service id="Zend\Diactoros\ServerRequestFactory" />
+        <service id="Zend\Diactoros\ResponseFactory" />
+
+        <service id="Psr\Http\Message\StreamFactoryInterface" alias="Zend\Diactoros\StreamFactory" />
+        <service id="Psr\Http\Message\ServerRequestFactoryInterface" alias="Zend\Diactoros\ServerRequestFactory" />
+        <service id="Psr\Http\Message\ResponseFactoryInterface" alias="Zend\Diactoros\ResponseFactory" />
     </services>
 </container>
