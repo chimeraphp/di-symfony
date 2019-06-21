@@ -5,7 +5,7 @@
     <services>
         <defaults public="false" />
 
-        <service id="Chimera\Routing\RouteParamsExtraction" class="Chimera\Routing\RouteParamsExtraction">
+        <service id="Chimera\Routing\RouteParamsExtraction">
             <argument type="service" id="Chimera\Routing\RouteParamsExtractor" />
         </service>
     </services>

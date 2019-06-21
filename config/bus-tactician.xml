@@ -5,15 +5,15 @@
     <services>
         <defaults public="false" />
 
-        <service id="League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor" class="League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor" />
+        <service id="League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor" />
 
-        <service id="League\Tactician\Handler\MethodNameInflector\ClassNameInflector" class="League\Tactician\Handler\MethodNameInflector\ClassNameInflector" />
-        <service id="League\Tactician\Handler\MethodNameInflector\HandleClassNameInflector" class="League\Tactician\Handler\MethodNameInflector\HandleClassNameInflector" />
-        <service id="League\Tactician\Handler\MethodNameInflector\HandleClassNameWithoutSuffixInflector" class="League\Tactician\Handler\MethodNameInflector\HandleClassNameWithoutSuffixInflector" />
-        <service id="League\Tactician\Handler\MethodNameInflector\HandleInflector" class="League\Tactician\Handler\MethodNameInflector\HandleInflector" />
-        <service id="League\Tactician\Handler\MethodNameInflector\InvokeInflector" class="League\Tactician\Handler\MethodNameInflector\InvokeInflector" />
+        <service id="League\Tactician\Handler\MethodNameInflector\ClassNameInflector" />
+        <service id="League\Tactician\Handler\MethodNameInflector\HandleClassNameInflector" />
+        <service id="League\Tactician\Handler\MethodNameInflector\HandleClassNameWithoutSuffixInflector" />
+        <service id="League\Tactician\Handler\MethodNameInflector\HandleInflector" />
+        <service id="League\Tactician\Handler\MethodNameInflector\InvokeInflector" />
 
-        <service id="Chimera\ServiceBus\Tactician\ReadModelConversionMiddleware" class="Chimera\ServiceBus\Tactician\ReadModelConversionMiddleware">
+        <service id="Chimera\ServiceBus\Tactician\ReadModelConversionMiddleware">
             <argument type="service" id="Chimera\ServiceBus\ReadModelConverter" />
         </service>
     </services>

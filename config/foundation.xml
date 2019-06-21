@@ -5,10 +5,10 @@
     <services>
         <defaults public="false" />
 
-        <service id="Chimera\MessageCreator\NamedConstructor" class="Chimera\MessageCreator\NamedConstructor" />
-        <service id="Chimera\ServiceBus\ReadModelConverter\Callback" class="Chimera\ServiceBus\ReadModelConverter\Callback" />
-        <service id="Chimera\IdentifierGenerator\RamseyUuid" class="Chimera\IdentifierGenerator\RamseyUuid" />
+        <service id="Chimera\MessageCreator\NamedConstructor" />
+        <service id="Chimera\ServiceBus\ReadModelConverter\Callback" />
+        <service id="Chimera\IdentifierGenerator\RamseyUuid" />
 
-        <service id="Lcobucci\ContentNegotiation\Formatter\Json" class="Lcobucci\ContentNegotiation\Formatter\Json" />
+        <service id="Lcobucci\ContentNegotiation\Formatter\Json" />
     </services>
 </container>
