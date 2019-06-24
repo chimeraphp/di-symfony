@@ -8,27 +8,28 @@ use Chimera\ExecuteCommand;
 use Chimera\ExecuteQuery;
 use Chimera\IdentifierGenerator;
 use Chimera\MessageCreator;
+use Chimera\Routing\Expressive\Application;
 use Chimera\Routing\Expressive\UriGenerator;
 use Chimera\Routing\Handler\CreateAndFetch;
 use Chimera\Routing\Handler\CreateOnly;
 use Chimera\Routing\Handler\ExecuteAndFetch;
 use Chimera\Routing\Handler\ExecuteOnly;
 use Chimera\Routing\Handler\FetchOnly;
+use Chimera\Routing\MissingRouteDispatching;
 use Chimera\Routing\RouteParamsExtraction;
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use Lcobucci\ContentNegotiation\ContentTypeMiddleware;
 use Lcobucci\ContentNegotiation\Formatter\Json;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
+use Psr\Http\Message\ResponseFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
-use Zend\Expressive\Application;
-use Zend\Expressive\Handler\NotFoundHandler;
+use Zend\Diactoros\ServerRequestFactory;
+use Zend\Expressive\Application as Expressive;
 use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
 use Zend\Expressive\Middleware\LazyLoadingMiddleware;
 use Zend\Expressive\MiddlewareContainer;
@@ -289,7 +290,7 @@ final class RegisterServices implements CompilerPassInterface
         $middlewarePipeline->addMethodCall('pipe', [new Reference(MethodNotAllowedMiddleware::class)]);
         $middlewarePipeline->addMethodCall('pipe', [new Reference(RouteParamsExtraction::class)]);
         $middlewarePipeline->addMethodCall('pipe', [new Reference(DispatchMiddleware::class)]);
-        $middlewarePipeline->addMethodCall('pipe', [new Reference(NotFoundHandler::class)]);
+        $middlewarePipeline->addMethodCall('pipe', [new Reference(MissingRouteDispatching::class)]);
 
         $container->setDefinition($this->applicationName . '.http.middleware_pipeline', $middlewarePipeline);
 
@@ -345,7 +346,7 @@ final class RegisterServices implements CompilerPassInterface
             ImplicitHeadMiddleware::class,
             [
                 new Reference($this->applicationName . '.http.router'),
-                new Reference(StreamInterface::class),
+                [new Reference(StreamFactoryInterface::class), 'createStream'],
             ]
         );
 
@@ -375,7 +376,7 @@ final class RegisterServices implements CompilerPassInterface
                 $container->hasParameter($applicationAllowedFormats) ? '%' . $applicationAllowedFormats . '%'
                                                                      : '%chimera.default_allowed_formats%',
                 $formatters,
-                new Reference(StreamInterface::class),
+                new Reference(StreamFactoryInterface::class),
             ]
         );
 
@@ -390,26 +391,30 @@ final class RegisterServices implements CompilerPassInterface
             [
                 new Reference($this->applicationName . '.http.middleware_pipeline'),
                 new Reference(EmitterInterface::class),
-                new Reference(ServerRequestInterface::class),
+                [ServerRequestFactory::class, 'fromGlobals'],
                 new Reference(ServerRequestErrorResponseGenerator::class),
             ]
         );
 
         $container->setDefinition($this->applicationName . '.http.request_handler_runner', $requestHandlerRunner);
 
-        $application = new Definition(
-            Application::class,
-            [
-                new Reference($this->applicationName . '.http.middleware_factory'),
-                new Reference($this->applicationName . '.http.middleware_pipeline'),
-                new Reference($this->applicationName . '.http.route_collector'),
-                new Reference($this->applicationName . '.http.request_handler_runner'),
-            ]
+        $container->setDefinition(
+            $this->applicationName . '.http_expressive',
+            new Definition(
+                Expressive::class,
+                [
+                    new Reference($this->applicationName . '.http.middleware_factory'),
+                    new Reference($this->applicationName . '.http.middleware_pipeline'),
+                    new Reference($this->applicationName . '.http.route_collector'),
+                    new Reference($this->applicationName . '.http.request_handler_runner'),
+                ]
+            )
         );
 
-        $application->setPublic(true);
+        $app = new Definition(Application::class, [new Reference($this->applicationName . '.http_expressive')]);
+        $app->setPublic(true);
 
-        $container->setDefinition($this->applicationName . '.http', $application);
+        $container->setDefinition($this->applicationName . '.http', $app);
     }
 
     private function generateReadAction(string $name, string $query, ContainerBuilder $container): Reference
@@ -468,7 +473,7 @@ final class RegisterServices implements CompilerPassInterface
             FetchOnly::class,
             [
                 $this->generateReadAction($routeServiceId . '.action', $route['query'], $container),
-                new Reference(ResponseInterface::class),
+                new Reference(ResponseFactoryInterface::class),
             ]
         );
 
@@ -486,7 +491,7 @@ final class RegisterServices implements CompilerPassInterface
             CreateOnly::class,
             [
                 $this->generateWriteAction($routeServiceId . '.action', $route['command'], $container),
-                new Reference(ResponseInterface::class),
+                new Reference(ResponseFactoryInterface::class),
                 $route['redirect_to'],
                 new Reference($this->applicationName . '.http.uri_generator'),
                 new Reference(IdentifierGenerator::class),
@@ -509,7 +514,7 @@ final class RegisterServices implements CompilerPassInterface
             [
                 $this->generateWriteAction($routeServiceId . '.write_action', $route['command'], $container),
                 $this->generateReadAction($routeServiceId . '.read_action', $route['query'], $container),
-                new Reference(ResponseInterface::class),
+                new Reference(ResponseFactoryInterface::class),
                 $route['redirect_to'],
                 new Reference($this->applicationName . '.http.uri_generator'),
                 new Reference(IdentifierGenerator::class),
@@ -530,7 +535,7 @@ final class RegisterServices implements CompilerPassInterface
             ExecuteOnly::class,
             [
                 $this->generateWriteAction($routeServiceId . '.action', $route['command'], $container),
-                new Reference(ResponseInterface::class),
+                new Reference(ResponseFactoryInterface::class),
                 $route['async'] === true ? StatusCode::STATUS_ACCEPTED : StatusCode::STATUS_NO_CONTENT,
             ]
         );
@@ -550,7 +555,7 @@ final class RegisterServices implements CompilerPassInterface
             [
                 $this->generateWriteAction($routeServiceId . '.action', $route['command'], $container),
                 $this->generateReadAction($routeServiceId . '.read_action', $route['query'], $container),
-                new Reference(ResponseInterface::class),
+                new Reference(ResponseFactoryInterface::class),
             ]
         );
 

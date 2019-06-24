@@ -7,12 +7,11 @@
 
         <service id="Chimera\MessageCreator" alias="Chimera\MessageCreator\JmsSerializer\ArrayTransformer" />
 
-        <service id="Chimera\MessageCreator\JmsSerializer\ArrayTransformer" class="Chimera\MessageCreator\JmsSerializer\ArrayTransformer">
+        <service id="Chimera\MessageCreator\JmsSerializer\ArrayTransformer">
             <argument type="service" id="JMS\Serializer\SerializerInterface" />
         </service>
 
-        <service id="Chimera\MessageCreator\JmsSerializer\InputDataInjector" class="Chimera\MessageCreator\JmsSerializer\InputDataInjector">
-
+        <service id="Chimera\MessageCreator\JmsSerializer\InputDataInjector">
             <!-- This tag is very specific to the compiler passes in jms/serializer-bundle -->
             <tag name="jms_serializer.event_listener" event="serializer.pre_deserialize" method="injectData" priority="-99" />
         </service>
