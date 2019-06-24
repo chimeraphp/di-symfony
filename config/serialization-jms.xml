@@ -21,6 +21,7 @@
             <argument>json</argument>
 
             <tag name="chimera.content_negotiation" format="application/json" />
+            <tag name="chimera.content_negotiation" format="application/problem+json" />
         </service>
 
         <service id="chimera.xml_formatter" class="Lcobucci\ContentNegotiation\Formatter\JmsSerializer">
@@ -28,6 +29,7 @@
             <argument>xml</argument>
 
             <tag name="chimera.content_negotiation" format="application/xml" />
+            <tag name="chimera.content_negotiation" format="application/problem+xml" />
         </service>
     </services>
 </container>
