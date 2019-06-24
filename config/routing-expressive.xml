@@ -14,6 +14,7 @@
                     <parameter>application/json</parameter>
                     <parameter>text/json</parameter>
                     <parameter>application/x-json</parameter>
+                    <parameter>application/problem+json</parameter>
                 </parameter>
                 <parameter key="charset">true</parameter>
             </parameter>
