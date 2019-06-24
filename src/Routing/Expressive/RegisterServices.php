@@ -365,7 +365,8 @@ final class RegisterServices implements CompilerPassInterface
         }
 
         if ($formatters === []) {
-            $formatters['application/json'] = new Reference(Json::class);
+            $formatters['application/json']         = new Reference(Json::class);
+            $formatters['application/problem+json'] = new Reference(Json::class);
         }
 
         $applicationAllowedFormats = $this->applicationName . '.allowed_formats';
