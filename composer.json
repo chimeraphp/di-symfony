@@ -15,6 +15,7 @@
     },
     "require": {
         "php": "^7.3 || 8.0",
+        "chimera/routing": "^0.3",
         "lcobucci/di-builder": "^5.6"
     },
     "require-dev": {
