@@ -275,13 +275,13 @@ final class RegisterServices implements CompilerPassInterface
             'pipe',
             [new Reference($this->applicationName . '.http.middleware.content_negotiation')]
         );
-        $middlewarePipeline->addMethodCall('pipe', [new Reference($this->applicationName . '.http.middleware.route')]);
-        $middlewarePipeline->addMethodCall('pipe', [new Reference(BodyParamsMiddleware::class)]);
 
         foreach ($middleware as $service) {
             $middlewarePipeline->addMethodCall('pipe', [new Reference($service)]);
         }
 
+        $middlewarePipeline->addMethodCall('pipe', [new Reference($this->applicationName . '.http.middleware.route')]);
+        $middlewarePipeline->addMethodCall('pipe', [new Reference(BodyParamsMiddleware::class)]);
         $middlewarePipeline->addMethodCall(
             'pipe',
             [new Reference($this->applicationName . '.http.middleware.implicit_head')]
