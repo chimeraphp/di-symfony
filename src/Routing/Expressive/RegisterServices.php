@@ -95,13 +95,15 @@ final class RegisterServices implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        $routes         = $this->extractRoutes($container);
-        $middlewareList = $this->extractMiddlewareList($container);
+        $routes                          = $this->extractRoutes($container);
+        $httpMiddlewareList              = $this->extractMiddlewareList($container, Tags::HTTP_MIDDLEWARE);
+        $httpErrorHandlingMiddlewareList = $this->extractMiddlewareList($container, Tags::HTTP_ERROR_HANDLING);
 
         $this->registerApplication(
             $container,
             $routes[$this->applicationName] ?? [],
-            $this->prioritiseMiddleware($middlewareList[$this->applicationName] ?? [])
+            $this->prioritiseMiddleware($httpMiddlewareList[$this->applicationName] ?? []),
+            $this->prioritiseMiddleware($httpErrorHandlingMiddlewareList[$this->applicationName] ?? [])
         );
     }
 
@@ -143,11 +145,11 @@ final class RegisterServices implements CompilerPassInterface
      *
      * @throws InvalidArgumentException
      */
-    private function extractMiddlewareList(ContainerBuilder $container): array
+    private function extractMiddlewareList(ContainerBuilder $container, string $serviceTag): array
     {
         $list = [];
 
-        foreach ($container->findTaggedServiceIds(Tags::HTTP_MIDDLEWARE) as $serviceId => $tags) {
+        foreach ($container->findTaggedServiceIds($serviceTag) as $serviceId => $tags) {
             foreach ($tags as $tag) {
                 $priority = $tag['priority'] ?? 0;
                 $path     = $tag['path'] ?? '/';
@@ -214,12 +216,14 @@ final class RegisterServices implements CompilerPassInterface
 
     /**
      * @param string[][] $routes
-     * @param string[][] $middlewareList
+     * @param string[][] $httpMiddlewareList
+     * @param string[][] $httpErrorHandingMiddlewareList
      */
     private function registerApplication(
         ContainerBuilder $container,
         array $routes,
-        array $middlewareList
+        array $httpMiddlewareList,
+        array $httpErrorHandingMiddlewareList
     ): void {
         $services = [];
 
@@ -231,12 +235,33 @@ final class RegisterServices implements CompilerPassInterface
             );
         }
 
-        $middleware = [];
+        $httpErrorHandlingMiddlewares = [];
 
-        foreach ($middlewareList as $path => $servicesIds) {
+        foreach ($httpErrorHandingMiddlewareList as $path => $servicesIds) {
             foreach ($servicesIds as $service) {
-                $middleware[] = $service;
-                $services[]   = $service;
+                $httpErrorHandlingMiddlewares[] = $service;
+                $services[]                     = $service;
+
+                if ($path === '/') {
+                    continue;
+                }
+
+                $decorator = $this->createService(
+                    PathMiddlewareDecorator::class,
+                    [$path, new Reference($service . '.decorator.inner')]
+                );
+                $decorator->setDecoratedService($service);
+
+                $container->setDefinition($service . '.decorator', $decorator);
+            }
+        }
+
+        $httpMiddleware = [];
+
+        foreach ($httpMiddlewareList as $path => $servicesIds) {
+            foreach ($servicesIds as $service) {
+                $httpMiddleware[] = $service;
+                $services[]       = $service;
 
                 if ($path === '/') {
                     continue;
@@ -275,10 +300,15 @@ final class RegisterServices implements CompilerPassInterface
             'pipe',
             [new Reference($this->applicationName . '.http.middleware.content_negotiation')]
         );
+
+        foreach ($httpErrorHandlingMiddlewares as $service) {
+            $middlewarePipeline->addMethodCall('pipe', [new Reference($service)]);
+        }
+
         $middlewarePipeline->addMethodCall('pipe', [new Reference($this->applicationName . '.http.middleware.route')]);
         $middlewarePipeline->addMethodCall('pipe', [new Reference(BodyParamsMiddleware::class)]);
 
-        foreach ($middleware as $service) {
+        foreach ($httpMiddleware as $service) {
             $middlewarePipeline->addMethodCall('pipe', [new Reference($service)]);
         }
 
