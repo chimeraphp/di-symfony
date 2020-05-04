@@ -5,7 +5,7 @@
 [![Unstable Version](https://img.shields.io/packagist/vpre/chimera/di-symfony.svg?style=flat-square)](https://packagist.org/packages/chimera/di-symfony)
 
 ![Branch master](https://img.shields.io/badge/branch-master-brightgreen.svg?style=flat-square)
-[![Build Status](https://img.shields.io/travis/com/chimeraphp/di-symfony/master.svg?style=flat-square)](http://travis-ci.org/chimeraphp/di-symfony)
+[![Build Status](https://img.shields.io/travis/com/chimeraphp/di-symfony/master.svg?style=flat-square)](http://travis-ci.com/chimeraphp/di-symfony)
 [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/chimeraphp/di-symfony/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/chimeraphp/di-symfony/?branch=master)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/chimeraphp/di-symfony/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/chimeraphp/di-symfony/?branch=master)
 
