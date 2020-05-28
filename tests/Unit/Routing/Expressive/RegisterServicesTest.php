@@ -40,4 +40,30 @@ final class RegisterServicesTest extends TestCase
         );
         $registerServices->process($builder);
     }
+
+    /**
+     * @test
+     *
+     * @covers ::__construct
+     * @covers ::process
+     * @covers ::extractRoutes
+     */
+    public function registeringServicesDoesNotAllowMultipleApplications(): void
+    {
+        $container = new ContainerBuilder();
+
+        $this->createRegisterServices('testing1')->process($container);
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->createRegisterServices('testing2')->process($container);
+    }
+
+    private function createRegisterServices(string $applicationName): RegisterServices
+    {
+        return new RegisterServices(
+            $applicationName,
+            $applicationName . '.command_bus',
+            $applicationName . '.query_bus'
+        );
+    }
 }

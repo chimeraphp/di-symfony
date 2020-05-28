@@ -9,6 +9,7 @@ use Chimera\ExecuteCommand;
 use Chimera\ExecuteQuery;
 use Chimera\IdentifierGenerator;
 use Chimera\MessageCreator;
+use Chimera\Routing\Application as ApplicationInterface;
 use Chimera\Routing\Expressive\Application;
 use Chimera\Routing\Expressive\UriGenerator;
 use Chimera\Routing\Handler\CreateAndFetch;
@@ -18,16 +19,17 @@ use Chimera\Routing\Handler\ExecuteOnly;
 use Chimera\Routing\Handler\FetchOnly;
 use Chimera\Routing\MissingRouteDispatching;
 use Chimera\Routing\RouteParamsExtraction;
+use InvalidArgumentException;
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
 use Lcobucci\ContentNegotiation\ContentTypeMiddleware;
 use Lcobucci\ContentNegotiation\Formatter\Json;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
 use Zend\Diactoros\ServerRequestFactory;
 use Zend\Expressive\Application as Expressive;
@@ -418,6 +420,14 @@ final class RegisterServices implements CompilerPassInterface
         $app->setPublic(true);
 
         $container->setDefinition($this->applicationName . '.http', $app);
+
+        // --- alias application
+
+        if ($container->hasAlias(ApplicationInterface::class)) {
+            throw new InvalidArgumentException('There can only be one application registered.');
+        }
+
+        $container->setAlias(ApplicationInterface::class, new Alias($this->applicationName . '.http', true));
     }
 
     private function generateReadAction(string $name, string $query, ContainerBuilder $container): Reference
