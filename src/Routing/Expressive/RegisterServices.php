@@ -8,6 +8,7 @@ use Chimera\ExecuteCommand;
 use Chimera\ExecuteQuery;
 use Chimera\IdentifierGenerator;
 use Chimera\MessageCreator;
+use Chimera\Routing\Application as ApplicationInterface;
 use Chimera\Routing\Expressive\Application;
 use Chimera\Routing\Expressive\UriGenerator;
 use Chimera\Routing\Handler\CreateAndFetch;
@@ -22,6 +23,7 @@ use Lcobucci\ContentNegotiation\ContentTypeMiddleware;
 use Lcobucci\ContentNegotiation\Formatter\Json;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -416,6 +418,14 @@ final class RegisterServices implements CompilerPassInterface
         $app->setPublic(true);
 
         $container->setDefinition($this->applicationName . '.http', $app);
+
+        // --- alias application
+
+        if ($container->hasAlias(ApplicationInterface::class)) {
+            throw new InvalidArgumentException('There can only be one application registered.');
+        }
+
+        $container->setAlias(ApplicationInterface::class, new Alias($this->applicationName . '.http', true));
     }
 
     private function generateReadAction(string $name, string $query, ContainerBuilder $container): Reference
