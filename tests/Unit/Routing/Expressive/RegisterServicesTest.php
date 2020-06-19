@@ -45,8 +45,14 @@ final class RegisterServicesTest extends TestCase
      * @test
      *
      * @covers ::__construct
-     * @covers ::process
+     * @covers ::createService
+     * @covers ::extractMiddlewareList
      * @covers ::extractRoutes
+     * @covers ::prioritiseMiddleware
+     * @covers ::process
+     * @covers ::readBCParameter
+     * @covers ::registerApplication
+     * @covers ::registerServiceLocator
      */
     public function registeringServicesDoesNotAllowMultipleApplications(): void
     {
