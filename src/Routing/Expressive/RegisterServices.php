@@ -24,7 +24,6 @@ use Lcobucci\ContentNegotiation\ContentTypeMiddleware;
 use Lcobucci\ContentNegotiation\Formatter\Json;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
-use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -45,6 +44,7 @@ use Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware;
 use Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware;
 use Zend\Expressive\Router\Middleware\RouteMiddleware;
 use Zend\Expressive\Router\RouteCollector;
+use Zend\Expressive\Router\RouterInterface;
 use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
 use Zend\HttpHandlerRunner\RequestHandlerRunner;
 use Zend\Stratigility\Middleware\PathMiddlewareDecorator;
@@ -93,8 +93,8 @@ final class RegisterServices implements CompilerPassInterface
 
         $this->registerApplication(
             $container,
-            $routes[$this->applicationName] ?? [],
-            $this->prioritiseMiddleware($middlewareList[$this->applicationName] ?? [])
+            $routes ?? [],
+            $this->prioritiseMiddleware($middlewareList ?? [])
         );
     }
 
@@ -118,13 +118,10 @@ final class RegisterServices implements CompilerPassInterface
                 if (isset($tag['methods'])) {
                     $tag['methods'] = explode(',', $tag['methods']);
                 }
-
-                $tag['app']     ??= $this->applicationName;
                 $tag['async']     = (bool) ($tag['async'] ?? false);
                 $tag['serviceId'] = $serviceId;
 
-                $routes[$tag['app']] ??= [];
-                $routes[$tag['app']][] = $tag;
+                $routes[] = $tag;
             }
         }
 
@@ -145,12 +142,9 @@ final class RegisterServices implements CompilerPassInterface
                 $priority = $tag['priority'] ?? 0;
                 $path     = $tag['path'] ?? '/';
 
-                $tag['app'] ??= $this->applicationName;
-
-                $list[$tag['app']]                   ??= [];
-                $list[$tag['app']][$priority]        ??= [];
-                $list[$tag['app']][$priority][$path] ??= [];
-                $list[$tag['app']][$priority][$path][] = $serviceId;
+                $list[$priority]          ??= [];
+                $list[$priority][$path]   ??= [];
+                $list[$priority][$path][] = $serviceId;
             }
         }
 
@@ -304,13 +298,9 @@ final class RegisterServices implements CompilerPassInterface
                 $this->readBCParameter($container, $this->applicationName . '.router_config', 'router_config', []),
             ]
         );
-        $appRouterConfig = $container->hasParameter($this->applicationName . '.router_config')
-            ? '%' . $this->applicationName . '.router_config%'
-            : [];
-
-        $router = $this->createService(FastRouteRouter::class, [null, null, $appRouterConfig]);
 
         $container->setDefinition(FastRouteRouter::class, $router);
+        $container->setAlias(RouterInterface::class, FastRouteRouter::class);
         $aliases[$this->applicationName . '.http.router'] = FastRouteRouter::class;
 
         $uriGenerator = $this->createService(
