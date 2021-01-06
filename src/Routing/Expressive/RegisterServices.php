@@ -296,16 +296,11 @@ final class RegisterServices implements CompilerPassInterface
 
         // -- routing
 
-        $appRouterConfig = $this->applicationName . '.router_config';
+        $appRouterConfig = $container->hasParameter($this->applicationName . '.router_config')
+            ? '%' . $this->applicationName . '.router_config%'
+            : [];
 
-        $router = $this->createService(
-            FastRouteRouter::class,
-            [
-                null,
-                null,
-                $container->hasParameter($appRouterConfig) ? '%' . $appRouterConfig . '%' : [],
-            ]
-        );
+        $router = $this->createService(FastRouteRouter::class, [null, null, $appRouterConfig]);
 
         $container->setDefinition($this->applicationName . '.http.router', $router);
 
