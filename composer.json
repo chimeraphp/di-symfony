@@ -14,15 +14,16 @@
         "sort-packages": true
     },
     "require": {
-        "php": "^7.3 || 8.0",
-        "chimera/routing": "^0.3",
+        "php": "^7.4 || 8.0",
+        "chimera/foundation": "^0.4.x-dev@dev",
+        "chimera/routing": "^0.4.x-dev@dev",
         "lcobucci/di-builder": "^5.6"
     },
     "require-dev": {
-        "chimera/bus-tactician": "^0.3",
-        "chimera/mapping": "^0.3",
-        "chimera/routing-expressive": "^0.3",
-        "chimera/serialization-jms": "^0.3",
+        "chimera/bus-tactician": "^0.4.x-dev@dev",
+        "chimera/mapping": "^0.4.x-dev@dev",
+        "chimera/routing-mezzio": "^0.4.x-dev@dev",
+        "chimera/serialization-jms": "^0.4.x-dev@dev",
         "infection/infection": "^0.20",
         "lcobucci/coding-standard": "^6.0",
         "phpstan/extension-installer": "^1.1",
@@ -36,7 +37,7 @@
         "chimera/bus-tactician": "To use league/tactician as service bus",
         "chimera/mapping": "To use annotations for mapping services",
         "chimera/serialization-jms": "To use jms/serializer to create messages and format content",
-        "chimera/routing-expressive": "To use zendframework/zend-expressive as routing application"
+        "chimera/routing-mezzio": "To use mezzio/mezzio as routing application"
     },
     "autoload": {
         "psr-4": {

@@ -28,7 +28,7 @@ final class RegisterApplication implements FileListProvider, CompilerPassListPro
             new MessageCreator\JmsSerializer\Package(),
             new Mapping\Package(),
             new ServiceBus\Tactician\Package($commandBusId, $queryBusId),
-            new Routing\Expressive\Package($name, $commandBusId, $queryBusId),
+            new Routing\Mezzio\Package($name, $commandBusId, $queryBusId),
         ];
     }
 

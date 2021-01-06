@@ -3,6 +3,3 @@ parameters:
     paths:
         - src
         - tests
-
-    ignoreErrors:
-        - '#Variable method call on \$this\(Chimera\\DependencyInjection\\Routing\\Expressive\\RegisterServices\)#'
