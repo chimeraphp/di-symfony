@@ -18,7 +18,7 @@ final class RegisterApplication implements FileListProvider, CompilerPassListPro
     private $name;
 
     /**
-     * @var ConditionallyLoadedPackage[]
+     * @var list<ConditionallyLoadedPackage>
      */
     private $relatedPackages;
 
@@ -43,8 +43,6 @@ final class RegisterApplication implements FileListProvider, CompilerPassListPro
         yield dirname(__DIR__) . '/config/routing.xml';
 
         foreach ($this->filterPackages(FileListProvider::class) as $package) {
-            assert($package instanceof FileListProvider);
-
             yield from $package->getFiles();
         }
     }
@@ -55,12 +53,17 @@ final class RegisterApplication implements FileListProvider, CompilerPassListPro
         yield [new ValidateApplicationComponents($this->name), PassConfig::TYPE_OPTIMIZE, -30];
 
         foreach ($this->filterPackages(CompilerPassListProvider::class) as $package) {
-            assert($package instanceof CompilerPassListProvider);
-
             yield from $package->getCompilerPasses();
         }
     }
 
+    /**
+     * @template T
+     *
+     * @param class-string<T> $type
+     *
+     * @return Generator<T>
+     */
     private function filterPackages(string $type): Generator
     {
         foreach ($this->relatedPackages as $package) {

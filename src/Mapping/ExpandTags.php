@@ -15,9 +15,11 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use function assert;
+use function class_exists;
 use function get_class;
 use function implode;
 use function is_array;
+use function is_string;
 
 final class ExpandTags implements CompilerPassInterface
 {
@@ -75,14 +77,21 @@ final class ExpandTags implements CompilerPassInterface
         $reader = Mapping\Reader::fromDefault();
 
         foreach ($container->getDefinitions() as $definition) {
-            $class       = new ReflectionClass($definition->getClass());
+            $className = $definition->getClass();
+            assert(is_string($className));
+            assert(class_exists($className));
+
+            $class       = new ReflectionClass($className);
             $annotations = $reader->getClassAnnotations($class);
 
             if ($annotations === []) {
                 continue;
             }
 
-            yield $class->getFileName() => [$definition, $annotations];
+            $fileName = $class->getFileName();
+            assert(is_string($fileName));
+
+            yield $fileName => [$definition, $annotations];
         }
     }
 
