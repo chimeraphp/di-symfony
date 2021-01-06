@@ -19,6 +19,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\BadMethodCallException;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
+
 use function array_combine;
 use function array_map;
 use function array_values;
@@ -33,27 +34,16 @@ final class RegisterServices implements CompilerPassInterface
     private const INVALID_HANDLER     = 'You must specify the "bus" and "handles" arguments in "%s" (tag "%s").';
     private const INVALID_BUS_HANDLER = 'You must specify the "handles" argument in "%s" (tag "%s").';
 
-    /**
-     * @var string
-     */
-    private $commandBusId;
+    private string $commandBusId;
+    private string $queryBusId;
 
-    /**
-     * @var string
-     */
-    private $queryBusId;
-
-    public function __construct(
-        string $commandBusId,
-        string $queryBusId
-    ) {
+    public function __construct(string $commandBusId, string $queryBusId)
+    {
         $this->commandBusId = $commandBusId;
         $this->queryBusId   = $queryBusId;
     }
 
-    /**
-     * @throws Exception
-     */
+    /** @throws Exception */
     public function process(ContainerBuilder $container): void
     {
         $handlerList    = $this->extractHandlers($container);
@@ -141,15 +131,13 @@ final class RegisterServices implements CompilerPassInterface
      */
     private function appendHandler(array $list, string $busId, string $message, string $serviceId): array
     {
-        $list[$busId]           = $list[$busId] ?? [];
+        $list[$busId]         ??= [];
         $list[$busId][$message] = $serviceId;
 
         return $list;
     }
 
-    /**
-     * @return Reference[][][]
-     */
+    /** @return Reference[][][] */
     private function extractMiddleware(ContainerBuilder $container): array
     {
         $list = [];
@@ -182,8 +170,8 @@ final class RegisterServices implements CompilerPassInterface
      */
     private function appendMiddleware(array $list, string $busId, int $priority, string $serviceId): array
     {
-        $list[$busId]              = $list[$busId] ?? [];
-        $list[$busId][$priority]   = $list[$busId][$priority] ?? [];
+        $list[$busId]            ??= [];
+        $list[$busId][$priority] ??= [];
         $list[$busId][$priority][] = new Reference($serviceId);
 
         return $list;
@@ -296,9 +284,7 @@ final class RegisterServices implements CompilerPassInterface
         return new Reference($id);
     }
 
-    /**
-     * @param string[] $handlers
-     */
+    /** @param string[] $handlers */
     private function registerServiceLocator(ContainerBuilder $container, array $handlers): Reference
     {
         $serviceIds = array_values($handlers);
@@ -314,9 +300,7 @@ final class RegisterServices implements CompilerPassInterface
         );
     }
 
-    /**
-     * @param mixed[] $arguments
-     */
+    /** @param mixed[] $arguments */
     private function createService(string $class, array $arguments = []): Definition
     {
         return (new Definition($class, $arguments))->setPublic(false);

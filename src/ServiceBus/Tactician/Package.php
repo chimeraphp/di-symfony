@@ -9,20 +9,14 @@ use Generator;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Lcobucci\DependencyInjection\FileListProvider;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+
 use function class_exists;
 use function dirname;
 
 final class Package implements FileListProvider, CompilerPassListProvider, ConditionallyLoadedPackage
 {
-    /**
-     * @var string
-     */
-    private $commandBusId;
-
-    /**
-     * @var string
-     */
-    private $queryBusId;
+    private string $commandBusId;
+    private string $queryBusId;
 
     public function __construct(
         string $commandBusId,

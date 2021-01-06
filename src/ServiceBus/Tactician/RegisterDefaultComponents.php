@@ -14,9 +14,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 final class RegisterDefaultComponents implements CompilerPassInterface
 {
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function process(ContainerBuilder $container): void
     {
         if (! $this->hasService($container, CommandNameExtractor::class)) {

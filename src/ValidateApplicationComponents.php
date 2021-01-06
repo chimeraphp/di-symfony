@@ -7,23 +7,19 @@ use RuntimeException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+
 use function sprintf;
 
 final class ValidateApplicationComponents implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
-    private $appName;
+    private string $appName;
 
     public function __construct(string $appName)
     {
         $this->appName = $appName;
     }
 
-    /**
-     * @throws InvalidArgumentException
-     */
+    /** @throws InvalidArgumentException */
     public function process(ContainerBuilder $container): void
     {
         $httpInterface = $container->getDefinition($this->appName . '.http');

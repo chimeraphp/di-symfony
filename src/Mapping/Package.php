@@ -8,6 +8,7 @@ use Chimera\Mapping\Annotation;
 use Generator;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+
 use function interface_exists;
 
 final class Package implements CompilerPassListProvider, ConditionallyLoadedPackage

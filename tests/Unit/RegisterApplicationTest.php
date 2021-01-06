@@ -7,12 +7,11 @@ use Chimera\DependencyInjection as Services;
 use Chimera\DependencyInjection\RegisterApplication;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+
 use function dirname;
 use function iterator_to_array;
 
-/**
- * @coversDefaultClass \Chimera\DependencyInjection\RegisterApplication
- */
+/** @coversDefaultClass \Chimera\DependencyInjection\RegisterApplication */
 final class RegisterApplicationTest extends TestCase
 {
     /**
@@ -23,7 +22,7 @@ final class RegisterApplicationTest extends TestCase
      * @covers ::filterPackages()
      *
      * @uses \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
-     * @uses \Chimera\DependencyInjection\Routing\Expressive\Package
+     * @uses \Chimera\DependencyInjection\Routing\Mezzio\Package
      * @uses \Chimera\DependencyInjection\ServiceBus\Tactician\Package
      */
     public function getFilesShouldYieldFilesFromAllRelatedAndInstalledPackages(): void
@@ -35,7 +34,7 @@ final class RegisterApplicationTest extends TestCase
         self::assertContains(dirname(__DIR__, 2) . '/config/bus-tactician.xml', $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/foundation.xml', $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/routing.xml', $files);
-        self::assertContains(dirname(__DIR__, 2) . '/config/routing-expressive.xml', $files);
+        self::assertContains(dirname(__DIR__, 2) . '/config/routing-mezzio.xml', $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/serialization-jms.xml', $files);
     }
 
@@ -48,8 +47,8 @@ final class RegisterApplicationTest extends TestCase
      *
      * @uses \Chimera\DependencyInjection\Mapping\Package
      * @uses \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
-     * @uses \Chimera\DependencyInjection\Routing\Expressive\Package
-     * @uses \Chimera\DependencyInjection\Routing\Expressive\RegisterServices
+     * @uses \Chimera\DependencyInjection\Routing\Mezzio\Package
+     * @uses \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
      * @uses \Chimera\DependencyInjection\ServiceBus\Tactician\Package
      * @uses \Chimera\DependencyInjection\ServiceBus\Tactician\RegisterServices
      * @uses \Chimera\DependencyInjection\ValidateApplicationComponents
@@ -74,7 +73,7 @@ final class RegisterApplicationTest extends TestCase
                     -30,
                 ],
                 [
-                    new Services\Routing\Expressive\RegisterServices(
+                    new Services\Routing\Mezzio\RegisterServices(
                         'testing',
                         'testing.command_bus',
                         'testing.query_bus'

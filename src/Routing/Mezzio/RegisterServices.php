@@ -1,25 +1,43 @@
 <?php
 declare(strict_types=1);
 
-namespace Chimera\DependencyInjection\Routing\Expressive;
+namespace Chimera\DependencyInjection\Routing\Mezzio;
 
 use Chimera\DependencyInjection\Tags;
 use Chimera\ExecuteCommand;
 use Chimera\ExecuteQuery;
 use Chimera\IdentifierGenerator;
 use Chimera\MessageCreator;
-use Chimera\Routing\Expressive\Application;
-use Chimera\Routing\Expressive\UriGenerator;
 use Chimera\Routing\Handler\CreateAndFetch;
 use Chimera\Routing\Handler\CreateOnly;
 use Chimera\Routing\Handler\ExecuteAndFetch;
 use Chimera\Routing\Handler\ExecuteOnly;
 use Chimera\Routing\Handler\FetchOnly;
+use Chimera\Routing\Mezzio\Application;
+use Chimera\Routing\Mezzio\UriGenerator;
 use Chimera\Routing\MissingRouteDispatching;
 use Chimera\Routing\RouteParamsExtraction;
 use Fig\Http\Message\StatusCodeInterface as StatusCode;
+use Laminas\Diactoros\ServerRequestFactory;
+use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
+use Laminas\HttpHandlerRunner\RequestHandlerRunner;
+use Laminas\Stratigility\Middleware\PathMiddlewareDecorator;
+use Laminas\Stratigility\MiddlewarePipe;
 use Lcobucci\ContentNegotiation\ContentTypeMiddleware;
 use Lcobucci\ContentNegotiation\Formatter\Json;
+use Mezzio\Application as Expressive;
+use Mezzio\Helper\BodyParams\BodyParamsMiddleware;
+use Mezzio\Middleware\LazyLoadingMiddleware;
+use Mezzio\MiddlewareContainer;
+use Mezzio\MiddlewareFactory;
+use Mezzio\Response\ServerRequestErrorResponseGenerator;
+use Mezzio\Router\FastRouteRouter;
+use Mezzio\Router\Middleware\DispatchMiddleware;
+use Mezzio\Router\Middleware\ImplicitHeadMiddleware;
+use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
+use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
+use Mezzio\Router\Middleware\RouteMiddleware;
+use Mezzio\Router\RouteCollector;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -28,24 +46,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
-use Zend\Diactoros\ServerRequestFactory;
-use Zend\Expressive\Application as Expressive;
-use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
-use Zend\Expressive\Middleware\LazyLoadingMiddleware;
-use Zend\Expressive\MiddlewareContainer;
-use Zend\Expressive\MiddlewareFactory;
-use Zend\Expressive\Response\ServerRequestErrorResponseGenerator;
-use Zend\Expressive\Router\FastRouteRouter;
-use Zend\Expressive\Router\Middleware\DispatchMiddleware;
-use Zend\Expressive\Router\Middleware\ImplicitHeadMiddleware;
-use Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware;
-use Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware;
-use Zend\Expressive\Router\Middleware\RouteMiddleware;
-use Zend\Expressive\Router\RouteCollector;
-use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
-use Zend\HttpHandlerRunner\RequestHandlerRunner;
-use Zend\Stratigility\Middleware\PathMiddlewareDecorator;
-use Zend\Stratigility\MiddlewarePipe;
+
 use function array_combine;
 use function array_map;
 use function assert;
@@ -68,20 +69,9 @@ final class RegisterServices implements CompilerPassInterface
         'none'          => ['methods' => ['GET'], 'callback' => 'noBehavior'],
     ];
 
-    /**
-     * @var string
-     */
-    private $applicationName;
-
-    /**
-     * @var string
-     */
-    private $commandBusId;
-
-    /**
-     * @var string
-     */
-    private $queryBusId;
+    private string $applicationName;
+    private string $commandBusId;
+    private string $queryBusId;
 
     public function __construct(
         string $applicationName,
@@ -126,11 +116,11 @@ final class RegisterServices implements CompilerPassInterface
                     $tag['methods'] = explode(',', $tag['methods']);
                 }
 
-                $tag['app']       = $tag['app'] ?? $this->applicationName;
+                $tag['app']     ??= $this->applicationName;
                 $tag['async']     = (bool) ($tag['async'] ?? false);
                 $tag['serviceId'] = $serviceId;
 
-                $routes[$tag['app']]   = $routes[$tag['app']] ?? [];
+                $routes[$tag['app']] ??= [];
                 $routes[$tag['app']][] = $tag;
             }
         }
@@ -152,11 +142,11 @@ final class RegisterServices implements CompilerPassInterface
                 $priority = $tag['priority'] ?? 0;
                 $path     = $tag['path'] ?? '/';
 
-                $tag['app'] = $tag['app'] ?? $this->applicationName;
+                $tag['app'] ??= $this->applicationName;
 
-                $list[$tag['app']]                     = $list[$tag['app']] ?? [];
-                $list[$tag['app']][$priority]          = $list[$tag['app']][$priority] ?? [];
-                $list[$tag['app']][$priority][$path]   = $list[$tag['app']][$priority][$path] ?? [];
+                $list[$tag['app']]                   ??= [];
+                $list[$tag['app']][$priority]        ??= [];
+                $list[$tag['app']][$priority][$path] ??= [];
                 $list[$tag['app']][$priority][$path][] = $serviceId;
             }
         }
@@ -177,7 +167,7 @@ final class RegisterServices implements CompilerPassInterface
 
         foreach ($middlewareList as $list) {
             foreach ($list as $path => $references) {
-                $prioritised[$path] = $prioritised[$path] ?? [];
+                $prioritised[$path] ??= [];
 
                 foreach ($references as $reference) {
                     $prioritised[$path][] = $reference;
@@ -188,9 +178,7 @@ final class RegisterServices implements CompilerPassInterface
         return $prioritised;
     }
 
-    /**
-     * @param string[] $services
-     */
+    /** @param string[] $services */
     private function registerServiceLocator(ContainerBuilder $container, array $services): Reference
     {
         return ServiceLocatorTagPass::register(
@@ -204,9 +192,7 @@ final class RegisterServices implements CompilerPassInterface
         );
     }
 
-    /**
-     * @param mixed[] $arguments
-     */
+    /** @param mixed[] $arguments */
     private function createService(string $class, array $arguments = []): Definition
     {
         return (new Definition($class, $arguments))->setPublic(false);
@@ -224,6 +210,7 @@ final class RegisterServices implements CompilerPassInterface
         $services = [];
 
         foreach ($routes as $route) {
+            // @phpstan-ignore-next-line
             $services[] = $this->{self::BEHAVIORS[$route['behavior']]['callback']}(
                 $this->applicationName . '.http.route.' . $route['route_name'],
                 $route,
@@ -296,16 +283,11 @@ final class RegisterServices implements CompilerPassInterface
 
         // -- routing
 
-        $appRouterConfig = $this->applicationName . '.router_config';
+        $appRouterConfig = $container->hasParameter($this->applicationName . '.router_config')
+            ? '%' . $this->applicationName . '.router_config%'
+            : [];
 
-        $router = $this->createService(
-            FastRouteRouter::class,
-            [
-                null,
-                null,
-                $container->hasParameter($appRouterConfig) ? '%' . $appRouterConfig . '%' : [],
-            ]
-        );
+        $router = $this->createService(FastRouteRouter::class, [null, null, $appRouterConfig]);
 
         $container->setDefinition($this->applicationName . '.http.router', $router);
 
@@ -465,9 +447,7 @@ final class RegisterServices implements CompilerPassInterface
         return $name . '.handler';
     }
 
-    /**
-     * @param mixed[] $route
-     */
+    /** @param mixed[] $route */
     public function fetchOnly(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $handler = $this->createService(
@@ -483,9 +463,7 @@ final class RegisterServices implements CompilerPassInterface
         return $this->wrapHandler($routeServiceId, $container);
     }
 
-    /**
-     * @param mixed[] $route
-     */
+    /** @param mixed[] $route */
     public function createOnly(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $handler = $this->createService(
@@ -505,9 +483,7 @@ final class RegisterServices implements CompilerPassInterface
         return $this->wrapHandler($routeServiceId, $container);
     }
 
-    /**
-     * @param mixed[] $route
-     */
+    /** @param mixed[] $route */
     public function createAndFetch(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $handler = $this->createService(
@@ -527,9 +503,7 @@ final class RegisterServices implements CompilerPassInterface
         return $this->wrapHandler($routeServiceId, $container);
     }
 
-    /**
-     * @param mixed[] $route
-     */
+    /** @param mixed[] $route */
     public function executeOnly(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $handler = $this->createService(
@@ -546,9 +520,7 @@ final class RegisterServices implements CompilerPassInterface
         return $this->wrapHandler($routeServiceId, $container);
     }
 
-    /**
-     * @param mixed[] $route
-     */
+    /** @param mixed[] $route */
     public function executeAndFetch(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $handler = $this->createService(
@@ -565,9 +537,7 @@ final class RegisterServices implements CompilerPassInterface
         return $this->wrapHandler($routeServiceId, $container);
     }
 
-    /**
-     * @param mixed[] $route
-     */
+    /** @param mixed[] $route */
     public function noBehavior(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $container->setAlias($routeServiceId . '.handler', $route['serviceId']);

@@ -1,33 +1,23 @@
 <?php
 declare(strict_types=1);
 
-namespace Chimera\DependencyInjection\Routing\Expressive;
+namespace Chimera\DependencyInjection\Routing\Mezzio;
 
 use Chimera\DependencyInjection\ConditionallyLoadedPackage;
-use Chimera\Routing\Expressive\RouteParamsExtractor;
+use Chimera\Routing\Mezzio\RouteParamsExtractor;
 use Generator;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Lcobucci\DependencyInjection\FileListProvider;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+
 use function class_exists;
 use function dirname;
 
 final class Package implements FileListProvider, CompilerPassListProvider, ConditionallyLoadedPackage
 {
-    /**
-     * @var string
-     */
-    private $applicationName;
-
-    /**
-     * @var string
-     */
-    private $commandBusId;
-
-    /**
-     * @var string
-     */
-    private $queryBusId;
+    private string $applicationName;
+    private string $commandBusId;
+    private string $queryBusId;
 
     public function __construct(
         string $applicationName,
@@ -41,7 +31,7 @@ final class Package implements FileListProvider, CompilerPassListProvider, Condi
 
     public function getFiles(): Generator
     {
-        yield dirname(__DIR__, 3) . '/config/routing-expressive.xml';
+        yield dirname(__DIR__, 3) . '/config/routing-mezzio.xml';
     }
 
     public function getCompilerPasses(): Generator
