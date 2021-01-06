@@ -1,13 +1,11 @@
 # Chimera - DI Symfony
 
-[![Total Downloads](https://img.shields.io/packagist/dt/chimera/di-symfony.svg?style=flat-square)](https://packagist.org/packages/chimera/di-symfony)
-[![Latest Stable Version](https://img.shields.io/packagist/v/chimera/di-symfony.svg?style=flat-square)](https://packagist.org/packages/chimera/di-symfony)
-[![Unstable Version](https://img.shields.io/packagist/vpre/chimera/di-symfony.svg?style=flat-square)](https://packagist.org/packages/chimera/di-symfony)
+[![Total Downloads]](https://packagist.org/packages/chimera/di-symfony)
+[![Latest Stable Version]](https://packagist.org/packages/chimera/di-symfony)
+[![Unstable Version]](https://packagist.org/packages/chimera/di-symfony)
 
-![Branch master](https://img.shields.io/badge/branch-master-brightgreen.svg?style=flat-square)
-[![Build Status](https://img.shields.io/travis/com/chimeraphp/di-symfony/master.svg?style=flat-square)](http://travis-ci.com/chimeraphp/di-symfony)
-[![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/chimeraphp/di-symfony/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/chimeraphp/di-symfony/?branch=master)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/chimeraphp/di-symfony/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/chimeraphp/di-symfony/?branch=master)
+[![Build Status]](https://github.com/chimeraphp/di-symfony/actions?query=workflow%3A%22PHPUnit%20Tests%22+branch%3Amaster)
+[![Code Coverage]](https://codecov.io/gh/chimeraphp/di-symfony)
 
 > The term Chimera (_/kɪˈmɪərə/_ or _/kaɪˈmɪərə/_) has come to describe any
 mythical or fictional animal with parts taken from various animals, or to
@@ -35,8 +33,7 @@ only things related to your software gets executed when handling requests.
 
 ## Installation
 
-Package is available on [Packagist](http://packagist.org/packages/chimera/di-symfony),
-you can install it using [Composer](http://getcomposer.org).
+Package is available on [Packagist], you can install it using [Composer].
 
 ```shell
 composer require chimera/di-symfony
@@ -58,7 +55,7 @@ Check the documentation for more information: https://secure.php.net/manual/en/f
 
 ## Usage
 
-Symfony DI component is just amazing and it has everything we need to compile the
+Symfony DI component is just amazing, and it has everything we need to compile the 
 container and just load it from a set of generated files, but the control of when
 to update those files now lies in the Kernel/MicroKernel. However we don't necessarily
 need to have a Kernel controlling that, we can use [`lcobucci/di-builder`](http://packagist.org/packages/lcobucci/di-builder)
@@ -67,4 +64,13 @@ hood to create the services.
 
 ## License
 
-MIT, see [LICENSE file](https://github.com/chimeraphp/di-symfony/blob/master/LICENSE).
+MIT, see [LICENSE].
+
+[Total Downloads]: https://img.shields.io/packagist/dt/chimera/di-symfony.svg?style=flat-square
+[Latest Stable Version]: https://img.shields.io/packagist/v/chimera/di-symfony.svg?style=flat-square
+[Unstable Version]: https://img.shields.io/packagist/vpre/chimera/di-symfony.svg?style=flat-square
+[Build Status]: https://img.shields.io/github/workflow/status/chimeraphp/di-symfony/PHPUnit%20tests/master?style=flat-square
+[Code Coverage]: https://codecov.io/gh/chimeraphp/di-symfony/branch/master/graph/badge.svg
+[Packagist]: http://packagist.org/packages/chimera/di-symfony
+[Composer]: http://getcomposer.org
+[LICENSE]: LICENSE
