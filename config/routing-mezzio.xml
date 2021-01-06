@@ -23,30 +23,30 @@
     <services>
         <defaults public="false" />
 
-        <service id="Chimera\Routing\Expressive\RouteParamsExtractor" />
-        <service id="Chimera\Routing\RouteParamsExtractor" alias="Chimera\Routing\Expressive\RouteParamsExtractor" />
+        <service id="Chimera\Routing\Mezzio\RouteParamsExtractor" />
+        <service id="Chimera\Routing\RouteParamsExtractor" alias="Chimera\Routing\Mezzio\RouteParamsExtractor" />
 
-        <service id="Zend\HttpHandlerRunner\Emitter\SapiEmitter" />
-        <service id="Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter" />
-        <service id="Zend\HttpHandlerRunner\Emitter\EmitterInterface" alias="Zend\HttpHandlerRunner\Emitter\SapiEmitter" />
+        <service id="Laminas\HttpHandlerRunner\Emitter\SapiEmitter" />
+        <service id="Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter" />
+        <service id="Laminas\HttpHandlerRunner\Emitter\EmitterInterface" alias="Laminas\HttpHandlerRunner\Emitter\SapiEmitter" />
 
-        <service id="Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware">
+        <service id="Mezzio\Router\Middleware\ImplicitOptionsMiddleware">
             <argument type="collection">
                 <argument type="service" id="Psr\Http\Message\ResponseFactoryInterface" />
                 <argument>createResponse</argument>
             </argument>
         </service>
 
-        <service id="Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware">
+        <service id="Mezzio\Router\Middleware\MethodNotAllowedMiddleware">
             <argument type="collection">
                 <argument type="service" id="Psr\Http\Message\ResponseFactoryInterface" />
                 <argument>createResponse</argument>
             </argument>
         </service>
 
-        <service id="Zend\Expressive\Router\Middleware\DispatchMiddleware" />
+        <service id="Mezzio\Router\Middleware\DispatchMiddleware" />
 
-        <service id="Zend\Expressive\Response\ServerRequestErrorResponseGenerator">
+        <service id="Mezzio\Response\ServerRequestErrorResponseGenerator">
             <argument type="collection">
                 <argument type="service" id="Psr\Http\Message\ResponseFactoryInterface" />
                 <argument>createResponse</argument>
@@ -54,14 +54,14 @@
             <argument>%zend_expressive.debug%</argument>
         </service>
 
-        <service id="Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware" />
+        <service id="Mezzio\Helper\BodyParams\BodyParamsMiddleware" />
 
-        <service id="Zend\Diactoros\StreamFactory" />
-        <service id="Zend\Diactoros\ServerRequestFactory" />
-        <service id="Zend\Diactoros\ResponseFactory" />
+        <service id="Laminas\Diactoros\StreamFactory" />
+        <service id="Laminas\Diactoros\ServerRequestFactory" />
+        <service id="Laminas\Diactoros\ResponseFactory" />
 
-        <service id="Psr\Http\Message\StreamFactoryInterface" alias="Zend\Diactoros\StreamFactory" />
-        <service id="Psr\Http\Message\ServerRequestFactoryInterface" alias="Zend\Diactoros\ServerRequestFactory" />
-        <service id="Psr\Http\Message\ResponseFactoryInterface" alias="Zend\Diactoros\ResponseFactory" />
+        <service id="Psr\Http\Message\StreamFactoryInterface" alias="Laminas\Diactoros\StreamFactory" />
+        <service id="Psr\Http\Message\ServerRequestFactoryInterface" alias="Laminas\Diactoros\ServerRequestFactory" />
+        <service id="Psr\Http\Message\ResponseFactoryInterface" alias="Laminas\Diactoros\ResponseFactory" />
     </services>
 </container>
