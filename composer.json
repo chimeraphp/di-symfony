@@ -23,7 +23,7 @@
         "chimera/mapping": "^0.3",
         "chimera/routing-expressive": "^0.3",
         "chimera/serialization-jms": "^0.3",
-        "infection/infection": "^0.16",
+        "infection/infection": "^0.20",
         "lcobucci/coding-standard": "^6.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^0.12",
