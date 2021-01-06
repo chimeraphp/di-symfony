@@ -14,6 +14,7 @@ use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+
 use function assert;
 use function class_exists;
 use function get_class;
@@ -95,9 +96,7 @@ final class ExpandTags implements CompilerPassInterface
         }
     }
 
-    /**
-     * @param Mapping\Annotation[] $annotations
-     */
+    /** @param Mapping\Annotation[] $annotations */
     private function appendTags(Definition $definition, array $annotations): void
     {
         foreach ($annotations as $annotation) {
@@ -107,9 +106,7 @@ final class ExpandTags implements CompilerPassInterface
         }
     }
 
-    /**
-     * @return string[]
-     */
+    /** @return array<string, string> */
     private function createAttributes(Mapping\Annotation $annotation): array
     {
         $attributes = (array) $annotation;

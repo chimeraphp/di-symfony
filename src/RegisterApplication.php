@@ -7,20 +7,15 @@ use Generator;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
 use Lcobucci\DependencyInjection\FileListProvider;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use function assert;
+
 use function dirname;
 
 final class RegisterApplication implements FileListProvider, CompilerPassListProvider
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var list<ConditionallyLoadedPackage>
-     */
-    private $relatedPackages;
+    /** @var list<ConditionallyLoadedPackage> */
+    private array $relatedPackages;
 
     public function __construct(string $name)
     {
@@ -67,9 +62,11 @@ final class RegisterApplication implements FileListProvider, CompilerPassListPro
     private function filterPackages(string $type): Generator
     {
         foreach ($this->relatedPackages as $package) {
-            if ($package instanceof $type && $package->shouldBeLoaded()) {
-                yield $package;
+            if (! $package instanceof $type || ! $package->shouldBeLoaded()) {
+                continue;
             }
+
+            yield $package;
         }
     }
 }

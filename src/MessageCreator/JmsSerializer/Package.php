@@ -7,6 +7,7 @@ use Chimera\DependencyInjection\ConditionallyLoadedPackage;
 use Chimera\MessageCreator\JmsSerializer\ArrayTransformer;
 use Generator;
 use Lcobucci\DependencyInjection\FileListProvider;
+
 use function class_exists;
 use function dirname;
 

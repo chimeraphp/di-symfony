@@ -7,12 +7,11 @@ use Chimera\DependencyInjection as Services;
 use Chimera\DependencyInjection\RegisterApplication;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+
 use function dirname;
 use function iterator_to_array;
 
-/**
- * @coversDefaultClass \Chimera\DependencyInjection\RegisterApplication
- */
+/** @coversDefaultClass \Chimera\DependencyInjection\RegisterApplication */
 final class RegisterApplicationTest extends TestCase
 {
     /**
