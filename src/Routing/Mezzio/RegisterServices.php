@@ -187,7 +187,7 @@ final class RegisterServices implements CompilerPassInterface
                 static function (string $id): Reference {
                     return new Reference($id);
                 },
-                (array) array_combine($services, $services)
+                array_combine($services, $services)
             )
         );
     }
