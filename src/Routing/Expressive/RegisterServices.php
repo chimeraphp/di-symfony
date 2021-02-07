@@ -253,13 +253,15 @@ final class RegisterServices implements CompilerPassInterface
 
         // -- middleware factory
 
-        $middlewareFactory = $this->createService(
-            MiddlewareFactory::class,
-            [new Reference(MiddlewareContainer::class)]
-        );
-
-        $container->setDefinition(MiddlewareFactory::class, $middlewareFactory);
-        $aliases[$this->applicationName . '.http.middleware_factory'] = MiddlewareFactory::class;
+// TODO: remove middleware_factory
+//
+//        $middlewareFactory = $this->createService(
+//            MiddlewareFactory::class,
+//            [new Reference(MiddlewareContainer::class)]
+//        );
+//
+//        $container->setDefinition(MiddlewareFactory::class, $middlewareFactory);
+//        $aliases[$this->applicationName . '.http.middleware_factory'] = MiddlewareFactory::class;
 
         // -- middleware pipeline
 
@@ -303,13 +305,15 @@ final class RegisterServices implements CompilerPassInterface
         $container->setAlias(RouterInterface::class, FastRouteRouter::class);
         $aliases[$this->applicationName . '.http.router'] = FastRouteRouter::class;
 
-        $uriGenerator = $this->createService(
-            UriGenerator::class,
-            [new Reference(FastRouteRouter::class)]
-        );
+        //TODO: remove uri_generator
 
-        $container->setDefinition(UriGeneratorInterface::class, $uriGenerator);
-        $aliases[$this->applicationName . '.http.uri_generator'] = UriGeneratorInterface::class;
+//        $uriGenerator = $this->createService(
+//            UriGenerator::class,
+//            [new Reference(FastRouteRouter::class)]
+//        );
+//
+//        $container->setDefinition(UriGeneratorInterface::class, $uriGenerator);
+//        $aliases[$this->applicationName . '.http.uri_generator'] = UriGeneratorInterface::class;
 
         $routeCollector = $this->createService(
             RouteCollector::class,
@@ -331,24 +335,26 @@ final class RegisterServices implements CompilerPassInterface
         $container->setDefinition(RouteCollector::class, $routeCollector);
         $aliases[$this->applicationName . '.http.route_collector'] = RouteCollector::class;
 
-        $routingMiddleware = $this->createService(
-            RouteMiddleware::class,
-            [new Reference(FastRouteRouter::class)]
-        );
+        //TODO: remove middleware.route
+//        $routingMiddleware = $this->createService(
+//            RouteMiddleware::class,
+//            [new Reference(FastRouteRouter::class)]
+//        );
+//
+//        $container->setDefinition(RouteMiddleware::class, $routingMiddleware);
+//        $aliases[$this->applicationName . '.http.middleware.route'] = RouteMiddleware::class;
 
-        $container->setDefinition(RouteMiddleware::class, $routingMiddleware);
-        $aliases[$this->applicationName . '.http.middleware.route'] = RouteMiddleware::class;
-
-        $implicitHeadMiddleware = $this->createService(
-            ImplicitHeadMiddleware::class,
-            [
-                new Reference(FastRouteRouter::class),
-                [new Reference(StreamFactoryInterface::class), 'createStream'],
-            ]
-        );
-
-        $container->setDefinition(ImplicitHeadMiddleware::class, $implicitHeadMiddleware);
-        $aliases[$this->applicationName . '.http.middleware.implicit_head'] = ImplicitHeadMiddleware::class;
+        //TODO: remove implicit head middleware
+//        $implicitHeadMiddleware = $this->createService(
+//            ImplicitHeadMiddleware::class,
+//            [
+//                new Reference(FastRouteRouter::class),
+//                [new Reference(StreamFactoryInterface::class), 'createStream'],
+//            ]
+//        );
+//
+//        $container->setDefinition(ImplicitHeadMiddleware::class, $implicitHeadMiddleware);
+//        $aliases[$this->applicationName . '.http.middleware.implicit_head'] = ImplicitHeadMiddleware::class;
 
         // -- content negotiation
 
@@ -381,34 +387,36 @@ final class RegisterServices implements CompilerPassInterface
         $container->setDefinition(ContentTypeMiddleware::class, $negotiator);
         $aliases[$this->applicationName . '.http.middleware.content_negotiation'] = ContentTypeMiddleware::class;
 
-        // --- request handler runner
+        //TODO: remove request handler runner
+//        // --- request handler runner
+//
+//        $requestHandlerRunner = $this->createService(
+//            RequestHandlerRunner::class,
+//            [
+//                new Reference(MiddlewarePipe::class),
+//                new Reference(EmitterInterface::class),
+//                [ServerRequestFactory::class, 'fromGlobals'],
+//                new Reference(ServerRequestErrorResponseGenerator::class),
+//            ]
+//        );
+//
+//        $container->setDefinition(RequestHandlerRunner::class, $requestHandlerRunner);
+//        $aliases[$this->applicationName . '.http.request_handler_runner'] = RequestHandlerRunner::class;
 
-        $requestHandlerRunner = $this->createService(
-            RequestHandlerRunner::class,
-            [
-                new Reference(MiddlewarePipe::class),
-                new Reference(EmitterInterface::class),
-                [ServerRequestFactory::class, 'fromGlobals'],
-                new Reference(ServerRequestErrorResponseGenerator::class),
-            ]
-        );
-
-        $container->setDefinition(RequestHandlerRunner::class, $requestHandlerRunner);
-        $aliases[$this->applicationName . '.http.request_handler_runner'] = RequestHandlerRunner::class;
-
-        $container->setDefinition(
-            Expressive::class,
-            new Definition(
-                Expressive::class,
-                [
-                    new Reference(MiddlewareFactory::class),
-                    new Reference(MiddlewarePipe::class),
-                    new Reference(RouteCollector::class),
-                    new Reference(RequestHandlerRunner::class),
-                ]
-            )
-        );
-        $aliases[$this->applicationName . '.http_expressive'] = Expressive::class;
+        //TODO: remove http_expressive
+//        $container->setDefinition(
+//            Expressive::class,
+//            new Definition(
+//                Expressive::class,
+//                [
+//                    new Reference(MiddlewareFactory::class),
+//                    new Reference(MiddlewarePipe::class),
+//                    new Reference(RouteCollector::class),
+//                    new Reference(RequestHandlerRunner::class),
+//                ]
+//            )
+//        );
+//        $aliases[$this->applicationName . '.http_expressive'] = Expressive::class;
 
         $app = new Definition(Application::class, [new Reference(Expressive::class)]);
         $app->setPublic(true);
