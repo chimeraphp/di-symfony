@@ -80,7 +80,10 @@ final class ExpandTags implements CompilerPassInterface
         foreach ($container->getDefinitions() as $definition) {
             $className = $definition->getClass();
             assert(is_string($className));
-            assert(class_exists($className));
+
+            if (! class_exists($className)) {
+                continue;
+            }
 
             $class       = new ReflectionClass($className);
             $annotations = $reader->getClassAnnotations($class);
