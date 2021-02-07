@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services ../vendor/symfony/dependency-injection/Loader/schema/dic/services/services-1.0.xsd">
+    <parameters>
+        <parameter key="zend_expressive.debug">false</parameter>
+
+        <parameter key="chimera.default_allowed_formats" type="collection">
+            <parameter type="collection" key="json">
+                <parameter key="extension" type="collection">
+                    <parameter>json</parameter>
+                </parameter>
+                <parameter key="mime-type" type="collection">
+                    <parameter>application/json</parameter>
+                    <parameter>text/json</parameter>
+                    <parameter>application/x-json</parameter>
+                </parameter>
+                <parameter key="charset">true</parameter>
+            </parameter>
+        </parameter>
+    </parameters>
+
+    <services>
+        <defaults public="false" />
+
+        <service id="Chimera\Routing\Expressive\RouteParamsExtractor" />
+        <service id="Chimera\Routing\RouteParamsExtractor" alias="Chimera\Routing\Expressive\RouteParamsExtractor" />
+
+        <service id="Zend\HttpHandlerRunner\Emitter\SapiEmitter" />
+        <service id="Zend\HttpHandlerRunner\Emitter\SapiStreamEmitter" />
+        <service id="Zend\HttpHandlerRunner\Emitter\EmitterInterface" alias="Zend\HttpHandlerRunner\Emitter\SapiEmitter" />
+
+        <service id="Zend\Expressive\Router\Middleware\ImplicitOptionsMiddleware">
+            <argument type="collection">
+                <argument type="service" id="Psr\Http\Message\ResponseFactoryInterface" />
+                <argument>createResponse</argument>
+            </argument>
+        </service>
+
+        <service id="Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware">
+            <argument type="collection">
+                <argument type="service" id="Psr\Http\Message\ResponseFactoryInterface" />
+                <argument>createResponse</argument>
+            </argument>
+        </service>
+
+        <service id="Zend\Expressive\Router\Middleware\DispatchMiddleware" />
+
+        <service id="Zend\Expressive\Response\ServerRequestErrorResponseGenerator">
+            <argument type="collection">
+                <argument type="service" id="Psr\Http\Message\ResponseFactoryInterface" />
+                <argument>createResponse</argument>
+            </argument>
+            <argument>%zend_expressive.debug%</argument>
+        </service>
+
+        <service id="Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware" />
+
+        <service id="Zend\Diactoros\StreamFactory" />
+        <service id="Zend\Diactoros\ServerRequestFactory" />
+        <service id="Zend\Diactoros\ResponseFactory" />
+
+        <service id="Psr\Http\Message\StreamFactoryInterface" alias="Zend\Diactoros\StreamFactory" />
+        <service id="Psr\Http\Message\ServerRequestFactoryInterface" alias="Zend\Diactoros\ServerRequestFactory" />
+        <service id="Psr\Http\Message\ResponseFactoryInterface" alias="Zend\Diactoros\ResponseFactory" />
+    </services>
+</container>
