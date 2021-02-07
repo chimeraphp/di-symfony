@@ -7,8 +7,16 @@
 
         <service id="Chimera\MessageCreator" alias="Chimera\MessageCreator\JmsSerializer\ArrayTransformer" />
 
+        <service id="Chimera\MessageCreator\InputExtractor\UseInputData" />
+        <service id="Chimera\MessageCreator\InputExtractor" alias="Chimera\MessageCreator\InputExtractor\UseInputData"/>
+
+        <service id="Chimera\MessageCreator\InputExtractor\AppendGeneratedIdentifier" decorates="Chimera\MessageCreator\InputExtractor">
+            <argument type="service" id=".inner" />
+        </service>
+
         <service id="Chimera\MessageCreator\JmsSerializer\ArrayTransformer">
             <argument type="service" id="JMS\Serializer\SerializerInterface" />
+            <argument type="service" id="Chimera\MessageCreator\InputExtractor" />
         </service>
 
         <service id="Chimera\MessageCreator\JmsSerializer\InputDataInjector">
