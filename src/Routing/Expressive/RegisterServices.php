@@ -10,7 +10,6 @@ use Chimera\IdentifierGenerator;
 use Chimera\MessageCreator;
 use Chimera\Routing\Application as ApplicationInterface;
 use Chimera\Routing\Expressive\Application;
-use Chimera\Routing\Expressive\UriGenerator;
 use Chimera\Routing\Handler\CreateAndFetch;
 use Chimera\Routing\Handler\CreateOnly;
 use Chimera\Routing\Handler\ExecuteAndFetch;
@@ -30,13 +29,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
-use Zend\Diactoros\ServerRequestFactory;
 use Zend\Expressive\Application as Expressive;
 use Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware;
 use Zend\Expressive\Middleware\LazyLoadingMiddleware;
 use Zend\Expressive\MiddlewareContainer;
-use Zend\Expressive\MiddlewareFactory;
-use Zend\Expressive\Response\ServerRequestErrorResponseGenerator;
 use Zend\Expressive\Router\FastRouteRouter;
 use Zend\Expressive\Router\Middleware\DispatchMiddleware;
 use Zend\Expressive\Router\Middleware\ImplicitHeadMiddleware;
@@ -45,8 +41,6 @@ use Zend\Expressive\Router\Middleware\MethodNotAllowedMiddleware;
 use Zend\Expressive\Router\Middleware\RouteMiddleware;
 use Zend\Expressive\Router\RouteCollector;
 use Zend\Expressive\Router\RouterInterface;
-use Zend\HttpHandlerRunner\Emitter\EmitterInterface;
-use Zend\HttpHandlerRunner\RequestHandlerRunner;
 use Zend\Stratigility\Middleware\PathMiddlewareDecorator;
 use Zend\Stratigility\MiddlewarePipe;
 
@@ -99,7 +93,7 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @return string[][][]
+     * @return string[][]
      *
      * @throws InvalidArgumentException
      */
@@ -118,6 +112,7 @@ final class RegisterServices implements CompilerPassInterface
                 if (isset($tag['methods'])) {
                     $tag['methods'] = explode(',', $tag['methods']);
                 }
+
                 $tag['async']     = (bool) ($tag['async'] ?? false);
                 $tag['serviceId'] = $serviceId;
 
@@ -142,8 +137,8 @@ final class RegisterServices implements CompilerPassInterface
                 $priority = $tag['priority'] ?? 0;
                 $path     = $tag['path'] ?? '/';
 
-                $list[$priority]          ??= [];
-                $list[$priority][$path]   ??= [];
+                $list[$priority]        ??= [];
+                $list[$priority][$path] ??= [];
                 $list[$priority][$path][] = $serviceId;
             }
         }
@@ -204,13 +199,12 @@ final class RegisterServices implements CompilerPassInterface
         array $routes,
         array $middlewareList
     ): void {
-
         if ($container->hasDefinition(ApplicationInterface::class)) {
             throw new InvalidArgumentException('Registering multiple applications is deprecated.');
         }
 
         $services = [];
-        $aliases = []; // for BC
+        $aliases  = []; // for BC
 
         foreach ($routes as $route) {
             // @phpstan-ignore-next-line
@@ -219,7 +213,9 @@ final class RegisterServices implements CompilerPassInterface
                 $route,
                 $container
             );
-            $aliases[$this->applicationName . '.http.route.' . $route['route_name']] = 'http.route.' . $route['route_name'];
+
+            $aliases[$this->applicationName . '.http.route.' . $route['route_name']]
+                = 'http.route.' . $route['route_name'];
         }
 
         $middleware = [];
@@ -376,7 +372,12 @@ final class RegisterServices implements CompilerPassInterface
         $negotiator = $this->createService(
             ContentTypeMiddleware::class,
             [
-                $this->readBCParameter($container, $this->applicationName . '.allowed_formats', 'allowed_formats', '%chimera.default_allowed_formats%'),
+                $this->readBCParameter(
+                    $container,
+                    $this->applicationName . '.allowed_formats',
+                    'allowed_formats',
+                    '%chimera.default_allowed_formats%'
+                ),
                 $formatters,
                 new Reference(StreamFactoryInterface::class),
             ]
@@ -575,9 +576,9 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @param string|array                 $default
+     * @param string|mixed[] $default
      *
-     * @return array|string
+     * @return mixed[]|string
      */
     private function readBCParameter(ContainerBuilder $container, string $legacyName, string $parameterName, $default)
     {
