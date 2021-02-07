@@ -22,6 +22,7 @@ final class RegisterApplicationTest extends TestCase
      * @covers ::filterPackages()
      *
      * @uses \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
+     * @uses \Chimera\DependencyInjection\Routing\Expressive\Package
      * @uses \Chimera\DependencyInjection\Routing\Mezzio\Package
      * @uses \Chimera\DependencyInjection\ServiceBus\Tactician\Package
      */
@@ -47,6 +48,8 @@ final class RegisterApplicationTest extends TestCase
      *
      * @uses \Chimera\DependencyInjection\Mapping\Package
      * @uses \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
+     * @uses \Chimera\DependencyInjection\Routing\Expressive\Package
+     * @uses \Chimera\DependencyInjection\Routing\Expressive\RegisterServices
      * @uses \Chimera\DependencyInjection\Routing\Mezzio\Package
      * @uses \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
      * @uses \Chimera\DependencyInjection\ServiceBus\Tactician\Package
