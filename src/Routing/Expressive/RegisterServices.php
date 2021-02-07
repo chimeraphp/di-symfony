@@ -205,7 +205,7 @@ final class RegisterServices implements CompilerPassInterface
         array $middlewareList
     ): void {
 
-        if ($container->hasAlias(ApplicationInterface::class)) {
+        if ($container->hasDefinition(ApplicationInterface::class)) {
             throw new InvalidArgumentException('Registering multiple applications is deprecated.');
         }
 
@@ -575,9 +575,11 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
+     * @param string|array                 $default
+     *
      * @return array|string
      */
-    private function readBCParameter(ContainerBuilder $container, string $legacyName, string $parameterName, string $default)
+    private function readBCParameter(ContainerBuilder $container, string $legacyName, string $parameterName, $default)
     {
         if ($container->hasParameter($legacyName)) {
             return '%' . $legacyName . '%';

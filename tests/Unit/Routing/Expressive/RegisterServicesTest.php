@@ -8,10 +8,22 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
+/**
+ * @coversDefaultClass \Chimera\DependencyInjection\Routing\Expressive\RegisterServices
+ */
 final class RegisterServicesTest extends TestCase
 {
     /**
      * @test
+     * @covers ::__construct()
+     * @covers ::createService()
+     * @covers ::extractMiddlewareList()
+     * @covers ::extractRoutes()
+     * @covers ::prioritiseMiddleware()
+     * @covers ::process()
+     * @covers ::readBCParameter()
+     * @covers ::registerApplication()
+     * @covers ::registerServiceLocator()
      */
     public function registeringServicesDoesNotAllowMultipleApplications(): void
     {
