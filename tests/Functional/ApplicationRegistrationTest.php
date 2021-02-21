@@ -23,7 +23,7 @@ use Chimera\ServiceBus;
 use Chimera\ServiceBus\Tactician\ReadModelConversionMiddleware;
 use Laminas\Stratigility\MiddlewarePipe;
 use League\Tactician\CommandBus;
-use League\Tactician\Container\ContainerLocator;
+use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Middleware;
 use Mezzio\Helper\BodyParams\BodyParamsMiddleware;
 use Mezzio\Router\Middleware\DispatchMiddleware;
@@ -149,7 +149,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         $container = $this->createContainer();
 
         $locator = $container->get('sample-app.command_bus.decorated_bus.handler.locator');
-        assert($locator instanceof ContainerLocator);
+        assert($locator instanceof HandlerLocator);
 
         self::assertInstanceOf(CreateThingHandler::class, $locator->getHandlerForCommand(CreateThing::class));
         self::assertInstanceOf(RemoveThingHandler::class, $locator->getHandlerForCommand(RemoveThing::class));
@@ -179,7 +179,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         $container = $this->createContainer();
 
         $locator = $container->get('sample-app.query_bus.decorated_bus.handler.locator');
-        assert($locator instanceof ContainerLocator);
+        assert($locator instanceof HandlerLocator);
 
         self::assertInstanceOf(FetchThingHandler::class, $locator->getHandlerForCommand(FetchThing::class));
         self::assertInstanceOf(ListThingsHandler::class, $locator->getHandlerForCommand(ListThings::class));
