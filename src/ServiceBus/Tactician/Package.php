@@ -34,7 +34,6 @@ final class Package implements FileListProvider, CompilerPassListProvider, Condi
     public function getCompilerPasses(): Generator
     {
         yield [new RegisterServices($this->commandBusId, $this->queryBusId), PassConfig::TYPE_BEFORE_OPTIMIZATION];
-        yield [new RegisterDefaultComponents(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -30];
     }
 
     public function shouldBeLoaded(): bool

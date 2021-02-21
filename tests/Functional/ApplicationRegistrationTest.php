@@ -45,7 +45,6 @@ use function assert;
  * @covers \Chimera\DependencyInjection\Routing\Mezzio\Package
  * @covers \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
  * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\Package
- * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\RegisterDefaultComponents
  * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\RegisterServices
  * @covers \Chimera\DependencyInjection\RegisterApplication
  * @covers \Chimera\DependencyInjection\RegisterDefaultComponents

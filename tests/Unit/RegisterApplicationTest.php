@@ -71,11 +71,6 @@ final class RegisterApplicationTest extends TestCase
                     PassConfig::TYPE_BEFORE_OPTIMIZATION,
                 ],
                 [
-                    new Services\ServiceBus\Tactician\RegisterDefaultComponents(),
-                    PassConfig::TYPE_BEFORE_OPTIMIZATION,
-                    -30,
-                ],
-                [
                     new Services\Routing\Mezzio\RegisterServices(
                         'testing',
                         'testing.command_bus',
