@@ -4,14 +4,11 @@ declare(strict_types=1);
 namespace Chimera\DependencyInjection\ServiceBus\Tactician;
 
 use Chimera\DependencyInjection\Tags;
+use Chimera\ServiceBus\Tactician\CommandHandler;
 use Chimera\ServiceBus\Tactician\ReadModelConversionMiddleware;
 use Chimera\ServiceBus\Tactician\ServiceBus;
 use Exception;
 use League\Tactician\CommandBus;
-use League\Tactician\Container\ContainerLocator;
-use League\Tactician\Handler\CommandHandlerMiddleware;
-use League\Tactician\Handler\CommandNameExtractor\CommandNameExtractor;
-use League\Tactician\Handler\MethodNameInflector\MethodNameInflector;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -20,9 +17,9 @@ use Symfony\Component\DependencyInjection\Exception\BadMethodCallException;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
 
+use function array_column;
 use function array_combine;
 use function array_map;
-use function array_values;
 use function assert;
 use function is_array;
 use function is_string;
@@ -68,7 +65,7 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @return string[][]
+     * @return array<string, array<string, array{service: string, method: string}>>
      *
      * @throws Exception
      */
@@ -125,14 +122,19 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @param string[][] $list
+     * @param array<string, array<string, array{service: string, method: string}>> $list
      *
-     * @return string[][]
+     * @return array<string, array<string, array{service: string, method: string}>>
      */
-    private function appendHandler(array $list, string $busId, string $message, string $serviceId): array
-    {
+    private function appendHandler(
+        array $list,
+        string $busId,
+        string $message,
+        string $serviceId,
+        string $method = 'handle'
+    ): array {
         $list[$busId]         ??= [];
-        $list[$busId][$message] = $serviceId;
+        $list[$busId][$message] = ['service' => $serviceId, 'method' => $method];
 
         return $list;
     }
@@ -198,8 +200,8 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @param string[]    $handlers
-     * @param Reference[] $middlewareList
+     * @param array<string, array{service: string, method: string}> $handlers
+     * @param Reference[]                                           $middlewareList
      *
      * @throws BadMethodCallException
      */
@@ -223,8 +225,8 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @param string[]    $handlers
-     * @param Reference[] $middlewareList
+     * @param array<string, array{service: string, method: string}> $handlers
+     * @param Reference[]                                           $middlewareList
      *
      * @throws BadMethodCallException
      */
@@ -242,7 +244,7 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @param string[] $handlers
+     * @param array<string, array{service: string, method: string}> $handlers
      *
      * @throws BadMethodCallException
      */
@@ -251,50 +253,23 @@ final class RegisterServices implements CompilerPassInterface
         $id = $busId . '.handler';
 
         $arguments = [
-            new Reference(CommandNameExtractor::class),
-            $this->registerTacticianLocator($container, $id, $handlers),
-            new Reference(MethodNameInflector::class),
+            $this->registerServiceLocator($container, array_column($handlers, 'service')),
+            $handlers,
         ];
 
-        $container->setDefinition($id, $this->createService(CommandHandlerMiddleware::class, $arguments));
+        $container->setDefinition($id, $this->createService(CommandHandler::class, $arguments));
+        $container->setAlias($id . '.locator', $id);
 
         return new Reference($id);
     }
 
-    /**
-     * @param string[] $handlers
-     *
-     * @throws BadMethodCallException
-     */
-    private function registerTacticianLocator(
-        ContainerBuilder $container,
-        string $handlerId,
-        array $handlers
-    ): Reference {
-        $id = $handlerId . '.locator';
-
-        $container->setDefinition(
-            $id,
-            $this->createService(
-                ContainerLocator::class,
-                [$this->registerServiceLocator($container, $handlers), $handlers]
-            )
-        );
-
-        return new Reference($id);
-    }
-
-    /** @param string[] $handlers */
-    private function registerServiceLocator(ContainerBuilder $container, array $handlers): Reference
+    /** @param list<string> $serviceIds */
+    private function registerServiceLocator(ContainerBuilder $container, array $serviceIds): Reference
     {
-        $serviceIds = array_values($handlers);
-
         return ServiceLocatorTagPass::register(
             $container,
             array_map(
-                static function (string $id): Reference {
-                    return new Reference($id);
-                },
+                static fn (string $id): Reference => new Reference($id),
                 array_combine($serviceIds, $serviceIds)
             )
         );

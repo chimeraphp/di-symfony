@@ -51,11 +51,9 @@ abstract class ApplicationTestCase extends TestCase
                     'sample-app.command_bus',
                     'sample-app.command_bus.decorated_bus',
                     'sample-app.command_bus.decorated_bus.handler',
-                    'sample-app.command_bus.decorated_bus.handler.locator',
                     'sample-app.query_bus',
                     'sample-app.query_bus.decorated_bus',
                     'sample-app.query_bus.decorated_bus.handler',
-                    'sample-app.query_bus.decorated_bus.handler.locator',
                     BodyParamsMiddleware::class,
                     ImplicitOptionsMiddleware::class,
                     MethodNotAllowedMiddleware::class,
@@ -69,7 +67,10 @@ abstract class ApplicationTestCase extends TestCase
                     QueryOnlyMiddleware::class,
                     CommandAndQueryMiddleware::class,
                 ],
-                []
+                [
+                    'sample-app.command_bus.decorated_bus.handler.locator',
+                    'sample-app.query_bus.decorated_bus.handler.locator',
+                ]
             ),
             PassConfig::TYPE_BEFORE_REMOVING
         );
