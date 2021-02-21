@@ -5,14 +5,6 @@
     <services>
         <defaults public="false" />
 
-        <service id="League\Tactician\Handler\CommandNameExtractor\ClassNameExtractor" />
-
-        <service id="League\Tactician\Handler\MethodNameInflector\ClassNameInflector" />
-        <service id="League\Tactician\Handler\MethodNameInflector\HandleClassNameInflector" />
-        <service id="League\Tactician\Handler\MethodNameInflector\HandleClassNameWithoutSuffixInflector" />
-        <service id="League\Tactician\Handler\MethodNameInflector\HandleInflector" />
-        <service id="League\Tactician\Handler\MethodNameInflector\InvokeInflector" />
-
         <service id="Chimera\ServiceBus\Tactician\ReadModelConversionMiddleware">
             <argument type="service" id="Chimera\ServiceBus\ReadModelConverter" />
         </service>
