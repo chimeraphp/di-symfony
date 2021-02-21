@@ -84,7 +84,7 @@ final class RegisterServices implements CompilerPassInterface
                     );
                 }
 
-                $list = $this->appendHandler($list, $tag['bus'], $tag['handles'], $serviceId);
+                $list = $this->appendHandler($list, $tag['bus'], $tag['handles'], $serviceId, 'handle');
             }
         }
 
@@ -99,7 +99,7 @@ final class RegisterServices implements CompilerPassInterface
                     );
                 }
 
-                $list = $this->appendHandler($list, $this->commandBusId, $tag['handles'], $serviceId);
+                $list = $this->appendHandler($list, $this->commandBusId, $tag['handles'], $serviceId, $tag['method']);
             }
         }
 
@@ -114,7 +114,7 @@ final class RegisterServices implements CompilerPassInterface
                     );
                 }
 
-                $list = $this->appendHandler($list, $this->queryBusId, $tag['handles'], $serviceId);
+                $list = $this->appendHandler($list, $this->queryBusId, $tag['handles'], $serviceId, $tag['method']);
             }
         }
 
@@ -131,7 +131,7 @@ final class RegisterServices implements CompilerPassInterface
         string $busId,
         string $message,
         string $serviceId,
-        string $method = 'handle'
+        string $method
     ): array {
         $list[$busId]         ??= [];
         $list[$busId][$message] = ['service' => $serviceId, 'method' => $method];
