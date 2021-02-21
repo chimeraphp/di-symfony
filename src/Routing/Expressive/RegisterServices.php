@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Chimera\DependencyInjection\Routing\Expressive;
 
+use Chimera\DependencyInjection\Routing\Priorities;
 use Chimera\DependencyInjection\Tags;
 use Chimera\ExecuteCommand;
 use Chimera\ExecuteQuery;
@@ -144,12 +145,29 @@ final class RegisterServices implements CompilerPassInterface
 
                 $tag['app'] ??= $this->applicationName;
 
-                $list[$tag['app']]                   ??= [];
-                $list[$tag['app']][$priority]        ??= [];
                 $list[$tag['app']][$priority][$path] ??= [];
                 $list[$tag['app']][$priority][$path][] = $serviceId;
             }
         }
+
+        $list[$this->applicationName][Priorities::CONTENT_NEGOTIATION]['/'] ??= [];
+        $list[$this->applicationName][Priorities::BEFORE_CUSTOM]['/']       ??= [];
+        $list[$this->applicationName][Priorities::AFTER_CUSTOM]['/']        ??= [];
+
+        $list[$this->applicationName][Priorities::CONTENT_NEGOTIATION]['/'][] = $this->applicationName
+                                                                              . '.http.middleware.content_negotiation';
+
+        $list[$this->applicationName][Priorities::BEFORE_CUSTOM]['/'][] = $this->applicationName
+                                                                        . '.http.middleware.route';
+        $list[$this->applicationName][Priorities::BEFORE_CUSTOM]['/'][] = BodyParamsMiddleware::class;
+
+        $list[$this->applicationName][Priorities::AFTER_CUSTOM]['/'][] = $this->applicationName
+                                                                            . '.http.middleware.implicit_head';
+        $list[$this->applicationName][Priorities::AFTER_CUSTOM]['/'][] = ImplicitOptionsMiddleware::class;
+        $list[$this->applicationName][Priorities::AFTER_CUSTOM]['/'][] = MethodNotAllowedMiddleware::class;
+        $list[$this->applicationName][Priorities::AFTER_CUSTOM]['/'][] = RouteParamsExtraction::class;
+        $list[$this->applicationName][Priorities::AFTER_CUSTOM]['/'][] = DispatchMiddleware::class;
+        $list[$this->applicationName][Priorities::AFTER_CUSTOM]['/'][] = MissingRouteDispatching::class;
 
         return $list;
     }
@@ -258,26 +276,10 @@ final class RegisterServices implements CompilerPassInterface
         // -- middleware pipeline
 
         $middlewarePipeline = $this->createService(MiddlewarePipe::class);
-        $middlewarePipeline->addMethodCall(
-            'pipe',
-            [new Reference($this->applicationName . '.http.middleware.content_negotiation')]
-        );
-        $middlewarePipeline->addMethodCall('pipe', [new Reference($this->applicationName . '.http.middleware.route')]);
-        $middlewarePipeline->addMethodCall('pipe', [new Reference(BodyParamsMiddleware::class)]);
 
         foreach ($middleware as $service) {
             $middlewarePipeline->addMethodCall('pipe', [new Reference($service)]);
         }
-
-        $middlewarePipeline->addMethodCall(
-            'pipe',
-            [new Reference($this->applicationName . '.http.middleware.implicit_head')]
-        );
-        $middlewarePipeline->addMethodCall('pipe', [new Reference(ImplicitOptionsMiddleware::class)]);
-        $middlewarePipeline->addMethodCall('pipe', [new Reference(MethodNotAllowedMiddleware::class)]);
-        $middlewarePipeline->addMethodCall('pipe', [new Reference(RouteParamsExtraction::class)]);
-        $middlewarePipeline->addMethodCall('pipe', [new Reference(DispatchMiddleware::class)]);
-        $middlewarePipeline->addMethodCall('pipe', [new Reference(MissingRouteDispatching::class)]);
 
         $container->setDefinition($this->applicationName . '.http.middleware_pipeline', $middlewarePipeline);
 
