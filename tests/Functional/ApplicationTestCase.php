@@ -27,10 +27,10 @@ use function exec;
 abstract class ApplicationTestCase extends TestCase
 {
     /**
-     * @before
-     * @after
+     * @beforeClass
+     * @afterClass
      */
-    final public function cleanUpContainer(): void
+    final public static function cleanUpContainer(): void
     {
         exec('rm -rf ' . __DIR__ . '/App/dump');
     }
