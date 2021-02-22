@@ -12,6 +12,7 @@ use Chimera\Routing\MissingRouteDispatching;
 use Chimera\Routing\RouteParamsExtraction;
 use Chimera\ServiceBus\Tactician\ReadModelConversionMiddleware;
 use Lcobucci\DependencyInjection\ContainerBuilder;
+use Lcobucci\ErrorHandling\ErrorConversionMiddleware;
 use Mezzio\Helper\BodyParams\BodyParamsMiddleware;
 use Mezzio\Router\Middleware\DispatchMiddleware;
 use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
@@ -66,6 +67,7 @@ abstract class ApplicationTestCase extends TestCase
                     CommandOnlyMiddleware::class,
                     QueryOnlyMiddleware::class,
                     CommandAndQueryMiddleware::class,
+                    ErrorConversionMiddleware::class,
                 ],
                 [
                     'sample-app.command_bus.decorated_bus.handler.locator',

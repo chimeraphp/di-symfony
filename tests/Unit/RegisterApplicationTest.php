@@ -11,7 +11,20 @@ use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use function dirname;
 use function iterator_to_array;
 
-/** @coversDefaultClass \Chimera\DependencyInjection\RegisterApplication */
+/**
+ * @covers \Chimera\DependencyInjection\Mapping\Package
+ * @covers \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
+ * @covers \Chimera\DependencyInjection\Routing\Expressive\Package
+ * @covers \Chimera\DependencyInjection\Routing\Expressive\RegisterServices
+ * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\Package
+ * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\RegisterDefaultComponents
+ * @covers \Chimera\DependencyInjection\Routing\Mezzio\Package
+ * @covers \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
+ * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\Package
+ * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\RegisterServices
+ * @covers \Chimera\DependencyInjection\ValidateApplicationComponents
+ * @coversDefaultClass \Chimera\DependencyInjection\RegisterApplication
+ */
 final class RegisterApplicationTest extends TestCase
 {
     /**
@@ -20,22 +33,18 @@ final class RegisterApplicationTest extends TestCase
      * @covers ::__construct()
      * @covers ::getFiles()
      * @covers ::filterPackages()
-     *
-     * @uses \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
-     * @uses \Chimera\DependencyInjection\Routing\Expressive\Package
-     * @uses \Chimera\DependencyInjection\Routing\Mezzio\Package
-     * @uses \Chimera\DependencyInjection\ServiceBus\Tactician\Package
      */
     public function getFilesShouldYieldFilesFromAllRelatedAndInstalledPackages(): void
     {
         $package = new RegisterApplication('testing');
         $files   = iterator_to_array($package->getFiles(), false);
 
-        self::assertCount(5, $files);
+        self::assertCount(6, $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/bus-tactician.xml', $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/foundation.xml', $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/routing.xml', $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/routing-mezzio.xml', $files);
+        self::assertContains(dirname(__DIR__, 2) . '/config/routing-error-handling.xml', $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/serialization-jms.xml', $files);
     }
 
@@ -45,16 +54,6 @@ final class RegisterApplicationTest extends TestCase
      * @covers ::__construct()
      * @covers ::getCompilerPasses()
      * @covers ::filterPackages()
-     *
-     * @uses \Chimera\DependencyInjection\Mapping\Package
-     * @uses \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
-     * @uses \Chimera\DependencyInjection\Routing\Expressive\Package
-     * @uses \Chimera\DependencyInjection\Routing\Expressive\RegisterServices
-     * @uses \Chimera\DependencyInjection\Routing\Mezzio\Package
-     * @uses \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
-     * @uses \Chimera\DependencyInjection\ServiceBus\Tactician\Package
-     * @uses \Chimera\DependencyInjection\ServiceBus\Tactician\RegisterServices
-     * @uses \Chimera\DependencyInjection\ValidateApplicationComponents
      */
     public function getCompilerPassesShouldYieldPassesFromAllRelatedAndInstalledPackages(): void
     {
@@ -78,6 +77,7 @@ final class RegisterApplicationTest extends TestCase
                     ),
                     PassConfig::TYPE_BEFORE_OPTIMIZATION,
                 ],
+                [new Services\Routing\ErrorHandling\RegisterDefaultComponents(), PassConfig::TYPE_BEFORE_OPTIMIZATION],
             ],
             $passes
         );

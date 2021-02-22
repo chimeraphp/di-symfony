@@ -12,8 +12,12 @@ use Chimera\Mapping\ServiceBus;
  */
 final class CreateThingHandler
 {
-    public function handle(): void
+    public function handle(CreateThing $command): void
     {
-        // do something smart somewhere
+        if ($command->name !== 'Testing') {
+            return;
+        }
+
+        throw new NameNotAllowed('"Testing" is a forbidden name in this application');
     }
 }

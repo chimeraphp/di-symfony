@@ -22,6 +22,7 @@ use Chimera\Routing\RouteParamsExtraction;
 use Chimera\ServiceBus;
 use Chimera\ServiceBus\Tactician\ReadModelConversionMiddleware;
 use Laminas\Stratigility\MiddlewarePipe;
+use Lcobucci\ErrorHandling\ErrorConversionMiddleware;
 use League\Tactician\CommandBus;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Middleware;
@@ -32,16 +33,20 @@ use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
 use Mezzio\Router\Route;
 use Mezzio\Router\RouteCollector;
 use Psr\Http\Server\MiddlewareInterface;
+use ReflectionProperty;
 
 use function array_filter;
 use function array_values;
 use function assert;
+use function iterator_to_array;
 
 /**
  * @covers \Chimera\DependencyInjection\Mapping\ExpandTags
  * @covers \Chimera\DependencyInjection\Mapping\Package
  * @covers \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
  * @covers \Chimera\DependencyInjection\Routing\Expressive\Package
+ * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\Package
+ * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\RegisterDefaultComponents
  * @covers \Chimera\DependencyInjection\Routing\Mezzio\Package
  * @covers \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
  * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\Package
@@ -110,6 +115,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
 
         $expectedMiddleware = [
             $container->get('sample-app.http.middleware.content_negotiation'),
+            $container->get(ErrorConversionMiddleware::class),
             $container->get('sample-app.http.middleware.route'),
             $container->get(BodyParamsMiddleware::class),
             $container->get(AnotherSampleMiddleware::class),
@@ -130,7 +136,16 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
             $expectedPipe->pipe($middleware);
         }
 
-        self::assertEquals($expectedPipe, $container->get('sample-app.http.middleware_pipeline'));
+        $property = new ReflectionProperty(MiddlewarePipe::class, 'pipeline');
+        $property->setAccessible(true);
+
+        $result = $container->get('sample-app.http.middleware_pipeline');
+        assert($result instanceof MiddlewarePipe);
+
+        self::assertSame(
+            iterator_to_array($property->getValue($expectedPipe)),
+            iterator_to_array($property->getValue($result))
+        );
     }
 
     /** @test */

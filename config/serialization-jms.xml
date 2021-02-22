@@ -19,11 +19,6 @@
             <argument type="service" id="Chimera\MessageCreator\InputExtractor" />
         </service>
 
-        <service id="Chimera\MessageCreator\JmsSerializer\InputDataInjector">
-            <!-- This tag is very specific to the compiler passes in jms/serializer-bundle -->
-            <tag name="jms_serializer.event_listener" event="serializer.pre_deserialize" method="injectData" priority="-99" />
-        </service>
-
         <service id="chimera.json_formatter" class="Lcobucci\ContentNegotiation\Formatter\JmsSerializer">
             <argument type="service" id="JMS\Serializer\SerializerInterface" />
             <argument>json</argument>

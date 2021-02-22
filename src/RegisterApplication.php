@@ -30,6 +30,7 @@ final class RegisterApplication implements FileListProvider, CompilerPassListPro
             new ServiceBus\Tactician\Package($commandBusId, $queryBusId),
             new Routing\Expressive\Package($name, $commandBusId, $queryBusId),
             new Routing\Mezzio\Package($name, $commandBusId, $queryBusId),
+            new Routing\ErrorHandling\Package(),
         ];
     }
 

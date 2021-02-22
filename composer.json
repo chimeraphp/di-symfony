@@ -23,6 +23,7 @@
         "chimera/serialization-jms": "^0.4.x-dev@dev",
         "infection/infection": "^0.21",
         "lcobucci/coding-standard": "^6.0",
+        "lcobucci/error-handling-middleware": "^1.2",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^0.12",
         "phpstan/phpstan-deprecation-rules": "^0.12",
@@ -34,7 +35,8 @@
         "chimera/bus-tactician": "To use league/tactician as service bus",
         "chimera/mapping": "To use annotations for mapping services",
         "chimera/routing-mezzio": "To use mezzio/mezzio as routing application",
-        "chimera/serialization-jms": "To use jms/serializer to create messages and format content"
+        "chimera/serialization-jms": "To use jms/serializer to create messages and format content",
+        "lcobucci/error-handling-middleware": "To use lcobucci/error-handling-middleware as the error handler for your application"
     },
     "config": {
         "preferred-install": "dist",
