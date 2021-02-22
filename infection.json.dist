@@ -9,5 +9,5 @@
         "text": "infection.log"
     },
     "minMsi": 40,
-    "minCoveredMsi": 90
+    "minCoveredMsi": 80
 }
