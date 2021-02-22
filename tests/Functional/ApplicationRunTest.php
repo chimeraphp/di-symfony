@@ -12,6 +12,7 @@ use Ramsey\Uuid\Uuid;
 
 use function assert;
 use function json_decode;
+use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 
@@ -67,6 +68,28 @@ final class ApplicationRunTest extends ApplicationTestCase
                 self::assertSame('application/json; charset=UTF-8', $response->getHeaderLine('Content-Type'));
                 self::assertSame('nosniff', $response->getHeaderLine('X-Content-Type-Options'));
                 self::assertSame('', (string) $response->getBody());
+            },
+        ];
+
+        yield 'create-thing-with-invalid-name' => [
+            $factory->createServerRequest('POST', '/things')
+                ->withBody($streamFactory->createStream('{"name": "Testing"}'))
+                ->withAddedHeader('Content-Type', 'application/json'),
+            static function (ResponseInterface $response): void {
+                self::assertSame(422, $response->getStatusCode());
+                self::assertSame('application/problem+json; charset=UTF-8', $response->getHeaderLine('Content-Type'));
+                self::assertSame('nosniff', $response->getHeaderLine('X-Content-Type-Options'));
+                self::assertJsonStringEqualsJsonString(
+                    json_encode(
+                        [
+                            'type' => 'https://httpstatuses.com/422',
+                            'title' => 'Name not allowed',
+                            'details' => '"Testing" is a forbidden name in this application',
+                        ],
+                        JSON_THROW_ON_ERROR
+                    ),
+                    (string) $response->getBody()
+                );
             },
         ];
 
@@ -126,6 +149,26 @@ final class ApplicationRunTest extends ApplicationTestCase
                 self::assertSame('application/json; charset=UTF-8', $response->getHeaderLine('Content-Type'));
                 self::assertSame('nosniff', $response->getHeaderLine('X-Content-Type-Options'));
                 self::assertSame('', (string) $response->getBody());
+            },
+        ];
+
+        yield 'invalid-endpoint' => [
+            $factory->createServerRequest('GET', '/something-that-does-not-exist'),
+            static function (ResponseInterface $response): void {
+                self::assertSame(404, $response->getStatusCode());
+                self::assertSame('application/problem+json; charset=UTF-8', $response->getHeaderLine('Content-Type'));
+                self::assertSame('nosniff', $response->getHeaderLine('X-Content-Type-Options'));
+                self::assertJsonStringEqualsJsonString(
+                    json_encode(
+                        [
+                            'type' => 'https://httpstatuses.com/404',
+                            'title' => 'Not Found',
+                            'details' => 'Cannot GET /something-that-does-not-exist',
+                        ],
+                        JSON_THROW_ON_ERROR
+                    ),
+                    (string) $response->getBody()
+                );
             },
         ];
     }
