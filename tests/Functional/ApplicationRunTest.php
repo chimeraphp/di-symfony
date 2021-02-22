@@ -57,7 +57,8 @@ final class ApplicationRunTest extends ApplicationTestCase
 
         yield 'create-thing' => [
             $factory->createServerRequest('POST', '/things')
-                ->withBody($streamFactory->createStream('{"name": "Testing}')),
+                ->withBody($streamFactory->createStream('{"name": "John"}'))
+                ->withAddedHeader('Content-Type', 'application/json'),
             static function (ResponseInterface $response): void {
                 self::assertSame(201, $response->getStatusCode());
                 self::assertMatchesRegularExpression(self::ITEM_ENDPOINT, $response->getHeaderLine('Location'));
