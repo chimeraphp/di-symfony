@@ -20,6 +20,8 @@ use const JSON_THROW_ON_ERROR;
  * @covers \Chimera\DependencyInjection\Mapping\Package
  * @covers \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
  * @covers \Chimera\DependencyInjection\Routing\Expressive\Package
+ * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\Package
+ * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\RegisterDefaultComponents
  * @covers \Chimera\DependencyInjection\Routing\Mezzio\Package
  * @covers \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
  * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\Package

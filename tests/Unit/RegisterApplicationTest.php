@@ -23,6 +23,7 @@ final class RegisterApplicationTest extends TestCase
      *
      * @uses \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
      * @uses \Chimera\DependencyInjection\Routing\Expressive\Package
+     * @uses \Chimera\DependencyInjection\Routing\ErrorHandling\Package
      * @uses \Chimera\DependencyInjection\Routing\Mezzio\Package
      * @uses \Chimera\DependencyInjection\ServiceBus\Tactician\Package
      */
@@ -31,11 +32,12 @@ final class RegisterApplicationTest extends TestCase
         $package = new RegisterApplication('testing');
         $files   = iterator_to_array($package->getFiles(), false);
 
-        self::assertCount(5, $files);
+        self::assertCount(6, $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/bus-tactician.xml', $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/foundation.xml', $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/routing.xml', $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/routing-mezzio.xml', $files);
+        self::assertContains(dirname(__DIR__, 2) . '/config/routing-error-handling.xml', $files);
         self::assertContains(dirname(__DIR__, 2) . '/config/serialization-jms.xml', $files);
     }
 
@@ -50,6 +52,8 @@ final class RegisterApplicationTest extends TestCase
      * @uses \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
      * @uses \Chimera\DependencyInjection\Routing\Expressive\Package
      * @uses \Chimera\DependencyInjection\Routing\Expressive\RegisterServices
+     * @uses \Chimera\DependencyInjection\Routing\ErrorHandling\Package
+     * @uses \Chimera\DependencyInjection\Routing\ErrorHandling\RegisterDefaultComponents
      * @uses \Chimera\DependencyInjection\Routing\Mezzio\Package
      * @uses \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
      * @uses \Chimera\DependencyInjection\ServiceBus\Tactician\Package
@@ -78,6 +82,7 @@ final class RegisterApplicationTest extends TestCase
                     ),
                     PassConfig::TYPE_BEFORE_OPTIMIZATION,
                 ],
+                [new Services\Routing\ErrorHandling\RegisterDefaultComponents(), PassConfig::TYPE_BEFORE_OPTIMIZATION],
             ],
             $passes
         );

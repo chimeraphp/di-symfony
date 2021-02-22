@@ -22,6 +22,7 @@ use Chimera\Routing\RouteParamsExtraction;
 use Chimera\ServiceBus;
 use Chimera\ServiceBus\Tactician\ReadModelConversionMiddleware;
 use Laminas\Stratigility\MiddlewarePipe;
+use Lcobucci\ErrorHandling\ErrorConversionMiddleware;
 use League\Tactician\CommandBus;
 use League\Tactician\Handler\Locator\HandlerLocator;
 use League\Tactician\Middleware;
@@ -44,6 +45,8 @@ use function iterator_to_array;
  * @covers \Chimera\DependencyInjection\Mapping\Package
  * @covers \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
  * @covers \Chimera\DependencyInjection\Routing\Expressive\Package
+ * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\Package
+ * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\RegisterDefaultComponents
  * @covers \Chimera\DependencyInjection\Routing\Mezzio\Package
  * @covers \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
  * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\Package
@@ -112,6 +115,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
 
         $expectedMiddleware = [
             $container->get('sample-app.http.middleware.content_negotiation'),
+            $container->get(ErrorConversionMiddleware::class),
             $container->get('sample-app.http.middleware.route'),
             $container->get(BodyParamsMiddleware::class),
             $container->get(AnotherSampleMiddleware::class),
