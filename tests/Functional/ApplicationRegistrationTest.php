@@ -32,10 +32,12 @@ use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
 use Mezzio\Router\Route;
 use Mezzio\Router\RouteCollector;
 use Psr\Http\Server\MiddlewareInterface;
+use ReflectionProperty;
 
 use function array_filter;
 use function array_values;
 use function assert;
+use function iterator_to_array;
 
 /**
  * @covers \Chimera\DependencyInjection\Mapping\ExpandTags
@@ -130,7 +132,16 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
             $expectedPipe->pipe($middleware);
         }
 
-        self::assertEquals($expectedPipe, $container->get('sample-app.http.middleware_pipeline'));
+        $property = new ReflectionProperty(MiddlewarePipe::class, 'pipeline');
+        $property->setAccessible(true);
+
+        $result = $container->get('sample-app.http.middleware_pipeline');
+        assert($result instanceof MiddlewarePipe);
+
+        self::assertSame(
+            iterator_to_array($property->getValue($expectedPipe)),
+            iterator_to_array($property->getValue($result))
+        );
     }
 
     /** @test */
