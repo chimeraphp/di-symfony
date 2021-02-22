@@ -49,6 +49,7 @@ use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
 
 use function array_combine;
+use function array_key_exists;
 use function array_map;
 use function assert;
 use function explode;
@@ -60,6 +61,9 @@ final class RegisterServices implements CompilerPassInterface
 {
     private const MESSAGE_INVALID_ROUTE = 'You must specify the "route_name", "path", and "behavior" arguments in '
                                           . '"%s" (tag "%s").';
+
+    private const MESSAGE_DUPLICATED_ROUTE = 'The service "%s" is trying to declare a route with name "%s" which has '
+                                           . 'already been defined by the service "%s".';
 
     private const BEHAVIORS = [
         'fetch'         => ['methods' => ['GET'], 'callback' => 'fetchOnly'],
@@ -104,12 +108,26 @@ final class RegisterServices implements CompilerPassInterface
     private function extractRoutes(ContainerBuilder $container): array
     {
         $routes = [];
+        $names  = [];
 
         foreach ($container->findTaggedServiceIds(Tags::HTTP_ROUTE) as $serviceId => $tags) {
             foreach ($tags as $tag) {
                 if (! isset($tag['route_name'], $tag['path'], $tag['behavior'])) {
                     throw new InvalidArgumentException(
                         sprintf(self::MESSAGE_INVALID_ROUTE, $serviceId, Tags::HTTP_ROUTE)
+                    );
+                }
+
+                assert(is_string($tag['route_name']));
+
+                if (array_key_exists($tag['route_name'], $names)) {
+                    throw new InvalidArgumentException(
+                        sprintf(
+                            self::MESSAGE_DUPLICATED_ROUTE,
+                            $serviceId,
+                            $tag['route_name'],
+                            $names[$tag['route_name']]
+                        )
                     );
                 }
 
@@ -123,6 +141,8 @@ final class RegisterServices implements CompilerPassInterface
 
                 $routes[$tag['app']] ??= [];
                 $routes[$tag['app']][] = $tag;
+
+                $names[$tag['route_name']] = $serviceId;
             }
         }
 
