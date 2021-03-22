@@ -3925,16 +3925,16 @@
         },
         {
             "name": "jms/serializer",
-            "version": "3.12.0",
+            "version": "3.12.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/schmittjoh/serializer.git",
-                "reference": "92698b2e313f1dae2200339cde7420a84003f122"
+                "reference": "0887ce89d889b15205d24111908efec55a2bdf27"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/92698b2e313f1dae2200339cde7420a84003f122",
-                "reference": "92698b2e313f1dae2200339cde7420a84003f122",
+                "url": "https://api.github.com/repos/schmittjoh/serializer/zipball/0887ce89d889b15205d24111908efec55a2bdf27",
+                "reference": "0887ce89d889b15205d24111908efec55a2bdf27",
                 "shasum": ""
             },
             "require": {
@@ -4006,7 +4006,7 @@
             ],
             "support": {
                 "issues": "https://github.com/schmittjoh/serializer/issues",
-                "source": "https://github.com/schmittjoh/serializer/tree/3.12.0"
+                "source": "https://github.com/schmittjoh/serializer/tree/3.12.1"
             },
             "funding": [
                 {
@@ -4014,7 +4014,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2021-03-04T16:28:37+00:00"
+            "time": "2021-03-21T19:32:17+00:00"
         },
         {
             "name": "justinrainbow/json-schema",
