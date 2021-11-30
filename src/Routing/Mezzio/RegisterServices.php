@@ -73,18 +73,11 @@ final class RegisterServices implements CompilerPassInterface
         'none'          => ['methods' => ['GET'], 'callback' => 'noBehavior'],
     ];
 
-    private string $applicationName;
-    private string $commandBusId;
-    private string $queryBusId;
-
     public function __construct(
-        string $applicationName,
-        string $commandBusId,
-        string $queryBusId
+        private string $applicationName,
+        private string $commandBusId,
+        private string $queryBusId,
     ) {
-        $this->applicationName = $applicationName;
-        $this->commandBusId    = $commandBusId;
-        $this->queryBusId      = $queryBusId;
     }
 
     public function process(ContainerBuilder $container): void
@@ -95,7 +88,7 @@ final class RegisterServices implements CompilerPassInterface
         $this->registerApplication(
             $container,
             $routes ?? [],
-            $this->prioritiseMiddleware($middlewareList ?? [])
+            $this->prioritiseMiddleware($middlewareList ?? []),
         );
     }
 
@@ -113,7 +106,7 @@ final class RegisterServices implements CompilerPassInterface
             foreach ($tags as $tag) {
                 if (! isset($tag['route_name'], $tag['path'], $tag['behavior'])) {
                     throw new InvalidArgumentException(
-                        sprintf(self::MESSAGE_INVALID_ROUTE, $serviceId, Tags::HTTP_ROUTE)
+                        sprintf(self::MESSAGE_INVALID_ROUTE, $serviceId, Tags::HTTP_ROUTE),
                     );
                 }
 
@@ -125,8 +118,8 @@ final class RegisterServices implements CompilerPassInterface
                             self::MESSAGE_DUPLICATED_ROUTE,
                             $serviceId,
                             $tag['route_name'],
-                            $names[$tag['route_name']]
-                        )
+                            $names[$tag['route_name']],
+                        ),
                     );
                 }
 
@@ -217,8 +210,8 @@ final class RegisterServices implements CompilerPassInterface
                 static function (string $id): Reference {
                     return new Reference($id);
                 },
-                array_combine($services, $services)
-            )
+                array_combine($services, $services),
+            ),
         );
     }
 
@@ -235,7 +228,7 @@ final class RegisterServices implements CompilerPassInterface
     private function registerApplication(
         ContainerBuilder $container,
         array $routes,
-        array $middlewareList
+        array $middlewareList,
     ): void {
         if ($container->hasDefinition(ApplicationInterface::class)) {
             throw new InvalidArgumentException('Registering multiple applications is deprecated.');
@@ -269,7 +262,7 @@ final class RegisterServices implements CompilerPassInterface
 
                 $decorator = $this->createService(
                     PathMiddlewareDecorator::class,
-                    [$path, new Reference($service . '.decorator.inner')]
+                    [$path, new Reference($service . '.decorator.inner')],
                 );
                 $decorator->setDecoratedService($service);
 
@@ -308,7 +301,7 @@ final class RegisterServices implements CompilerPassInterface
                 null,
                 null,
                 $this->readBCParameter($container, $this->applicationName . '.router_config', 'router_config', []),
-            ]
+            ],
         );
 
         $container->setDefinition(FastRouteRouter::class, $router);
@@ -318,7 +311,7 @@ final class RegisterServices implements CompilerPassInterface
 
         $routeCollector = $this->createService(
             RouteCollector::class,
-            [new Reference(FastRouteRouter::class)]
+            [new Reference(FastRouteRouter::class)],
         );
 
         foreach ($routes as $route) {
@@ -329,7 +322,7 @@ final class RegisterServices implements CompilerPassInterface
                     new Reference('http.route.' . $route['route_name']),
                     $route['methods'] ?? self::BEHAVIORS[$route['behavior']]['methods'],
                     $route['route_name'],
-                ]
+                ],
             );
         }
 
@@ -360,11 +353,11 @@ final class RegisterServices implements CompilerPassInterface
                     $container,
                     $this->applicationName . '.allowed_formats',
                     'allowed_formats',
-                    '%chimera.default_allowed_formats%'
+                    '%chimera.default_allowed_formats%',
                 ),
                 $formatters,
                 new Reference(StreamFactoryInterface::class),
-            ]
+            ],
         );
 
         $negotiator->setFactory([ContentTypeMiddleware::class, 'fromRecommendedSettings']);
@@ -396,7 +389,7 @@ final class RegisterServices implements CompilerPassInterface
                 new Reference($this->queryBusId),
                 new Reference(MessageCreator::class),
                 $query,
-            ]
+            ],
         );
 
         $container->setDefinition($name, $action);
@@ -412,7 +405,7 @@ final class RegisterServices implements CompilerPassInterface
                 new Reference($this->commandBusId),
                 new Reference(MessageCreator::class),
                 $command,
-            ]
+            ],
         );
 
         $container->setDefinition($name, $action);
@@ -427,7 +420,7 @@ final class RegisterServices implements CompilerPassInterface
             [
                 new Reference(MiddlewareContainer::class),
                 $name . '.handler',
-            ]
+            ],
         );
 
         $container->setDefinition($name, $middleware);
@@ -443,7 +436,7 @@ final class RegisterServices implements CompilerPassInterface
             [
                 $this->generateReadAction($routeServiceId . '.action', $route['query'], $container),
                 new Reference(ResponseFactoryInterface::class),
-            ]
+            ],
         );
 
         $container->setDefinition($routeServiceId . '.handler', $handler);
@@ -463,7 +456,7 @@ final class RegisterServices implements CompilerPassInterface
                 new Reference(UriGeneratorInterface::class),
                 new Reference(IdentifierGenerator::class),
                 $route['async'] === true ? StatusCode::STATUS_ACCEPTED : StatusCode::STATUS_CREATED,
-            ]
+            ],
         );
 
         $container->setDefinition($routeServiceId . '.handler', $handler);
@@ -483,7 +476,7 @@ final class RegisterServices implements CompilerPassInterface
                 $route['redirect_to'],
                 new Reference(UriGeneratorInterface::class),
                 new Reference(IdentifierGenerator::class),
-            ]
+            ],
         );
 
         $container->setDefinition($routeServiceId . '.handler', $handler);
@@ -500,7 +493,7 @@ final class RegisterServices implements CompilerPassInterface
                 $this->generateWriteAction($routeServiceId . '.action', $route['command'], $container),
                 new Reference(ResponseFactoryInterface::class),
                 $route['async'] === true ? StatusCode::STATUS_ACCEPTED : StatusCode::STATUS_NO_CONTENT,
-            ]
+            ],
         );
 
         $container->setDefinition($routeServiceId . '.handler', $handler);
@@ -517,7 +510,7 @@ final class RegisterServices implements CompilerPassInterface
                 $this->generateWriteAction($routeServiceId . '.action', $route['command'], $container),
                 $this->generateReadAction($routeServiceId . '.read_action', $route['query'], $container),
                 new Reference(ResponseFactoryInterface::class),
-            ]
+            ],
         );
 
         $container->setDefinition($routeServiceId . '.handler', $handler);
@@ -538,8 +531,12 @@ final class RegisterServices implements CompilerPassInterface
      *
      * @return mixed[]|string
      */
-    private function readBCParameter(ContainerBuilder $container, string $legacyName, string $parameterName, $default)
-    {
+    private function readBCParameter(
+        ContainerBuilder $container,
+        string $legacyName,
+        string $parameterName,
+        string|array $default,
+    ): array|string {
         if ($container->hasParameter($legacyName)) {
             return '%' . $legacyName . '%';
         }

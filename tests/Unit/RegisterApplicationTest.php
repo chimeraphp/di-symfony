@@ -71,13 +71,13 @@ final class RegisterApplicationTest extends TestCase
                     new Services\Routing\Mezzio\RegisterServices(
                         'testing',
                         'testing.command_bus',
-                        'testing.query_bus'
+                        'testing.query_bus',
                     ),
                     PassConfig::TYPE_BEFORE_OPTIMIZATION,
                 ],
                 [new Services\Routing\ErrorHandling\RegisterDefaultComponents(), PassConfig::TYPE_BEFORE_OPTIMIZATION],
             ],
-            $passes
+            $passes,
         );
     }
 }

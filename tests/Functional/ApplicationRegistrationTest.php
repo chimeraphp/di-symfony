@@ -91,16 +91,14 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         array $routes,
         string $path,
         array $methods,
-        string $expectedName
+        string $expectedName,
     ): void {
         $match = array_values(
             array_filter(
                 $routes,
-                static function (Route $route) use ($path, $methods): bool {
-                    return $route->getPath() === $path
-                        && $route->getAllowedMethods() === $methods;
-                }
-            )
+                static fn (Route $route): bool => $route->getPath() === $path
+                    && $route->getAllowedMethods() === $methods,
+            ),
         );
 
         self::assertCount(1, $match);
@@ -143,7 +141,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
 
         self::assertSame(
             iterator_to_array($property->getValue($expectedPipe)),
-            iterator_to_array($property->getValue($result))
+            iterator_to_array($property->getValue($result)),
         );
     }
 

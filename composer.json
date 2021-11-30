@@ -22,7 +22,7 @@
         "chimera/routing-mezzio": "^0.4",
         "chimera/serialization-jms": "^0.4",
         "infection/infection": "^0.21",
-        "lcobucci/coding-standard": "^6.0",
+        "lcobucci/coding-standard": "^8.0",
         "lcobucci/error-handling-middleware": "^1.2",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^0.12",

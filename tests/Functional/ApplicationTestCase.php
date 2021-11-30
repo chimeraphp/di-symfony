@@ -72,9 +72,9 @@ abstract class ApplicationTestCase extends TestCase
                     'sample-app.http.middleware.implicit_head',
                     'sample-app.command_bus.decorated_bus.handler.locator',
                     'sample-app.query_bus.decorated_bus.handler.locator',
-                ]
+                ],
             ),
-            PassConfig::TYPE_BEFORE_REMOVING
+            PassConfig::TYPE_BEFORE_REMOVING,
         );
 
         return $builder->getContainer();
@@ -88,20 +88,12 @@ abstract class ApplicationTestCase extends TestCase
     {
         return new class ($services, $aliases) implements CompilerPassInterface
         {
-            /** @var list<string> */
-            private array $services;
-
-            /** @var list<string> */
-            private array $aliases;
-
             /**
              * @param list<string> $services
              * @param list<string> $aliases
              */
-            public function __construct(array $services, array $aliases)
+            public function __construct(private array $services, private array $aliases)
             {
-                $this->services = $services;
-                $this->aliases  = $aliases;
             }
 
             public function process(\Symfony\Component\DependencyInjection\ContainerBuilder $container): void

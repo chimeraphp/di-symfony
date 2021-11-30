@@ -13,11 +13,8 @@ use function sprintf;
 
 final class ValidateApplicationComponents implements CompilerPassInterface
 {
-    private string $appName;
-
-    public function __construct(string $appName)
+    public function __construct(private string $appName)
     {
-        $this->appName = $appName;
     }
 
     /** @throws InvalidArgumentException */
@@ -28,7 +25,7 @@ final class ValidateApplicationComponents implements CompilerPassInterface
 
         if (! $httpInterface->isPublic() || ! $alias->isPublic()) {
             throw new RuntimeException(
-                sprintf('The HTTP interface for "%s" is not a public service', $this->appName)
+                sprintf('The HTTP interface for "%s" is not a public service', $this->appName),
             );
         }
     }

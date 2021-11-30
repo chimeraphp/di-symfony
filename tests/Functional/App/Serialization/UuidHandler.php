@@ -63,19 +63,16 @@ final class UuidHandler implements SubscribingHandlerInterface
         return $methods;
     }
 
-    /**
-     * @param mixed[] $type
-     *
-     * @return mixed
-     */
-    public function serialize(SerializationVisitorInterface $visitor, UuidInterface $uuid, array $type)
+    /** @param mixed[] $type */
+    public function serialize(SerializationVisitorInterface $visitor, UuidInterface $uuid, array $type): mixed
     {
         return $visitor->visitString($uuid->toString(), $type);
     }
 
-    /** @param string|UuidInterface|null $data */
-    public function deserialize(DeserializationVisitorInterface $visitor, $data): ?UuidInterface
-    {
+    public function deserialize(
+        DeserializationVisitorInterface $visitor,
+        string|UuidInterface|null $data,
+    ): ?UuidInterface {
         assert($visitor instanceof JsonDeserializationVisitor);
         if ($data === null) {
             return null;

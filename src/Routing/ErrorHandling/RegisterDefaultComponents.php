@@ -25,7 +25,7 @@ final class RegisterDefaultComponents implements CompilerPassInterface
 
         $container->setAlias(
             StatusCodeExtractionStrategy::class,
-            new Alias(StatusCodeExtractionStrategy\ClassMap::class)
+            new Alias(StatusCodeExtractionStrategy\ClassMap::class),
         );
     }
 

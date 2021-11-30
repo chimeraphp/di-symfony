@@ -85,9 +85,9 @@ final class ApplicationRunTest extends ApplicationTestCase
                             'title' => 'Name not allowed',
                             'details' => '"Testing" is a forbidden name in this application',
                         ],
-                        JSON_THROW_ON_ERROR
+                        JSON_THROW_ON_ERROR,
                     ),
-                    (string) $response->getBody()
+                    (string) $response->getBody(),
                 );
             },
         ];
@@ -105,7 +105,7 @@ final class ApplicationRunTest extends ApplicationTestCase
                         'id' => $id,
                         'name' => 'a random name',
                     ],
-                    json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR)
+                    json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR),
                 );
             },
         ];
@@ -164,9 +164,9 @@ final class ApplicationRunTest extends ApplicationTestCase
                             'title' => 'Not Found',
                             'details' => 'Cannot GET /something-that-does-not-exist',
                         ],
-                        JSON_THROW_ON_ERROR
+                        JSON_THROW_ON_ERROR,
                     ),
-                    (string) $response->getBody()
+                    (string) $response->getBody(),
                 );
             },
         ];
