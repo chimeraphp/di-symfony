@@ -56,6 +56,46 @@
 
         <service id="Zend\Expressive\Helper\BodyParams\BodyParamsMiddleware" />
 
+        <service id="Zend\Expressive\MiddlewareFactory" class="Zend\Expressive\MiddlewareFactory">
+            <argument type="service" id="Zend\Expressive\MiddlewareContainer"/>
+        </service>
+
+        <service id="Zend\Expressive\Router\Middleware\RouteMiddleware">
+            <argument type="service" id="Zend\Expressive\Router\RouterInterface"/>
+        </service>
+
+        <service id="Zend\Expressive\Router\Middleware\ImplicitHeadMiddleware">
+            <argument type="service" id="Zend\Expressive\Router\RouterInterface"/>
+            <argument type="collection">
+                <argument type="service" id="Psr\Http\Message\StreamFactoryInterface" />
+                <argument>createStream</argument>
+            </argument>
+            <!-- TODO: better way to do the above? -->
+        </service>
+
+        <service id="Zend\HttpHandlerRunner\RequestHandlerRunner">
+            <argument type="service" id="Zend\Stratigility\MiddlewarePipe"/>
+            <argument type="service" id="Zend\HttpHandlerRunner\Emitter\EmitterInterface"/>
+            <argument type="collection">
+                <argument type="service" id="Psr\Http\Message\ServerRequestFactoryInterface" />
+                <argument>fromGlobals</argument>
+            </argument>
+            <!-- TODO: better way to do the above? -->
+            <argument type="service" id="Zend\Expressive\Response\ServerRequestErrorResponseGenerator"/>
+
+        </service>
+
+        <service id="Zend\Expressive\Application">
+            <argument type="service" id="Zend\Expressive\MiddlewareFactory"/>
+            <argument type="service" id="Zend\Stratigility\MiddlewarePipe"/>
+            <argument type="service" id="Zend\Expressive\Router\RouteCollector"/>
+            <argument type="service" id="Zend\HttpHandlerRunner\RequestHandlerRunner"/>
+        </service>
+
+        <service id="Chimera\Routing\Expressive\UriGenerator">
+            <argument type="service" id="Zend\Expressive\Router\RouterInterfacer"/>
+        </service>
+
         <service id="Zend\Diactoros\StreamFactory" />
         <service id="Zend\Diactoros\ServerRequestFactory" />
         <service id="Zend\Diactoros\ResponseFactory" />
@@ -63,5 +103,7 @@
         <service id="Psr\Http\Message\StreamFactoryInterface" alias="Zend\Diactoros\StreamFactory" />
         <service id="Psr\Http\Message\ServerRequestFactoryInterface" alias="Zend\Diactoros\ServerRequestFactory" />
         <service id="Psr\Http\Message\ResponseFactoryInterface" alias="Zend\Diactoros\ResponseFactory" />
+        <service id="Chimera\Routing\UriGenerator" alias="Chimera\Routing\Expressive\UriGenerator" />
+
     </services>
 </container>
