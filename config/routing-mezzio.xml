@@ -56,6 +56,48 @@
 
         <service id="Mezzio\Helper\BodyParams\BodyParamsMiddleware" />
 
+        <service id="Mezzio\MiddlewareFactory" class="Mezzio\MiddlewareFactory">
+            <argument type="service" id="Mezzio\MiddlewareContainer"/>
+        </service>
+
+        <service id="Mezzio\Router\Middleware\RouteMiddleware">
+            <argument type="service" id="Mezzio\Router\RouterInterface"/>
+        </service>
+
+        <service id="Mezzio\Router\Middleware\ImplicitHeadMiddleware">
+            <argument type="service" id="Mezzio\Router\RouterInterface"/>
+            <argument type="collection">
+                <argument type="service" id="Psr\Http\Message\StreamFactoryInterface" />
+                <argument>createStream</argument>
+            </argument>
+            <!-- TODO: better way to do the above? -->
+        </service>
+
+        <service id="Laminas\HttpHandlerRunner\RequestHandlerRunner">
+            <argument type="service" id="Laminas\Stratigility\MiddlewarePipe"/>
+            <argument type="service" id="Laminas\HttpHandlerRunner\Emitter\EmitterInterface"/>
+            <argument type="collection">
+                <argument type="service" id="Psr\Http\Message\ServerRequestFactoryInterface" />
+                <argument>fromGlobals</argument>
+            </argument>
+            <!-- TODO: better way to do the above? -->
+            <argument type="service" id="Mezzio\Response\ServerRequestErrorResponseGenerator"/>
+
+        </service>
+
+        <service id="Mezzio\Application">
+            <argument type="service" id="Mezzio\MiddlewareFactory"/>
+            <argument type="service" id="Laminas\Stratigility\MiddlewarePipe"/>
+            <argument type="service" id="Mezzio\Router\RouteCollector"/>
+            <argument type="service" id="Laminas\HttpHandlerRunner\RequestHandlerRunner"/>
+        </service>
+
+        <service id="Chimera\Routing\Mezzio\UriGenerator">
+            <argument type="service" id="Mezzio\Router\RouterInterface"/>
+        </service>
+
+        <service id="Chimera\Routing\UriGenerator" alias="Chimera\Routing\Mezzio\UriGenerator" />
+
         <service id="Laminas\Diactoros\StreamFactory" />
         <service id="Laminas\Diactoros\ServerRequestFactory" />
         <service id="Laminas\Diactoros\ResponseFactory" />

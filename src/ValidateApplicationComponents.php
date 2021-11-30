@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Chimera\DependencyInjection;
 
+use Chimera\Routing\Application;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,9 +23,10 @@ final class ValidateApplicationComponents implements CompilerPassInterface
     /** @throws InvalidArgumentException */
     public function process(ContainerBuilder $container): void
     {
-        $httpInterface = $container->getDefinition($this->appName . '.http');
+        $httpInterface = $container->getDefinition(Application::class);
+        $alias         = $container->getAlias($this->appName . '.http');
 
-        if (! $httpInterface->isPublic()) {
+        if (! $httpInterface->isPublic() || ! $alias->isPublic()) {
             throw new RuntimeException(
                 sprintf('The HTTP interface for "%s" is not a public service', $this->appName)
             );

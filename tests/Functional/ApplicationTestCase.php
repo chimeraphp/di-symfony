@@ -44,11 +44,6 @@ abstract class ApplicationTestCase extends TestCase
         $builder->addPass(
             $this->makeServicesPublic(
                 [
-                    'sample-app.http.route_collector',
-                    'sample-app.http.middleware_pipeline',
-                    'sample-app.http.middleware.content_negotiation',
-                    'sample-app.http.middleware.route',
-                    'sample-app.http.middleware.implicit_head',
                     'sample-app.command_bus',
                     'sample-app.command_bus.decorated_bus',
                     'sample-app.command_bus.decorated_bus.handler',
@@ -70,6 +65,11 @@ abstract class ApplicationTestCase extends TestCase
                     ErrorConversionMiddleware::class,
                 ],
                 [
+                    'sample-app.http.route_collector',
+                    'sample-app.http.middleware_pipeline',
+                    'sample-app.http.middleware.content_negotiation',
+                    'sample-app.http.middleware.route',
+                    'sample-app.http.middleware.implicit_head',
                     'sample-app.command_bus.decorated_bus.handler.locator',
                     'sample-app.query_bus.decorated_bus.handler.locator',
                 ]
