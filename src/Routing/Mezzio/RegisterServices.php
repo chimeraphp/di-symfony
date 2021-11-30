@@ -361,8 +361,6 @@ final class RegisterServices implements CompilerPassInterface
         $formatters = [];
 
         foreach ($container->findTaggedServiceIds(Tags::CONTENT_FORMATTER) as $serviceId => $tags) {
-            assert(is_string($serviceId));
-
             foreach ($tags as $tag) {
                 $formatters[$tag['format']] = new Reference($serviceId);
             }

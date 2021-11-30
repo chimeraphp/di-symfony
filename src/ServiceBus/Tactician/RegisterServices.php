@@ -20,9 +20,6 @@ use Symfony\Component\DependencyInjection\Reference;
 use function array_column;
 use function array_combine;
 use function array_map;
-use function assert;
-use function is_array;
-use function is_string;
 use function krsort;
 use function sprintf;
 
@@ -74,9 +71,6 @@ final class RegisterServices implements CompilerPassInterface
         $list = [];
 
         foreach ($container->findTaggedServiceIds(Tags::BUS_HANDLER) as $serviceId => $tags) {
-            assert(is_array($tags));
-            assert(is_string($serviceId));
-
             foreach ($tags as $tag) {
                 if (! isset($tag['bus'], $tag['handles'])) {
                     throw new InvalidArgumentException(
@@ -89,9 +83,6 @@ final class RegisterServices implements CompilerPassInterface
         }
 
         foreach ($container->findTaggedServiceIds(Tags::BUS_COMMAND_HANDLER) as $serviceId => $tags) {
-            assert(is_array($tags));
-            assert(is_string($serviceId));
-
             foreach ($tags as $tag) {
                 if (! isset($tag['handles'])) {
                     throw new InvalidArgumentException(
@@ -104,9 +95,6 @@ final class RegisterServices implements CompilerPassInterface
         }
 
         foreach ($container->findTaggedServiceIds(Tags::BUS_QUERY_HANDLER) as $serviceId => $tags) {
-            assert(is_array($tags));
-            assert(is_string($serviceId));
-
             foreach ($tags as $tag) {
                 if (! isset($tag['handles'])) {
                     throw new InvalidArgumentException(
@@ -145,9 +133,6 @@ final class RegisterServices implements CompilerPassInterface
         $list = [];
 
         foreach ($container->findTaggedServiceIds(Tags::BUS_MIDDLEWARE) as $serviceId => $tags) {
-            assert(is_array($tags));
-            assert(is_string($serviceId));
-
             foreach ($tags as $tag) {
                 $priority = $tag['priority'] ?? 0;
 
