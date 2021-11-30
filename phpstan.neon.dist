@@ -3,6 +3,3 @@ parameters:
     paths:
         - src
         - tests
-
-    ignoreErrors:
-        - '#Class Chimera\\Routing\\Expressive\\(Application|UriGenerator) not found.#'
