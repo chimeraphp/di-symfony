@@ -87,13 +87,13 @@ final class RegisterServices implements CompilerPassInterface
 
         $this->registerApplication(
             $container,
-            $routes ?? [],
-            $this->prioritiseMiddleware($middlewareList ?? []),
+            $routes,
+            $this->prioritiseMiddleware($middlewareList),
         );
     }
 
     /**
-     * @return string[][]
+     * @return list<array{path: string, route_name: string, behavior: string, methods?: list<string>, async: bool, serviceId: string}>
      *
      * @throws InvalidArgumentException
      */
@@ -140,7 +140,7 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @return mixed[]
+     * @return array<int, array<string, list<class-string|string>>>
      *
      * @throws InvalidArgumentException
      */
@@ -150,8 +150,8 @@ final class RegisterServices implements CompilerPassInterface
 
         foreach ($container->findTaggedServiceIds(Tags::HTTP_MIDDLEWARE) as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                $priority = $tag['priority'] ?? 0;
-                $path     = $tag['path'] ?? '/';
+                $priority = (int) ($tag['priority'] ?? 0);
+                $path     = (string) ($tag['path'] ?? '/');
 
                 $list[$priority][$path] ??= [];
                 $list[$priority][$path][] = $serviceId;
@@ -178,9 +178,9 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @param mixed[] $middlewareList
+     * @param array<int, array<string, list<class-string|string>>> $middlewareList
      *
-     * @return string[][]
+     * @return array<string, list<class-string|string>>
      */
     private function prioritiseMiddleware(array $middlewareList): array
     {
@@ -222,8 +222,8 @@ final class RegisterServices implements CompilerPassInterface
     }
 
     /**
-     * @param string[][] $routes
-     * @param string[][] $middlewareList
+     * @param list<array{path: string, route_name: string, behavior: string, methods?: list<string>, async: bool, serviceId: string}> $routes
+     * @param array<string, list<class-string|string>>                                                                                $middlewareList
      */
     private function registerApplication(
         ContainerBuilder $container,
@@ -427,7 +427,7 @@ final class RegisterServices implements CompilerPassInterface
         return $name . '.handler';
     }
 
-    /** @param mixed[] $route */
+    /** @param array{query: class-string} $route */
     public function fetchOnly(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $handler = $this->createService(
@@ -443,7 +443,7 @@ final class RegisterServices implements CompilerPassInterface
         return $this->wrapHandler($routeServiceId, $container);
     }
 
-    /** @param mixed[] $route */
+    /** @param array{command: class-string, async: bool, redirect_to: string} $route */
     public function createOnly(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $handler = $this->createService(
@@ -463,7 +463,7 @@ final class RegisterServices implements CompilerPassInterface
         return $this->wrapHandler($routeServiceId, $container);
     }
 
-    /** @param mixed[] $route */
+    /** @param array{command: class-string, query: class-string, redirect_to: string} $route */
     public function createAndFetch(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $handler = $this->createService(
@@ -483,7 +483,7 @@ final class RegisterServices implements CompilerPassInterface
         return $this->wrapHandler($routeServiceId, $container);
     }
 
-    /** @param mixed[] $route */
+    /** @param array{command: class-string, async: bool} $route */
     public function executeOnly(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $handler = $this->createService(
@@ -500,7 +500,7 @@ final class RegisterServices implements CompilerPassInterface
         return $this->wrapHandler($routeServiceId, $container);
     }
 
-    /** @param mixed[] $route */
+    /** @param array{command: class-string, query: class-string} $route */
     public function executeAndFetch(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $handler = $this->createService(
@@ -517,7 +517,7 @@ final class RegisterServices implements CompilerPassInterface
         return $this->wrapHandler($routeServiceId, $container);
     }
 
-    /** @param mixed[] $route */
+    /** @param array{serviceId: string} $route */
     public function noBehavior(string $routeServiceId, array $route, ContainerBuilder $container): string
     {
         $container->setAlias($routeServiceId . '.handler', $route['serviceId']);

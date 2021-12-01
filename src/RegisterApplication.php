@@ -5,6 +5,7 @@ namespace Chimera\DependencyInjection;
 
 use Generator;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
+use Lcobucci\DependencyInjection\Config\Package;
 use Lcobucci\DependencyInjection\FileListProvider;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
@@ -50,7 +51,7 @@ final class RegisterApplication implements FileListProvider, CompilerPassListPro
     }
 
     /**
-     * @template T
+     * @template T of Package
      *
      * @param class-string<T> $type
      *

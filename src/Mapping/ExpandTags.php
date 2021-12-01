@@ -120,14 +120,14 @@ final class ExpandTags implements CompilerPassInterface
         $type = self::ROUTE_BEHAVIOR[$annotation::class];
 
         $attributes['behavior'] = $type;
-        $attributes['methods']  = implode(',', $attributes['methods'] ?? []);
+        $attributes['methods']  = implode(',', $attributes['methods'] ?? []); // @phpstan-ignore-line
 
-        if (isset($attributes['name'])) {
+        if (isset($attributes['name'])) { // @phpstan-ignore-line
             $attributes['route_name'] = $attributes['name'];
             unset($attributes['name']);
         }
 
-        if (isset($attributes['redirectTo'])) {
+        if (isset($attributes['redirectTo'])) { // @phpstan-ignore-line
             $attributes['redirect_to'] = $attributes['redirectTo'];
             unset($attributes['redirectTo']);
         }

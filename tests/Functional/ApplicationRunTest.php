@@ -120,6 +120,7 @@ final class ApplicationRunTest extends ApplicationTestCase
                 $items = json_decode((string) $response->getBody(), true, 512, JSON_THROW_ON_ERROR);
                 $names = ['one', 'two', 'three'];
 
+                self::assertIsArray($items);
                 self::assertCount(3, $items);
 
                 foreach ($items as $i => $item) {
