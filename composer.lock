@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f0ec80dfc4a99c41e6145a41923ad275",
+    "content-hash": "498f33d31aad8cc77e143b194260cad8",
     "packages": [
         {
             "name": "brick/math",
@@ -68,37 +68,38 @@
         },
         {
             "name": "chimera/bus-tactician",
-            "version": "0.4.0",
+            "version": "0.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chimeraphp/bus-tactician.git",
-                "reference": "9a50173225c8f2c44d05ceea4cec61c8dc0c1bf0"
+                "reference": "ecba69e6d9893b2a83923eacb4eed41657ba74b8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chimeraphp/bus-tactician/zipball/9a50173225c8f2c44d05ceea4cec61c8dc0c1bf0",
-                "reference": "9a50173225c8f2c44d05ceea4cec61c8dc0c1bf0",
+                "url": "https://api.github.com/repos/chimeraphp/bus-tactician/zipball/ecba69e6d9893b2a83923eacb4eed41657ba74b8",
+                "reference": "ecba69e6d9893b2a83923eacb4eed41657ba74b8",
                 "shasum": ""
             },
             "require": {
-                "chimera/foundation": "^0.4",
+                "chimera/foundation": "^0.5.x-dev",
                 "league/tactician": "^1.1",
-                "php": "^7.4 || ^8.0",
+                "php": "^8.0",
                 "psr/container": "^1.0"
             },
             "provide": {
-                "chimera/bus-implementation": "0.4.0"
+                "chimera/bus-implementation": "0.5.0"
             },
             "require-dev": {
-                "infection/infection": "^0.21",
-                "lcobucci/coding-standard": "^6.0",
+                "infection/infection": "^0.25",
+                "lcobucci/coding-standard": "^8.0",
                 "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^0.12",
-                "phpstan/phpstan-deprecation-rules": "^0.12",
-                "phpstan/phpstan-phpunit": "^0.12",
-                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpstan/phpstan": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^9.5"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -118,7 +119,7 @@
             "description": "Service bus adapter for league/tactician",
             "support": {
                 "issues": "https://github.com/chimeraphp/bus-tactician/issues",
-                "source": "https://github.com/chimeraphp/bus-tactician/tree/0.4.0"
+                "source": "https://github.com/chimeraphp/bus-tactician/tree/0.5.x"
             },
             "funding": [
                 {
@@ -130,36 +131,37 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-02-24T21:13:59+00:00"
+            "time": "2021-12-01T09:03:36+00:00"
         },
         {
             "name": "chimera/foundation",
-            "version": "0.4.0",
+            "version": "0.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chimeraphp/foundation.git",
-                "reference": "0b6c5f5324981b7c9beb159748f098f78f14d8b6"
+                "reference": "ac35164f8cd55877deab5ebfefa5e2f5e8cdafbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chimeraphp/foundation/zipball/0b6c5f5324981b7c9beb159748f098f78f14d8b6",
-                "reference": "0b6c5f5324981b7c9beb159748f098f78f14d8b6",
+                "url": "https://api.github.com/repos/chimeraphp/foundation/zipball/ac35164f8cd55877deab5ebfefa5e2f5e8cdafbd",
+                "reference": "ac35164f8cd55877deab5ebfefa5e2f5e8cdafbd",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.4 || ^8.0",
-                "ramsey/uuid": "^4.1"
+                "php": "^8.0",
+                "ramsey/uuid": "^4.2"
             },
             "require-dev": {
-                "infection/infection": "^0.21",
-                "lcobucci/coding-standard": "^6.0",
+                "infection/infection": "^0.25",
+                "lcobucci/coding-standard": "^8.0",
                 "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^0.12",
-                "phpstan/phpstan-deprecation-rules": "^0.12",
-                "phpstan/phpstan-phpunit": "^0.12",
-                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpstan/phpstan": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^9.5"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -179,7 +181,7 @@
             "description": "Base structure to connect PSR-7 objects to command and query buses",
             "support": {
                 "issues": "https://github.com/chimeraphp/foundation/issues",
-                "source": "https://github.com/chimeraphp/foundation/tree/0.4.0"
+                "source": "https://github.com/chimeraphp/foundation/tree/0.5.x"
             },
             "funding": [
                 {
@@ -191,44 +193,45 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-02-23T20:58:10+00:00"
+            "time": "2021-12-01T09:49:44+00:00"
         },
         {
             "name": "chimera/routing",
-            "version": "0.4.0",
+            "version": "0.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chimeraphp/routing.git",
-                "reference": "b8653ff9415ab08ec6455a844835b5708831bcdf"
+                "reference": "cc51fa29f9b2bce3005507f972942b46e70a73c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chimeraphp/routing/zipball/b8653ff9415ab08ec6455a844835b5708831bcdf",
-                "reference": "b8653ff9415ab08ec6455a844835b5708831bcdf",
+                "url": "https://api.github.com/repos/chimeraphp/routing/zipball/cc51fa29f9b2bce3005507f972942b46e70a73c2",
+                "reference": "cc51fa29f9b2bce3005507f972942b46e70a73c2",
                 "shasum": ""
             },
             "require": {
-                "chimera/foundation": "^0.4",
+                "chimera/foundation": "^0.5.x-dev",
                 "fig/http-message-util": "^1.1",
-                "lcobucci/content-negotiation-middleware": "^3.0",
+                "lcobucci/content-negotiation-middleware": "^3.1",
                 "middlewares/negotiation": "^2.0",
-                "php": "^7.4 || ^8.0",
+                "php": "^8.0",
                 "psr/http-factory": "^1.0",
                 "psr/http-message": "^1.0",
                 "psr/http-server-handler": "^1.0",
                 "psr/http-server-middleware": "^1.0"
             },
             "require-dev": {
-                "infection/infection": "^0.21",
-                "laminas/laminas-diactoros": "^2.5",
-                "lcobucci/coding-standard": "^6.0",
+                "infection/infection": "^0.25",
+                "laminas/laminas-diactoros": "^2.8",
+                "lcobucci/coding-standard": "^8.0",
                 "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^0.12",
-                "phpstan/phpstan-deprecation-rules": "^0.12",
-                "phpstan/phpstan-phpunit": "^0.12",
-                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpstan/phpstan": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^9.5"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -248,7 +251,7 @@
             "description": "A collection of reusable PSR-15 components that connects Chimera to any framework",
             "support": {
                 "issues": "https://github.com/chimeraphp/routing/issues",
-                "source": "https://github.com/chimeraphp/routing/tree/0.4.0"
+                "source": "https://github.com/chimeraphp/routing/tree/0.5.x"
             },
             "funding": [
                 {
@@ -260,49 +263,50 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-02-24T20:42:19+00:00"
+            "time": "2021-12-01T09:49:59+00:00"
         },
         {
             "name": "chimera/routing-mezzio",
-            "version": "0.4.0",
+            "version": "0.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chimeraphp/routing-mezzio.git",
-                "reference": "582b13c804bae7b73a94a3a9c9b0125f5dd3087d"
+                "reference": "6f8ed178f137abfc00295effbaf851cccaf7edaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chimeraphp/routing-mezzio/zipball/582b13c804bae7b73a94a3a9c9b0125f5dd3087d",
-                "reference": "582b13c804bae7b73a94a3a9c9b0125f5dd3087d",
+                "url": "https://api.github.com/repos/chimeraphp/routing-mezzio/zipball/6f8ed178f137abfc00295effbaf851cccaf7edaa",
+                "reference": "6f8ed178f137abfc00295effbaf851cccaf7edaa",
                 "shasum": ""
             },
             "require": {
-                "chimera/foundation": "^0.4",
-                "chimera/routing": "^0.4",
-                "laminas/laminas-diactoros": "^2.5",
-                "mezzio/mezzio": "^3.3",
-                "mezzio/mezzio-fastroute": "^3.1",
-                "mezzio/mezzio-helpers": "^5.4",
-                "mezzio/mezzio-router": "^3.3",
-                "php": "^7.4 || ^8.0",
+                "chimera/foundation": "^0.5.x-dev",
+                "chimera/routing": "^0.5.x-dev",
+                "laminas/laminas-diactoros": "^2.8",
+                "mezzio/mezzio": "^3.7",
+                "mezzio/mezzio-fastroute": "^3.3",
+                "mezzio/mezzio-helpers": "^5.7",
+                "mezzio/mezzio-router": "^3.4",
+                "php": "^8.0",
                 "psr/http-message": "^1.0"
             },
             "provide": {
-                "chimera/routing-implementation": "0.4.0"
+                "chimera/routing-implementation": "0.5.0"
             },
             "replace": {
                 "chimera/routing-expressive": "*"
             },
             "require-dev": {
-                "infection/infection": "^0.21",
-                "lcobucci/coding-standard": "^6.0",
+                "infection/infection": "^0.25",
+                "lcobucci/coding-standard": "^8.0",
                 "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^0.12",
-                "phpstan/phpstan-deprecation-rules": "^0.12",
-                "phpstan/phpstan-phpunit": "^0.12",
-                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpstan/phpstan": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^9.5"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -322,7 +326,7 @@
             "description": "Laminas Mezzio implementation for chimera/routing",
             "support": {
                 "issues": "https://github.com/chimeraphp/routing-mezzio/issues",
-                "source": "https://github.com/chimeraphp/routing-mezzio/tree/0.4.0"
+                "source": "https://github.com/chimeraphp/routing-mezzio/tree/0.5.x"
             },
             "funding": [
                 {
@@ -334,7 +338,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-02-24T20:50:06+00:00"
+            "time": "2021-12-01T19:09:21+00:00"
         },
         {
             "name": "fig/http-message-util",
@@ -828,40 +832,40 @@
         },
         {
             "name": "lcobucci/content-negotiation-middleware",
-            "version": "3.0.0",
+            "version": "3.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/lcobucci/content-negotiation-middleware.git",
-                "reference": "66c6d8e5403ca935ffae49b7a6e17101e1cc81b5"
+                "reference": "5aa1d625d7b99addc58d20437e93902280d2f3d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/lcobucci/content-negotiation-middleware/zipball/66c6d8e5403ca935ffae49b7a6e17101e1cc81b5",
-                "reference": "66c6d8e5403ca935ffae49b7a6e17101e1cc81b5",
+                "url": "https://api.github.com/repos/lcobucci/content-negotiation-middleware/zipball/5aa1d625d7b99addc58d20437e93902280d2f3d4",
+                "reference": "5aa1d625d7b99addc58d20437e93902280d2f3d4",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "fig/http-message-util": "^1.1",
-                "php": "^7.4 || ^8.0",
+                "php": "^8.0",
                 "psr/http-factory": "^1.0",
+                "psr/http-message": "^1.0",
                 "psr/http-server-middleware": "^1.0"
             },
             "require-dev": {
-                "infection/infection": "^0.16",
-                "jms/serializer": "^3.8",
-                "laminas/laminas-diactoros": "^2.3",
-                "lcobucci/coding-standard": "^5.0",
-                "league/plates": "^3.3",
+                "infection/infection": "^0.25",
+                "jms/serializer": "^3.15",
+                "laminas/laminas-diactoros": "^2.8",
+                "lcobucci/coding-standard": "^8.0",
+                "league/plates": "^3.4",
                 "middlewares/negotiation": "^2.0",
-                "phpstan/extension-installer": "^1.0",
+                "phpstan/extension-installer": "^1.1",
                 "phpstan/phpstan": "^0.12",
                 "phpstan/phpstan-deprecation-rules": "^0.12",
                 "phpstan/phpstan-phpunit": "^0.12",
                 "phpstan/phpstan-strict-rules": "^0.12",
-                "phpunit/phpunit": "^9.2",
-                "squizlabs/php_codesniffer": "^3.5",
-                "twig/twig": "^3.0"
+                "phpunit/phpunit": "^9.5",
+                "twig/twig": "^3.3"
             },
             "suggest": {
                 "jms/serializer": "For content formatting using a more flexible serializer",
@@ -871,11 +875,6 @@
                 "twig/twig": "For content formatting using Twig as template engine"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "3.0.x-dev"
-                }
-            },
             "autoload": {
                 "psr-4": {
                     "Lcobucci\\ContentNegotiation\\": "src"
@@ -894,7 +893,7 @@
             "description": "A PSR-15 middleware to handle content negotiation",
             "support": {
                 "issues": "https://github.com/lcobucci/content-negotiation-middleware/issues",
-                "source": "https://github.com/lcobucci/content-negotiation-middleware/tree/3.0.0"
+                "source": "https://github.com/lcobucci/content-negotiation-middleware/tree/3.1.0"
             },
             "funding": [
                 {
@@ -906,7 +905,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2020-07-02T17:28:07+00:00"
+            "time": "2021-10-31T22:08:18+00:00"
         },
         {
             "name": "lcobucci/di-builder",
@@ -1039,26 +1038,25 @@
         },
         {
             "name": "mezzio/mezzio",
-            "version": "3.6.0",
+            "version": "3.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mezzio/mezzio.git",
-                "reference": "4e7fa905c5dcfd8f973ccaa4481754a38b5d4545"
+                "reference": "974ada22c4be16130656f9a688a630aaf1e4baa7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mezzio/mezzio/zipball/4e7fa905c5dcfd8f973ccaa4481754a38b5d4545",
-                "reference": "4e7fa905c5dcfd8f973ccaa4481754a38b5d4545",
+                "url": "https://api.github.com/repos/mezzio/mezzio/zipball/974ada22c4be16130656f9a688a630aaf1e4baa7",
+                "reference": "974ada22c4be16130656f9a688a630aaf1e4baa7",
                 "shasum": ""
             },
             "require": {
                 "fig/http-message-util": "^1.1.5",
-                "laminas/laminas-httphandlerrunner": "^1.3.0",
-                "laminas/laminas-stratigility": "^3.3.0",
-                "laminas/laminas-zendframework-bridge": "^1.1.0",
-                "mezzio/mezzio-router": "^3.5",
-                "mezzio/mezzio-template": "^2.1.0",
-                "php": "^7.3||~8.0.0",
+                "laminas/laminas-httphandlerrunner": "^1.5",
+                "laminas/laminas-stratigility": "^3.5",
+                "mezzio/mezzio-router": "^3.7",
+                "mezzio/mezzio-template": "^2.2",
+                "php": "~7.4.0||~8.0.0||~8.1.0",
                 "psr/container": "^1.0",
                 "psr/http-factory": "^1.0",
                 "psr/http-message": "^1.0.1",
@@ -1067,26 +1065,26 @@
             },
             "conflict": {
                 "container-interop/container-interop": "<1.2.0",
-                "filp/whoops": "<2.1.1",
+                "filp/whoops": "<2.14.4",
                 "laminas/laminas-diactoros": "<1.7.1",
-                "laminas/laminas-stdlib": "<3.2.1"
-            },
-            "replace": {
-                "zendframework/zend-expressive": "^3.2.1"
+                "laminas/laminas-http": "<2.15.0",
+                "laminas/laminas-router": "<3.5.0",
+                "laminas/laminas-stdlib": "<3.6.0",
+                "zendframework/zend-expressive": "*"
             },
             "require-dev": {
-                "filp/whoops": "^2.8.0",
-                "laminas/laminas-coding-standard": "~2.2.0",
-                "laminas/laminas-diactoros": "^2.5.0",
-                "laminas/laminas-servicemanager": "^3.6.0",
+                "filp/whoops": "^2.14.4",
+                "laminas/laminas-coding-standard": "~2.3.0",
+                "laminas/laminas-diactoros": "^2.8.0",
+                "laminas/laminas-servicemanager": "^3.10",
                 "malukenho/docheader": "^0.1.8",
                 "mezzio/mezzio-aurarouter": "^3.1.0",
-                "mezzio/mezzio-fastroute": "^3.1.0",
+                "mezzio/mezzio-fastroute": "^3.3.0",
                 "mezzio/mezzio-laminasrouter": "^3.1.0",
-                "mockery/mockery": "^1.0",
-                "phpunit/phpunit": "^9.3",
+                "mockery/mockery": "^1.4.4",
+                "phpunit/phpunit": "^9.5.10",
                 "psalm/plugin-phpunit": "^0.13",
-                "vimeo/psalm": "^4.1"
+                "vimeo/psalm": "^4.13.1"
             },
             "suggest": {
                 "filp/whoops": "^2.1 to use the Whoops error handler",
@@ -1145,7 +1143,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2021-08-06T16:23:58+00:00"
+            "time": "2021-12-01T18:45:03+00:00"
         },
         {
             "name": "mezzio/mezzio-fastroute",
@@ -1626,20 +1624,20 @@
         },
         {
             "name": "psr/cache",
-            "version": "1.0.1",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/cache.git",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8"
+                "reference": "213f9dbc5b9bfbc4f8db86d2838dc968752ce13b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/cache/zipball/d11b50ad223250cf17b86e38383413f5a6764bf8",
-                "reference": "d11b50ad223250cf17b86e38383413f5a6764bf8",
+                "url": "https://api.github.com/repos/php-fig/cache/zipball/213f9dbc5b9bfbc4f8db86d2838dc968752ce13b",
+                "reference": "213f9dbc5b9bfbc4f8db86d2838dc968752ce13b",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=8.0.0"
             },
             "type": "library",
             "extra": {
@@ -1659,7 +1657,7 @@
             "authors": [
                 {
                     "name": "PHP-FIG",
-                    "homepage": "http://www.php-fig.org/"
+                    "homepage": "https://www.php-fig.org/"
                 }
             ],
             "description": "Common interface for caching libraries",
@@ -1669,9 +1667,9 @@
                 "psr-6"
             ],
             "support": {
-                "source": "https://github.com/php-fig/cache/tree/master"
+                "source": "https://github.com/php-fig/cache/tree/2.0.0"
             },
-            "time": "2016-08-06T20:24:11+00:00"
+            "time": "2021-02-03T23:23:37+00:00"
         },
         {
             "name": "psr/container",
@@ -2516,25 +2514,25 @@
         },
         {
             "name": "symfony/deprecation-contracts",
-            "version": "v2.5.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "6f981ee24cf69ee7ce9736146d1c57c2780598a8"
+                "reference": "c726b64c1ccfe2896cb7df2e1331c357ad1c8ced"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/6f981ee24cf69ee7ce9736146d1c57c2780598a8",
-                "reference": "6f981ee24cf69ee7ce9736146d1c57c2780598a8",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/c726b64c1ccfe2896cb7df2e1331c357ad1c8ced",
+                "reference": "c726b64c1ccfe2896cb7df2e1331c357ad1c8ced",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.1"
+                "php": ">=8.0.2"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "2.5-dev"
+                    "dev-main": "3.0-dev"
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -2563,7 +2561,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v2.5.0"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.0.0"
             },
             "funding": [
                 {
@@ -2579,7 +2577,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-12T14:48:14+00:00"
+            "time": "2021-11-01T23:48:49+00:00"
         },
         {
             "name": "symfony/expression-language",
@@ -3110,22 +3108,21 @@
         },
         {
             "name": "symfony/service-contracts",
-            "version": "v2.5.0",
+            "version": "v2.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/service-contracts.git",
-                "reference": "1ab11b933cd6bc5464b08e81e2c5b07dec58b0fc"
+                "reference": "d664541b99d6fb0247ec5ff32e87238582236204"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/1ab11b933cd6bc5464b08e81e2c5b07dec58b0fc",
-                "reference": "1ab11b933cd6bc5464b08e81e2c5b07dec58b0fc",
+                "url": "https://api.github.com/repos/symfony/service-contracts/zipball/d664541b99d6fb0247ec5ff32e87238582236204",
+                "reference": "d664541b99d6fb0247ec5ff32e87238582236204",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2.5",
-                "psr/container": "^1.1",
-                "symfony/deprecation-contracts": "^2.1"
+                "psr/container": "^1.1"
             },
             "conflict": {
                 "ext-psr": "<1.1|>=2"
@@ -3136,7 +3133,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "2.5-dev"
+                    "dev-main": "2.4-dev"
                 },
                 "thanks": {
                     "name": "symfony/contracts",
@@ -3173,7 +3170,7 @@
                 "standards"
             ],
             "support": {
-                "source": "https://github.com/symfony/service-contracts/tree/v2.5.0"
+                "source": "https://github.com/symfony/service-contracts/tree/v2.4.1"
             },
             "funding": [
                 {
@@ -3189,7 +3186,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-04T16:48:04+00:00"
+            "time": "2021-11-04T16:37:19+00:00"
         },
         {
             "name": "symfony/var-exporter",
@@ -3382,16 +3379,16 @@
     "packages-dev": [
         {
             "name": "chimera/mapping",
-            "version": "0.4.0",
+            "version": "0.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chimeraphp/mapping.git",
-                "reference": "148a8170a2a0fd3075d2313a0cfba9fe69ff00da"
+                "reference": "56f5acd47b9e498fede97981e5841e44f13b3106"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chimeraphp/mapping/zipball/148a8170a2a0fd3075d2313a0cfba9fe69ff00da",
-                "reference": "148a8170a2a0fd3075d2313a0cfba9fe69ff00da",
+                "url": "https://api.github.com/repos/chimeraphp/mapping/zipball/56f5acd47b9e498fede97981e5841e44f13b3106",
+                "reference": "56f5acd47b9e498fede97981e5841e44f13b3106",
                 "shasum": ""
             },
             "require": {
@@ -3408,6 +3405,7 @@
                 "phpstan/phpstan-strict-rules": "^0.12",
                 "phpunit/phpunit": "^9.5"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -3427,7 +3425,7 @@
             "description": "Useful annotations to configure the application layer of your software",
             "support": {
                 "issues": "https://github.com/chimeraphp/mapping/issues",
-                "source": "https://github.com/chimeraphp/mapping/tree/0.4.0"
+                "source": "https://github.com/chimeraphp/mapping/tree/0.5.x"
             },
             "funding": [
                 {
@@ -3439,41 +3437,41 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-02-23T21:23:16+00:00"
+            "time": "2021-12-01T17:05:44+00:00"
         },
         {
             "name": "chimera/serialization-jms",
-            "version": "0.4.0",
+            "version": "0.5.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/chimeraphp/serialization-jms.git",
-                "reference": "74989692bdd3ad3ad0802b9c766b8bd8e3506125"
+                "reference": "166e95c436ef00bb80dd7a910c819d0c478e3bab"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/chimeraphp/serialization-jms/zipball/74989692bdd3ad3ad0802b9c766b8bd8e3506125",
-                "reference": "74989692bdd3ad3ad0802b9c766b8bd8e3506125",
+                "url": "https://api.github.com/repos/chimeraphp/serialization-jms/zipball/166e95c436ef00bb80dd7a910c819d0c478e3bab",
+                "reference": "166e95c436ef00bb80dd7a910c819d0c478e3bab",
                 "shasum": ""
             },
             "require": {
-                "chimera/foundation": "^0.4",
-                "jms/serializer": "^3.11",
-                "php": "^7.4 || ^8.0"
+                "chimera/foundation": "^0.5.x-dev",
+                "jms/serializer": "^3.16",
+                "php": "^8.0"
             },
             "provide": {
-                "chimera/serialization-implementation": "0.4.0"
+                "chimera/serialization-implementation": "0.5.0"
             },
             "require-dev": {
-                "doctrine/annotations": "^1.11",
-                "infection/infection": "^0.21",
-                "lcobucci/coding-standard": "^6.0",
+                "infection/infection": "^0.25",
+                "lcobucci/coding-standard": "^8.0",
                 "phpstan/extension-installer": "^1.1",
-                "phpstan/phpstan": "^0.12",
-                "phpstan/phpstan-deprecation-rules": "^0.12",
-                "phpstan/phpstan-phpunit": "^0.12",
-                "phpstan/phpstan-strict-rules": "^0.12",
+                "phpstan/phpstan": "^1.2",
+                "phpstan/phpstan-deprecation-rules": "^1.0",
+                "phpstan/phpstan-phpunit": "^1.0",
+                "phpstan/phpstan-strict-rules": "^1.0",
                 "phpunit/phpunit": "^9.5"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -3493,7 +3491,7 @@
             "description": "Adapter for jms/serializer which allows you to create messages to be handled",
             "support": {
                 "issues": "https://github.com/chimeraphp/serialization-jms/issues",
-                "source": "https://github.com/chimeraphp/serialization-jms/tree/0.4.0"
+                "source": "https://github.com/chimeraphp/serialization-jms/tree/0.5.x"
             },
             "funding": [
                 {
@@ -3505,7 +3503,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2021-02-24T21:27:58+00:00"
+            "time": "2021-12-01T14:04:24+00:00"
         },
         {
             "name": "composer/xdebug-handler",
@@ -7526,34 +7524,33 @@
         },
         {
             "name": "symfony/string",
-            "version": "v5.4.0",
+            "version": "v6.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/string.git",
-                "reference": "9ffaaba53c61ba75a3c7a3a779051d1e9ec4fd2d"
+                "reference": "ba727797426af0f587f4800566300bdc0cda0777"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/string/zipball/9ffaaba53c61ba75a3c7a3a779051d1e9ec4fd2d",
-                "reference": "9ffaaba53c61ba75a3c7a3a779051d1e9ec4fd2d",
+                "url": "https://api.github.com/repos/symfony/string/zipball/ba727797426af0f587f4800566300bdc0cda0777",
+                "reference": "ba727797426af0f587f4800566300bdc0cda0777",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.2.5",
+                "php": ">=8.0.2",
                 "symfony/polyfill-ctype": "~1.8",
                 "symfony/polyfill-intl-grapheme": "~1.0",
                 "symfony/polyfill-intl-normalizer": "~1.0",
-                "symfony/polyfill-mbstring": "~1.0",
-                "symfony/polyfill-php80": "~1.15"
+                "symfony/polyfill-mbstring": "~1.0"
             },
             "conflict": {
-                "symfony/translation-contracts": ">=3.0"
+                "symfony/translation-contracts": "<2.0"
             },
             "require-dev": {
-                "symfony/error-handler": "^4.4|^5.0|^6.0",
-                "symfony/http-client": "^4.4|^5.0|^6.0",
-                "symfony/translation-contracts": "^1.1|^2",
-                "symfony/var-exporter": "^4.4|^5.0|^6.0"
+                "symfony/error-handler": "^5.4|^6.0",
+                "symfony/http-client": "^5.4|^6.0",
+                "symfony/translation-contracts": "^2.0|^3.0",
+                "symfony/var-exporter": "^5.4|^6.0"
             },
             "type": "library",
             "autoload": {
@@ -7592,7 +7589,7 @@
                 "utf8"
             ],
             "support": {
-                "source": "https://github.com/symfony/string/tree/v5.4.0"
+                "source": "https://github.com/symfony/string/tree/v6.0.0"
             },
             "funding": [
                 {
@@ -7608,7 +7605,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-24T10:02:00+00:00"
+            "time": "2021-10-29T07:35:21+00:00"
         },
         {
             "name": "thecodingmachine/safe",
@@ -7852,7 +7849,14 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "chimera/foundation": 20,
+        "chimera/routing": 20,
+        "chimera/bus-tactician": 20,
+        "chimera/mapping": 20,
+        "chimera/routing-mezzio": 20,
+        "chimera/serialization-jms": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
