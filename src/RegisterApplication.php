@@ -5,6 +5,7 @@ namespace Chimera\DependencyInjection;
 
 use Generator;
 use Lcobucci\DependencyInjection\CompilerPassListProvider;
+use Lcobucci\DependencyInjection\Config\Package;
 use Lcobucci\DependencyInjection\FileListProvider;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
@@ -12,15 +13,11 @@ use function dirname;
 
 final class RegisterApplication implements FileListProvider, CompilerPassListProvider
 {
-    private string $name;
-
     /** @var list<ConditionallyLoadedPackage> */
     private array $relatedPackages;
 
-    public function __construct(string $name)
+    public function __construct(private string $name)
     {
-        $this->name = $name;
-
         $commandBusId = $name . '.command_bus';
         $queryBusId   = $name . '.query_bus';
 
@@ -54,7 +51,7 @@ final class RegisterApplication implements FileListProvider, CompilerPassListPro
     }
 
     /**
-     * @template T
+     * @template T of Package
      *
      * @param class-string<T> $type
      *

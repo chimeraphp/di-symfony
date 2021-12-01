@@ -36,7 +36,7 @@ final class RegisterServicesTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             'The service "service2" is trying to declare a route with name "test" '
-            . 'which has already been defined by the service "service1".'
+            . 'which has already been defined by the service "service1".',
         );
         $registerServices->process($builder);
     }

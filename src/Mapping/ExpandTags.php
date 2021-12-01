@@ -17,7 +17,6 @@ use Symfony\Component\DependencyInjection\Definition;
 
 use function assert;
 use function class_exists;
-use function get_class;
 use function implode;
 use function is_array;
 use function is_string;
@@ -103,7 +102,7 @@ final class ExpandTags implements CompilerPassInterface
     private function appendTags(Definition $definition, array $annotations): void
     {
         foreach ($annotations as $annotation) {
-            $tagName = self::SERVICE_TAGS[get_class($annotation)];
+            $tagName = self::SERVICE_TAGS[$annotation::class];
 
             $definition->addTag($tagName, $this->createAttributes($annotation));
         }
@@ -118,17 +117,17 @@ final class ExpandTags implements CompilerPassInterface
             return $attributes;
         }
 
-        $type = self::ROUTE_BEHAVIOR[get_class($annotation)];
+        $type = self::ROUTE_BEHAVIOR[$annotation::class];
 
         $attributes['behavior'] = $type;
-        $attributes['methods']  = implode(',', $attributes['methods'] ?? []);
+        $attributes['methods']  = implode(',', $attributes['methods'] ?? []); // @phpstan-ignore-line
 
-        if (isset($attributes['name'])) {
+        if (isset($attributes['name'])) { // @phpstan-ignore-line
             $attributes['route_name'] = $attributes['name'];
             unset($attributes['name']);
         }
 
-        if (isset($attributes['redirectTo'])) {
+        if (isset($attributes['redirectTo'])) { // @phpstan-ignore-line
             $attributes['redirect_to'] = $attributes['redirectTo'];
             unset($attributes['redirectTo']);
         }

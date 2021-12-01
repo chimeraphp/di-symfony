@@ -17,18 +17,18 @@ final class RegisterDefaultComponents implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         if (! $this->hasService($container, IdentifierGenerator::class)) {
-            $container->setAlias(IdentifierGenerator::class, new Alias(IdentifierGenerator\RamseyUuid::class, false));
+            $container->setAlias(IdentifierGenerator::class, new Alias(IdentifierGenerator\RamseyUuid::class));
         }
 
         if (! $this->hasService($container, MessageCreator::class)) {
-            $container->setAlias(MessageCreator::class, new Alias(MessageCreator\NamedConstructor::class, false));
+            $container->setAlias(MessageCreator::class, new Alias(MessageCreator\NamedConstructor::class));
         }
 
         if ($this->hasService($container, ReadModelConverter::class)) {
             return;
         }
 
-        $container->setAlias(ReadModelConverter::class, new Alias(ReadModelConverter\Callback::class, false));
+        $container->setAlias(ReadModelConverter::class, new Alias(ReadModelConverter\Callback::class));
     }
 
     private function hasService(ContainerBuilder $container, string $service): bool

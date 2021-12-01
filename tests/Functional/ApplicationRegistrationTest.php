@@ -34,6 +34,7 @@ use Mezzio\Router\Route;
 use Mezzio\Router\RouteCollector;
 use Psr\Http\Server\MiddlewareInterface;
 use ReflectionProperty;
+use SplQueue;
 
 use function array_filter;
 use function array_values;
@@ -91,16 +92,14 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         array $routes,
         string $path,
         array $methods,
-        string $expectedName
+        string $expectedName,
     ): void {
         $match = array_values(
             array_filter(
                 $routes,
-                static function (Route $route) use ($path, $methods): bool {
-                    return $route->getPath() === $path
-                        && $route->getAllowedMethods() === $methods;
-                }
-            )
+                static fn (Route $route): bool => $route->getPath() === $path
+                    && $route->getAllowedMethods() === $methods,
+            ),
         );
 
         self::assertCount(1, $match);
@@ -141,10 +140,12 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         $result = $container->get('sample-app.http.middleware_pipeline');
         assert($result instanceof MiddlewarePipe);
 
-        self::assertSame(
-            iterator_to_array($property->getValue($expectedPipe)),
-            iterator_to_array($property->getValue($result))
-        );
+        $expectedPipeline  = $property->getValue($expectedPipe);
+        $resultingPipeline = $property->getValue($result);
+
+        self::assertInstanceOf(SplQueue::class, $expectedPipeline);
+        self::assertInstanceOf(SplQueue::class, $resultingPipeline);
+        self::assertSame(iterator_to_array($expectedPipeline), iterator_to_array($resultingPipeline));
     }
 
     /** @test */

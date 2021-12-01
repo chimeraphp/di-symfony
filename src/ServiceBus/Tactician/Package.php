@@ -15,15 +15,10 @@ use function dirname;
 
 final class Package implements FileListProvider, CompilerPassListProvider, ConditionallyLoadedPackage
 {
-    private string $commandBusId;
-    private string $queryBusId;
-
     public function __construct(
-        string $commandBusId,
-        string $queryBusId
+        private string $commandBusId,
+        private string $queryBusId,
     ) {
-        $this->commandBusId = $commandBusId;
-        $this->queryBusId   = $queryBusId;
     }
 
     public function getFiles(): Generator

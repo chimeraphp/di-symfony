@@ -28,13 +28,8 @@ final class RegisterServices implements CompilerPassInterface
     private const INVALID_HANDLER     = 'You must specify the "bus" and "handles" arguments in "%s" (tag "%s").';
     private const INVALID_BUS_HANDLER = 'You must specify the "handles" argument in "%s" (tag "%s").';
 
-    private string $commandBusId;
-    private string $queryBusId;
-
-    public function __construct(string $commandBusId, string $queryBusId)
+    public function __construct(private string $commandBusId, private string $queryBusId)
     {
-        $this->commandBusId = $commandBusId;
-        $this->queryBusId   = $queryBusId;
     }
 
     /** @throws Exception */
@@ -47,7 +42,7 @@ final class RegisterServices implements CompilerPassInterface
             $this->commandBusId,
             $container,
             $handlerList[$this->commandBusId] ?? [],
-            $this->prioritiseMiddlewareList($middlewareList[$this->commandBusId] ?? [])
+            $this->prioritiseMiddlewareList($middlewareList[$this->commandBusId] ?? []),
         );
 
         $queryMiddleware   = $this->prioritiseMiddlewareList($middlewareList[$this->queryBusId] ?? []);
@@ -57,7 +52,7 @@ final class RegisterServices implements CompilerPassInterface
             $this->queryBusId,
             $container,
             $handlerList[$this->queryBusId] ?? [],
-            $queryMiddleware
+            $queryMiddleware,
         );
     }
 
@@ -74,7 +69,7 @@ final class RegisterServices implements CompilerPassInterface
             foreach ($tags as $tag) {
                 if (! isset($tag['bus'], $tag['handles'])) {
                     throw new InvalidArgumentException(
-                        sprintf(self::INVALID_HANDLER, $serviceId, Tags::BUS_HANDLER)
+                        sprintf(self::INVALID_HANDLER, $serviceId, Tags::BUS_HANDLER),
                     );
                 }
 
@@ -86,7 +81,7 @@ final class RegisterServices implements CompilerPassInterface
             foreach ($tags as $tag) {
                 if (! isset($tag['handles'])) {
                     throw new InvalidArgumentException(
-                        sprintf(self::INVALID_BUS_HANDLER, $serviceId, Tags::BUS_COMMAND_HANDLER)
+                        sprintf(self::INVALID_BUS_HANDLER, $serviceId, Tags::BUS_COMMAND_HANDLER),
                     );
                 }
 
@@ -98,7 +93,7 @@ final class RegisterServices implements CompilerPassInterface
             foreach ($tags as $tag) {
                 if (! isset($tag['handles'])) {
                     throw new InvalidArgumentException(
-                        sprintf(self::INVALID_BUS_HANDLER, $serviceId, Tags::BUS_QUERY_HANDLER)
+                        sprintf(self::INVALID_BUS_HANDLER, $serviceId, Tags::BUS_QUERY_HANDLER),
                     );
                 }
 
@@ -119,7 +114,7 @@ final class RegisterServices implements CompilerPassInterface
         string $busId,
         string $message,
         string $serviceId,
-        string $method
+        string $method,
     ): array {
         $list[$busId]         ??= [];
         $list[$busId][$message] = ['service' => $serviceId, 'method' => $method];
@@ -194,18 +189,18 @@ final class RegisterServices implements CompilerPassInterface
         string $id,
         ContainerBuilder $container,
         array $handlers,
-        array $middlewareList
+        array $middlewareList,
     ): void {
         $tacticianBus = $this->registerTacticianBus(
             $id . '.decorated_bus',
             $container,
             $handlers,
-            $middlewareList
+            $middlewareList,
         );
 
         $container->setDefinition(
             $id,
-            $this->createService(ServiceBus::class, [$tacticianBus])
+            $this->createService(ServiceBus::class, [$tacticianBus]),
         );
     }
 
@@ -219,7 +214,7 @@ final class RegisterServices implements CompilerPassInterface
         string $id,
         ContainerBuilder $container,
         array $handlers,
-        array $middlewareList
+        array $middlewareList,
     ): Reference {
         $middlewareList[] = $this->registerTacticianHandler($container, $id, $handlers);
 
@@ -255,8 +250,8 @@ final class RegisterServices implements CompilerPassInterface
             $container,
             array_map(
                 static fn (string $id): Reference => new Reference($id),
-                array_combine($serviceIds, $serviceIds)
-            )
+                array_combine($serviceIds, $serviceIds),
+            ),
         );
     }
 

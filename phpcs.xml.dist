@@ -8,7 +8,7 @@
     <arg name="parallel" value="80" />
     <arg name="colors" />
     <arg name="cache" value=".phpcs.cache" />
-    <arg value="p" />
+    <arg value="np" />
 
     <file>src</file>
     <file>tests</file>

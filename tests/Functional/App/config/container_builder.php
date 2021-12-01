@@ -8,7 +8,7 @@ use Lcobucci\DependencyInjection\ContainerBuilder;
 
 use function dirname;
 
-$builder = ContainerBuilder::default(__FILE__, __NAMESPACE__);
+$builder = ContainerBuilder::xml(__FILE__, __NAMESPACE__);
 $root    = dirname(__DIR__);
 
 return $builder->setDumpDir($root . '/dump')

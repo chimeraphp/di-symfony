@@ -10,25 +10,27 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.0",
         "ext-json": "*",
-        "chimera/bus-implementation": "^0.4",
-        "chimera/routing-implementation": "^0.4",
-        "lcobucci/di-builder": "^7.0"
+        "chimera/bus-implementation": "^0.5",
+        "chimera/foundation": "^0.5.x-dev",
+        "chimera/routing": "^0.5.x-dev",
+        "chimera/routing-implementation": "^0.5",
+        "lcobucci/di-builder": "^7.1"
     },
     "require-dev": {
-        "chimera/bus-tactician": "^0.4",
-        "chimera/mapping": "^0.4",
-        "chimera/routing-mezzio": "^0.4",
-        "chimera/serialization-jms": "^0.4",
-        "infection/infection": "^0.21",
-        "lcobucci/coding-standard": "^6.0",
+        "chimera/bus-tactician": "^0.5.x-dev",
+        "chimera/mapping": "^0.5.x-dev",
+        "chimera/routing-mezzio": "^0.5.x-dev",
+        "chimera/serialization-jms": "^0.5.x-dev",
+        "infection/infection": "^0.25",
+        "lcobucci/coding-standard": "^8.0",
         "lcobucci/error-handling-middleware": "^1.2",
         "phpstan/extension-installer": "^1.1",
-        "phpstan/phpstan": "^0.12",
-        "phpstan/phpstan-deprecation-rules": "^0.12",
-        "phpstan/phpstan-phpunit": "^0.12",
-        "phpstan/phpstan-strict-rules": "^0.12",
+        "phpstan/phpstan": "^1.2",
+        "phpstan/phpstan-deprecation-rules": "^1.0",
+        "phpstan/phpstan-phpunit": "^1.0",
+        "phpstan/phpstan-strict-rules": "^1.0",
         "phpunit/phpunit": "^9.5"
     },
     "suggest": {
