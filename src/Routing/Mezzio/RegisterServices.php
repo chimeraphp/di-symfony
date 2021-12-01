@@ -245,8 +245,7 @@ final class RegisterServices implements CompilerPassInterface
                 $container
             );
 
-            $aliases[$this->applicationName . '.http.route.' . $route['route_name']]
-                = 'http.route.' . $route['route_name'];
+            $aliases['.http.route.' . $route['route_name']] = 'http.route.' . $route['route_name'];
         }
 
         $middleware = [];
@@ -276,11 +275,11 @@ final class RegisterServices implements CompilerPassInterface
 
         $middlewareContainer = $this->createService(MiddlewareContainer::class, [$locator]);
         $container->setDefinition(MiddlewareContainer::class, $middlewareContainer);
-        $aliases[$this->applicationName . '.http.middleware_container'] = MiddlewareContainer::class;
+        $aliases['.http.middleware_container'] = MiddlewareContainer::class;
 
         // -- middleware factory
 
-        $aliases[$this->applicationName . '.http.middleware_factory'] = MiddlewareFactory::class;
+        $aliases['.http.middleware_factory'] = MiddlewareFactory::class;
 
         // -- middleware pipeline
 
@@ -291,7 +290,7 @@ final class RegisterServices implements CompilerPassInterface
         }
 
         $container->setDefinition(MiddlewarePipe::class, $middlewarePipeline);
-        $aliases[$this->applicationName . '.http.middleware_pipeline'] = MiddlewarePipe::class;
+        $aliases['.http.middleware_pipeline'] = MiddlewarePipe::class;
 
         // -- routing
 
@@ -306,8 +305,8 @@ final class RegisterServices implements CompilerPassInterface
 
         $container->setDefinition(FastRouteRouter::class, $router);
         $container->setAlias(RouterInterface::class, FastRouteRouter::class);
-        $aliases[$this->applicationName . '.http.router']        = FastRouteRouter::class;
-        $aliases[$this->applicationName . '.http.uri_generator'] = UriGeneratorInterface::class;
+        $aliases['.http.router']        = FastRouteRouter::class;
+        $aliases['.http.uri_generator'] = UriGeneratorInterface::class;
 
         $routeCollector = $this->createService(
             RouteCollector::class,
@@ -327,9 +326,9 @@ final class RegisterServices implements CompilerPassInterface
         }
 
         $container->setDefinition(RouteCollector::class, $routeCollector);
-        $aliases[$this->applicationName . '.http.route_collector']          = RouteCollector::class;
-        $aliases[$this->applicationName . '.http.middleware.route']         = RouteMiddleware::class;
-        $aliases[$this->applicationName . '.http.middleware.implicit_head'] = ImplicitHeadMiddleware::class;
+        $aliases['.http.route_collector']          = RouteCollector::class;
+        $aliases['.http.middleware.route']         = RouteMiddleware::class;
+        $aliases['.http.middleware.implicit_head'] = ImplicitHeadMiddleware::class;
 
         // -- content negotiation
 
@@ -363,17 +362,17 @@ final class RegisterServices implements CompilerPassInterface
         $negotiator->setFactory([ContentTypeMiddleware::class, 'fromRecommendedSettings']);
 
         $container->setDefinition(ContentTypeMiddleware::class, $negotiator);
-        $aliases[$this->applicationName . '.http.middleware.content_negotiation'] = ContentTypeMiddleware::class;
-        $aliases[$this->applicationName . '.http.request_handler_runner']         = RequestHandlerRunner::class;
+        $aliases['.http.middleware.content_negotiation'] = ContentTypeMiddleware::class;
+        $aliases['.http.request_handler_runner']         = RequestHandlerRunner::class;
 
         $app = new Definition(Application::class, [new Reference(Mezzio::class)]);
         $app->setPublic(true);
 
         $container->setDefinition(ApplicationInterface::class, $app);
-        $aliases[$this->applicationName . '.http'] = ApplicationInterface::class;
+        $aliases['.http'] = ApplicationInterface::class;
 
         foreach ($aliases as $alias => $service) {
-            $container->setAlias($alias, $service)->setDeprecated('chimera/di-symfony', '0.5.0', null);
+            $container->setAlias($this->applicationName . $alias, $service)->setDeprecated('chimera/di-symfony', '0.5.0', null);
         }
 
         $container->getAlias($this->applicationName . '.http')
