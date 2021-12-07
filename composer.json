@@ -1,8 +1,8 @@
 {
     "name": "chimera/di-symfony",
-    "type": "library",
     "description": "A set of compiler passes that connects all components together",
     "license": "MIT",
+    "type": "library",
     "authors": [
         {
             "name": "Luís Cobucci",
@@ -40,10 +40,6 @@
         "chimera/serialization-jms": "To use jms/serializer to create messages and format content",
         "lcobucci/error-handling-middleware": "To use lcobucci/error-handling-middleware as the error handler for your application"
     },
-    "config": {
-        "preferred-install": "dist",
-        "sort-packages": true
-    },
     "autoload": {
         "psr-4": {
             "Chimera\\DependencyInjection\\": "src"
@@ -53,5 +49,9 @@
         "psr-4": {
             "Chimera\\DependencyInjection\\Tests\\": "tests"
         }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true
     }
 }
