@@ -11,7 +11,6 @@
     ],
     "require": {
         "php": "^8.0",
-        "ext-json": "*",
         "chimera/bus-implementation": "^0.5",
         "chimera/foundation": "^0.5.x-dev",
         "chimera/routing": "^0.5.x-dev",
