@@ -372,11 +372,11 @@ final class RegisterServices implements CompilerPassInterface
         $aliases['.http'] = ApplicationInterface::class;
 
         foreach ($aliases as $alias => $service) {
-            $container->setAlias($this->applicationName . $alias, $service)->setDeprecated('chimera/di-symfony', '0.5.0', null);
+            $container->setAlias($this->applicationName . $alias, $service)->setDeprecated('chimera/di-symfony', '0.5.0', '');
         }
 
         $container->getAlias($this->applicationName . '.http')
-            ->setDeprecated('chimera/di-symfony', '0.5.0', null)
+            ->setDeprecated('chimera/di-symfony', '0.5.0', '')
             ->setPublic(true);
     }
 

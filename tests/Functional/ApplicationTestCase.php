@@ -27,6 +27,38 @@ use function exec;
 
 abstract class ApplicationTestCase extends TestCase
 {
+    private const SERVICES_TO_MAKE_PUBLIC = [
+        'sample-app.command_bus',
+        'sample-app.command_bus.decorated_bus',
+        'sample-app.command_bus.decorated_bus.handler',
+        'sample-app.query_bus',
+        'sample-app.query_bus.decorated_bus',
+        'sample-app.query_bus.decorated_bus.handler',
+        BodyParamsMiddleware::class,
+        ImplicitOptionsMiddleware::class,
+        MethodNotAllowedMiddleware::class,
+        RouteParamsExtraction::class,
+        DispatchMiddleware::class,
+        MissingRouteDispatching::class,
+        SampleMiddleware::class,
+        AnotherSampleMiddleware::class,
+        ReadModelConversionMiddleware::class,
+        CommandOnlyMiddleware::class,
+        QueryOnlyMiddleware::class,
+        CommandAndQueryMiddleware::class,
+        ErrorConversionMiddleware::class,
+    ];
+
+    private const ALIASES_TO_MAKE_PUBLIC = [
+        'sample-app.http.route_collector',
+        'sample-app.http.middleware_pipeline',
+        'sample-app.http.middleware.content_negotiation',
+        'sample-app.http.middleware.route',
+        'sample-app.http.middleware.implicit_head',
+        'sample-app.command_bus.decorated_bus.handler.locator',
+        'sample-app.query_bus.decorated_bus.handler.locator',
+    ];
+
     /**
      * @beforeClass
      * @afterClass
@@ -42,51 +74,16 @@ abstract class ApplicationTestCase extends TestCase
         assert($builder instanceof ContainerBuilder);
 
         $builder->addPass(
-            $this->makeServicesPublic(
-                [
-                    'sample-app.command_bus',
-                    'sample-app.command_bus.decorated_bus',
-                    'sample-app.command_bus.decorated_bus.handler',
-                    'sample-app.query_bus',
-                    'sample-app.query_bus.decorated_bus',
-                    'sample-app.query_bus.decorated_bus.handler',
-                    BodyParamsMiddleware::class,
-                    ImplicitOptionsMiddleware::class,
-                    MethodNotAllowedMiddleware::class,
-                    RouteParamsExtraction::class,
-                    DispatchMiddleware::class,
-                    MissingRouteDispatching::class,
-                    SampleMiddleware::class,
-                    AnotherSampleMiddleware::class,
-                    ReadModelConversionMiddleware::class,
-                    CommandOnlyMiddleware::class,
-                    QueryOnlyMiddleware::class,
-                    CommandAndQueryMiddleware::class,
-                    ErrorConversionMiddleware::class,
-                ],
-                [
-                    'sample-app.http.route_collector',
-                    'sample-app.http.middleware_pipeline',
-                    'sample-app.http.middleware.content_negotiation',
-                    'sample-app.http.middleware.route',
-                    'sample-app.http.middleware.implicit_head',
-                    'sample-app.command_bus.decorated_bus.handler.locator',
-                    'sample-app.query_bus.decorated_bus.handler.locator',
-                ],
-            ),
+            $this->makeServicesPublic(),
             PassConfig::TYPE_BEFORE_REMOVING,
         );
 
         return $builder->getContainer();
     }
 
-    /**
-     * @param list<string> $services
-     * @param list<string> $aliases
-     */
-    private function makeServicesPublic(array $services, array $aliases): CompilerPassInterface
+    private function makeServicesPublic(): CompilerPassInterface
     {
-        return new class ($services, $aliases) implements CompilerPassInterface
+        return new class (self::SERVICES_TO_MAKE_PUBLIC, self::ALIASES_TO_MAKE_PUBLIC) implements CompilerPassInterface
         {
             /**
              * @param list<string> $services
