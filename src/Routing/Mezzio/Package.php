@@ -16,9 +16,9 @@ use function dirname;
 final class Package implements FileListProvider, CompilerPassListProvider, ConditionallyLoadedPackage
 {
     public function __construct(
-        private string $applicationName,
-        private string $commandBusId,
-        private string $queryBusId,
+        private readonly string $applicationName,
+        private readonly string $commandBusId,
+        private readonly string $queryBusId,
     ) {
     }
 

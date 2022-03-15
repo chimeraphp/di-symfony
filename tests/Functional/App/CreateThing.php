@@ -8,9 +8,9 @@ use Ramsey\Uuid\UuidInterface;
 
 final class CreateThing
 {
-    /** @Type(UuidInterface::class)  */
+    #[Type(UuidInterface::class)]
     public UuidInterface $id;
 
-    /** @Type("string") */
+    #[Type('string')]
     public string $name;
 }

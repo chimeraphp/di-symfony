@@ -8,6 +8,6 @@ use Ramsey\Uuid\UuidInterface;
 
 final class FetchThing
 {
-    /** @Type(UuidInterface::class) */
+    #[Type(UuidInterface::class)]
     public UuidInterface $id;
 }

@@ -8,15 +8,11 @@ use Ramsey\Uuid\UuidInterface;
 
 final class Thing
 {
-    /** @Serializer\Type(UuidInterface::class) */
-    public UuidInterface $id;
-
-    /** @Serializer\Type("string") */
-    public string $name;
-
-    public function __construct(UuidInterface $id, string $name)
-    {
-        $this->id   = $id;
-        $this->name = $name;
+    public function __construct(
+        #[Serializer\Type(UuidInterface::class)]
+        public readonly UuidInterface $id,
+        #[Serializer\Type('string')]
+        public readonly string $name,
+    ) {
     }
 }
