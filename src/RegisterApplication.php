@@ -16,7 +16,7 @@ final class RegisterApplication implements FileListProvider, CompilerPassListPro
     /** @var list<ConditionallyLoadedPackage> */
     private array $relatedPackages;
 
-    public function __construct(private string $name)
+    public function __construct(private readonly string $name)
     {
         $commandBusId = $name . '.command_bus';
         $queryBusId   = $name . '.query_bus';

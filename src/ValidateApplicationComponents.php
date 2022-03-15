@@ -13,7 +13,7 @@ use function sprintf;
 
 final class ValidateApplicationComponents implements CompilerPassInterface
 {
-    public function __construct(private string $appName)
+    public function __construct(private readonly string $appName)
     {
     }
 

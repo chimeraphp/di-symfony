@@ -8,10 +8,10 @@ use Ramsey\Uuid\UuidInterface;
 
 final class Thing
 {
-    /** @Serializer\Type(UuidInterface::class) */
+    #[Serializer\Type(UuidInterface::class)]
     public UuidInterface $id;
 
-    /** @Serializer\Type("string") */
+    #[Serializer\Type('string')]
     public string $name;
 
     public function __construct(UuidInterface $id, string $name)

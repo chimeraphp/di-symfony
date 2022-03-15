@@ -28,8 +28,10 @@ final class RegisterServices implements CompilerPassInterface
     private const INVALID_HANDLER     = 'You must specify the "bus" and "handles" arguments in "%s" (tag "%s").';
     private const INVALID_BUS_HANDLER = 'You must specify the "handles" argument in "%s" (tag "%s").';
 
-    public function __construct(private string $commandBusId, private string $queryBusId)
-    {
+    public function __construct(
+        private readonly string $commandBusId,
+        private readonly string $queryBusId,
+    ) {
     }
 
     /** @throws Exception */
