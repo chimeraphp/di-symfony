@@ -10,12 +10,13 @@ use JMS\Serializer\Visitor\DeserializationVisitorInterface;
 use JMS\Serializer\Visitor\SerializationVisitorInterface;
 use Ramsey\Uuid\Guid\Guid;
 use Ramsey\Uuid\Lazy\LazyUuidFromString;
-use Ramsey\Uuid\Nonstandard\UuidV6;
 use Ramsey\Uuid\Rfc4122\UuidV1;
 use Ramsey\Uuid\Rfc4122\UuidV2;
 use Ramsey\Uuid\Rfc4122\UuidV3;
 use Ramsey\Uuid\Rfc4122\UuidV4;
 use Ramsey\Uuid\Rfc4122\UuidV5;
+use Ramsey\Uuid\Rfc4122\UuidV6;
+use Ramsey\Uuid\Rfc4122\UuidV7;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
@@ -34,6 +35,7 @@ final class UuidHandler implements SubscribingHandlerInterface
         UuidV4::class,
         UuidV5::class,
         UuidV6::class,
+        UuidV7::class,
     ];
 
     /**
