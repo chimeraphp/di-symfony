@@ -5,33 +5,26 @@ namespace Chimera\DependencyInjection\Tests\Unit;
 
 use Chimera\DependencyInjection as Services;
 use Chimera\DependencyInjection\RegisterApplication;
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 use function dirname;
 use function iterator_to_array;
 
-/**
- * @covers \Chimera\DependencyInjection\Mapping\Package
- * @covers \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
- * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\Package
- * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\RegisterDefaultComponents
- * @covers \Chimera\DependencyInjection\Routing\Mezzio\Package
- * @covers \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
- * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\Package
- * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\RegisterServices
- * @covers \Chimera\DependencyInjection\ValidateApplicationComponents
- * @coversDefaultClass \Chimera\DependencyInjection\RegisterApplication
- */
+#[PHPUnit\CoversClass(Services\Mapping\Package::class)]
+#[PHPUnit\CoversClass(Services\MessageCreator\JmsSerializer\Package::class)]
+#[PHPUnit\CoversClass(Services\Routing\ErrorHandling\Package::class)]
+#[PHPUnit\CoversClass(Services\Routing\ErrorHandling\RegisterDefaultComponents::class)]
+#[PHPUnit\CoversClass(Services\Routing\Mezzio\Package::class)]
+#[PHPUnit\CoversClass(Services\Routing\Mezzio\RegisterServices::class)]
+#[PHPUnit\CoversClass(Services\ServiceBus\Tactician\Package::class)]
+#[PHPUnit\CoversClass(Services\ServiceBus\Tactician\RegisterServices::class)]
+#[PHPUnit\CoversClass(Services\ValidateApplicationComponents::class)]
+#[PHPUnit\CoversClass(RegisterApplication::class)]
 final class RegisterApplicationTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::__construct()
-     * @covers ::getFiles()
-     * @covers ::filterPackages()
-     */
+    #[PHPUnit\Test]
     public function getFilesShouldYieldFilesFromAllRelatedAndInstalledPackages(): void
     {
         $package = new RegisterApplication('testing');
@@ -46,13 +39,7 @@ final class RegisterApplicationTest extends TestCase
         self::assertContains(dirname(__DIR__, 2) . '/config/serialization-jms.xml', $files);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct()
-     * @covers ::getCompilerPasses()
-     * @covers ::filterPackages()
-     */
+    #[PHPUnit\Test]
     public function getCompilerPassesShouldYieldPassesFromAllRelatedAndInstalledPackages(): void
     {
         $package = new RegisterApplication('testing');

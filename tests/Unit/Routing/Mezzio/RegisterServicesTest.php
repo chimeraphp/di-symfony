@@ -6,20 +6,15 @@ namespace Chimera\DependencyInjection\Tests\Unit\Routing\Mezzio;
 use Chimera\DependencyInjection\Routing\Mezzio\RegisterServices;
 use Chimera\DependencyInjection\Tags;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-/** @coversDefaultClass \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices */
+#[PHPUnit\CoversClass(RegisterServices::class)]
 final class RegisterServicesTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::process
-     * @covers ::extractRoutes
-     */
+    #[PHPUnit\Test]
     public function exceptionShouldBeRaisedWhenTryingToRegisterDuplicatedRoutes(): void
     {
         $service1 = new Definition();

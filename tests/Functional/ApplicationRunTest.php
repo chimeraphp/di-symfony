@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace Chimera\DependencyInjection\Tests\Functional;
 
+use Chimera\DependencyInjection as Services;
 use Chimera\Routing\Application;
 use Laminas\Diactoros\ServerRequestFactory;
 use Laminas\Diactoros\StreamFactory;
+use PHPUnit\Framework\Attributes as PHPUnit;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Ramsey\Uuid\Uuid;
@@ -16,20 +18,18 @@ use function json_encode;
 
 use const JSON_THROW_ON_ERROR;
 
-/**
- * @covers \Chimera\DependencyInjection\Mapping\ExpandTags
- * @covers \Chimera\DependencyInjection\Mapping\Package
- * @covers \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
- * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\Package
- * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\RegisterDefaultComponents
- * @covers \Chimera\DependencyInjection\Routing\Mezzio\Package
- * @covers \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
- * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\Package
- * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\RegisterServices
- * @covers \Chimera\DependencyInjection\RegisterApplication
- * @covers \Chimera\DependencyInjection\RegisterDefaultComponents
- * @covers \Chimera\DependencyInjection\ValidateApplicationComponents
- */
+#[PHPUnit\CoversClass(Services\Mapping\ExpandTags::class)]
+#[PHPUnit\CoversClass(Services\Mapping\Package::class)]
+#[PHPUnit\CoversClass(Services\MessageCreator\JmsSerializer\Package::class)]
+#[PHPUnit\CoversClass(Services\Routing\ErrorHandling\Package::class)]
+#[PHPUnit\CoversClass(Services\Routing\ErrorHandling\RegisterDefaultComponents::class)]
+#[PHPUnit\CoversClass(Services\Routing\Mezzio\Package::class)]
+#[PHPUnit\CoversClass(Services\Routing\Mezzio\RegisterServices::class)]
+#[PHPUnit\CoversClass(Services\ServiceBus\Tactician\Package::class)]
+#[PHPUnit\CoversClass(Services\ServiceBus\Tactician\RegisterServices::class)]
+#[PHPUnit\CoversClass(Services\RegisterApplication::class)]
+#[PHPUnit\CoversClass(Services\RegisterDefaultComponents::class)]
+#[PHPUnit\CoversClass(Services\ValidateApplicationComponents::class)]
 final class ApplicationRunTest extends ApplicationTestCase
 {
     private const UUID_PATTERN = '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[1-5]{1}[0-9A-Fa-f]{3}-'
@@ -37,10 +37,8 @@ final class ApplicationRunTest extends ApplicationTestCase
 
     private const ITEM_ENDPOINT = '/^\/things\/' . self::UUID_PATTERN . '$/';
 
-    /**
-     * @test
-     * @dataProvider possibleRequests
-     */
+    #[PHPUnit\Test]
+    #[PHPUnit\DataProvider('possibleRequests')]
     public function correctResponseShouldBeProvided(ServerRequestInterface $request, callable $verifyResponse): void
     {
         $container = $this->createContainer();
@@ -52,7 +50,7 @@ final class ApplicationRunTest extends ApplicationTestCase
     }
 
     /** @return iterable<string, array{0: ServerRequestInterface, 1: callable}> */
-    public function possibleRequests(): iterable
+    public static function possibleRequests(): iterable
     {
         $factory       = new ServerRequestFactory();
         $streamFactory = new StreamFactory();
