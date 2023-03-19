@@ -5,20 +5,16 @@ namespace Chimera\DependencyInjection\Tests\Unit;
 
 use Chimera\DependencyInjection\ValidateApplicationComponents;
 use Chimera\Routing\Application;
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-/** @coversDefaultClass \Chimera\DependencyInjection\ValidateApplicationComponents */
+#[PHPUnit\CoversClass(ValidateApplicationComponents::class)]
 final class ValidateApplicationComponentsTest extends TestCase
 {
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::process
-     */
+    #[PHPUnit\Test]
     public function exceptionShouldBeRaisedWhenDefinitionIsNotPublic(): void
     {
         $builder = new ContainerBuilder();
@@ -32,12 +28,7 @@ final class ValidateApplicationComponentsTest extends TestCase
         $pass->process($builder);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::process
-     */
+    #[PHPUnit\Test]
     public function exceptionShouldBeRaisedWhenLegacyAliasIsNotPublic(): void
     {
         $builder = new ContainerBuilder();
@@ -51,12 +42,7 @@ final class ValidateApplicationComponentsTest extends TestCase
         $pass->process($builder);
     }
 
-    /**
-     * @test
-     *
-     * @covers ::__construct
-     * @covers ::process
-     */
+    #[PHPUnit\Test]
     public function noExceptionShouldBeRaisedWhenExpectedServicesArePublic(): void
     {
         $builder = new ContainerBuilder();

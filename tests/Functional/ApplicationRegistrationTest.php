@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Chimera\DependencyInjection\Tests\Functional;
 
+use Chimera\DependencyInjection as Services;
 use Chimera\DependencyInjection\Tests\Functional\App\CreateThing;
 use Chimera\DependencyInjection\Tests\Functional\App\CreateThingHandler;
 use Chimera\DependencyInjection\Tests\Functional\App\FetchThing;
@@ -32,6 +33,7 @@ use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
 use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
 use Mezzio\Router\Route;
 use Mezzio\Router\RouteCollector;
+use PHPUnit\Framework\Attributes as PHPUnit;
 use Psr\Http\Server\MiddlewareInterface;
 use ReflectionProperty;
 use SplQueue;
@@ -41,23 +43,21 @@ use function array_values;
 use function assert;
 use function iterator_to_array;
 
-/**
- * @covers \Chimera\DependencyInjection\Mapping\ExpandTags
- * @covers \Chimera\DependencyInjection\Mapping\Package
- * @covers \Chimera\DependencyInjection\MessageCreator\JmsSerializer\Package
- * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\Package
- * @covers \Chimera\DependencyInjection\Routing\ErrorHandling\RegisterDefaultComponents
- * @covers \Chimera\DependencyInjection\Routing\Mezzio\Package
- * @covers \Chimera\DependencyInjection\Routing\Mezzio\RegisterServices
- * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\Package
- * @covers \Chimera\DependencyInjection\ServiceBus\Tactician\RegisterServices
- * @covers \Chimera\DependencyInjection\RegisterApplication
- * @covers \Chimera\DependencyInjection\RegisterDefaultComponents
- * @covers \Chimera\DependencyInjection\ValidateApplicationComponents
- */
+#[PHPUnit\CoversClass(Services\Mapping\ExpandTags::class)]
+#[PHPUnit\CoversClass(Services\Mapping\Package::class)]
+#[PHPUnit\CoversClass(Services\MessageCreator\JmsSerializer\Package::class)]
+#[PHPUnit\CoversClass(Services\Routing\ErrorHandling\Package::class)]
+#[PHPUnit\CoversClass(Services\Routing\ErrorHandling\RegisterDefaultComponents::class)]
+#[PHPUnit\CoversClass(Services\Routing\Mezzio\Package::class)]
+#[PHPUnit\CoversClass(Services\Routing\Mezzio\RegisterServices::class)]
+#[PHPUnit\CoversClass(Services\ServiceBus\Tactician\Package::class)]
+#[PHPUnit\CoversClass(Services\ServiceBus\Tactician\RegisterServices::class)]
+#[PHPUnit\CoversClass(Services\RegisterApplication::class)]
+#[PHPUnit\CoversClass(Services\RegisterDefaultComponents::class)]
+#[PHPUnit\CoversClass(Services\ValidateApplicationComponents::class)]
 final class ApplicationRegistrationTest extends ApplicationTestCase
 {
-    /** @test */
+    #[PHPUnit\Test]
     public function applicationMustBeCorrectlyRegistered(): void
     {
         $container = $this->createContainer();
@@ -66,7 +66,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         self::assertInstanceOf(Application::class, $container->get('sample-app.http'));
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function routesMustBeProperlyDefined(): void
     {
         $container = $this->createContainer();
@@ -106,7 +106,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         self::assertSame($expectedName, $match[0]->getName());
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function httpMiddlewaresMustBeProperlyDefined(): void
     {
         $container = $this->createContainer();
@@ -135,7 +135,6 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         }
 
         $property = new ReflectionProperty(MiddlewarePipe::class, 'pipeline');
-        $property->setAccessible(true);
 
         $result = $container->get('sample-app.http.middleware_pipeline');
         assert($result instanceof MiddlewarePipe);
@@ -148,7 +147,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         self::assertSame(iterator_to_array($expectedPipeline), iterator_to_array($resultingPipeline));
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function serviceBusesMustExist(): void
     {
         $container = $this->createContainer();
@@ -157,7 +156,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         self::assertInstanceOf(ServiceBus::class, $container->get('sample-app.query_bus'));
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function commandBusHandlersMustBeProperlyDefined(): void
     {
         $container = $this->createContainer();
@@ -169,7 +168,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         self::assertInstanceOf(RemoveThingHandler::class, $locator->getHandlerForCommand(RemoveThing::class));
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function commandBusMiddlewareMustBeProperlyDefined(): void
     {
         $container = $this->createContainer();
@@ -187,7 +186,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         self::assertEquals(new CommandBus($middlewareList), $bus); // @phpstan-ignore-line
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function queryBusHandlersMustBeProperlyDefined(): void
     {
         $container = $this->createContainer();
@@ -199,7 +198,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         self::assertInstanceOf(ListThingsHandler::class, $locator->getHandlerForCommand(ListThings::class));
     }
 
-    /** @test */
+    #[PHPUnit\Test]
     public function queryBusMiddlewareMustBeProperlyDefined(): void
     {
         $container = $this->createContainer();

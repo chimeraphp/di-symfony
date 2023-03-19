@@ -17,6 +17,7 @@ use Mezzio\Helper\BodyParams\BodyParamsMiddleware;
 use Mezzio\Router\Middleware\DispatchMiddleware;
 use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
 use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
+use PHPUnit\Framework\Attributes as PHPUnit;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -59,10 +60,8 @@ abstract class ApplicationTestCase extends TestCase
         'sample-app.query_bus.decorated_bus.handler.locator',
     ];
 
-    /**
-     * @beforeClass
-     * @afterClass
-     */
+    #[PHPUnit\BeforeClass]
+    #[PHPUnit\AfterClass]
     final public static function cleanUpContainer(): void
     {
         exec('rm -rf ' . __DIR__ . '/App/dump');
