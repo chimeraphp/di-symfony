@@ -28,7 +28,7 @@ final class ValidateApplicationComponentsTest extends TestCase
         $pass = new ValidateApplicationComponents('sample-app');
 
         $this->expectException(RuntimeException::class);
-        $this->expectErrorMessage('The HTTP interface for "sample-app" is not a public service');
+        $this->expectExceptionMessage('The HTTP interface for "sample-app" is not a public service');
         $pass->process($builder);
     }
 
@@ -47,7 +47,7 @@ final class ValidateApplicationComponentsTest extends TestCase
         $pass = new ValidateApplicationComponents('sample-app');
 
         $this->expectException(RuntimeException::class);
-        $this->expectErrorMessage('The HTTP interface for "sample-app" is not a public service');
+        $this->expectExceptionMessage('The HTTP interface for "sample-app" is not a public service');
         $pass->process($builder);
     }
 
