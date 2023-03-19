@@ -28,4 +28,4 @@ phpcs:
 
 .PHONY: phpstan
 phpstan:
-	@vendor/bin/phpstan analyse
+	@XDEBUG_MODE=off vendor/bin/phpstan analyse
