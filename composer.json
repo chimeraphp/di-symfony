@@ -20,7 +20,7 @@
     "require-dev": {
         "chimera/bus-tactician": "^1.0.x-dev",
         "chimera/mapping": "^1.0.x-dev",
-        "chimera/routing-mezzio": "^1.0.x-dev",
+        "chimera/routing-mezzio": "0.4.0",
         "chimera/serialization-jms": "^1.0.x-dev",
         "infection/infection": "^0.26",
         "lcobucci/coding-standard": "^9.0",
