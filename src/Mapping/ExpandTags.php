@@ -46,7 +46,7 @@ final class ExpandTags implements CompilerPassInterface
     ];
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @throws InvalidArgumentException
      * @throws ReflectionException
