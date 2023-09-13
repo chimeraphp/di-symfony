@@ -183,7 +183,7 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         ];
 
         self::assertContainsOnlyInstancesOf(Middleware::class, $middlewareList);
-        self::assertEquals(new CommandBus($middlewareList), $bus); // @phpstan-ignore-line
+        self::assertEquals(new CommandBus($middlewareList), $bus);
     }
 
     #[PHPUnit\Test]
@@ -214,6 +214,6 @@ final class ApplicationRegistrationTest extends ApplicationTestCase
         ];
 
         self::assertContainsOnlyInstancesOf(Middleware::class, $middlewareList);
-        self::assertEquals(new CommandBus($middlewareList), $bus); // @phpstan-ignore-line
+        self::assertEquals(new CommandBus($middlewareList), $bus);
     }
 }
