@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": "~8.1.0 || ~8.2.0",
+        "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
         "chimera/bus-implementation": "^1.0",
         "chimera/foundation": "^1.0.x-dev",
         "chimera/routing": "^1.0.x-dev",
@@ -22,7 +22,7 @@
         "chimera/mapping": "^1.0.x-dev",
         "chimera/routing-mezzio": "^1.0.x-dev",
         "chimera/serialization-jms": "^1.0.x-dev",
-        "infection/infection": "^0.26",
+        "infection/infection": "^0.29",
         "lcobucci/coding-standard": "^11.0",
         "lcobucci/error-handling-middleware": "^1.4",
         "phpstan/extension-installer": "^1.2",
