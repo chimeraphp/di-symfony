@@ -15,7 +15,7 @@
         "chimera/foundation": "^1.0.x-dev",
         "chimera/routing": "^1.0.x-dev",
         "chimera/routing-implementation": "^1.0",
-        "lcobucci/di-builder": "^7.2"
+        "lcobucci/di-builder": "^9.0"
     },
     "require-dev": {
         "chimera/bus-tactician": "^1.0.x-dev",
